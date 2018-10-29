@@ -8,6 +8,10 @@ import iView from 'iview'
 import i18n from '@/locale'
 import config from '@/config'
 import importDirective from '@/directive'
+
+// 引入moment
+import moment from 'moment'
+
 import 'iview/dist/styles/iview.css'
 import './index.less'
 import '@/assets/icons/iconfont.css'
@@ -23,6 +27,10 @@ Vue.config.productionTip = false
  * @description 全局注册应用配置
  */
 Vue.prototype.$config = config
+
+// 设置moment使用
+Vue.prototype.$moment = moment;//赋值使用
+
 /**
  * 注册指令
  */

@@ -14,18 +14,74 @@ const btns = {
     }, [
       h('Button', {
         props: {
-          type: 'text',
-          ghost: true
+          type: 'error',
+          ghost: false
+
         }
-      }, [
-        h('Icon', {
-          props: {
-            type: 'md-trash',
-            size: 18,
-            color: '#000000'
-          }
-        })
-      ])
+      }, '删除')
+    ])
+  },
+  // 编辑按钮
+  edit: (h, params, vm) => {
+    return h('span', {
+      style: {
+        marginLeft: '10px'
+      },
+      on: {
+        'click': () => {
+          vm.$emit('on-edit', params)
+        }
+      }
+    }, [
+      h('Button', {
+        props: {
+          type: 'success',
+          ghost: false
+
+        }
+      }, '编辑')
+    ])
+  },
+  // 详情按钮
+  details: (h, params, vm) => {
+    return h('span', {
+      style: {
+        marginLeft: '10px'
+      },
+      on: {
+        'click': () => {
+          vm.$emit('on-detail', params)
+        }
+      }
+    }, [
+      h('Button', {
+        props: {
+          type: 'primary',
+          ghost: false
+
+        }
+      }, '详情')
+    ])
+  },
+  // 导入按钮
+  guideIn: (h, params, vm) => {
+    return h('span', {
+      style: {
+        marginLeft: '10px'
+      },
+      on: {
+        'click': () => {
+          vm.$emit('on-fileIn', params)
+        }
+      }
+    }, [
+      h('Button', {
+        props: {
+          type: 'default',
+          ghost: false
+
+        }
+      }, '导入')
     ])
   }
 }

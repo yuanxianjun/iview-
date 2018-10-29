@@ -11,7 +11,6 @@ import parentView from '@/components/parent-view'
  *  beforeCloseName: (-) 设置该字段，则在关闭当前tab页时会去'@/router/before-close.js'里寻找该字段名对应的方法，作为关闭前的钩子函数
  * }
  */
-
 export default [
   {
     path: '/login',
@@ -22,10 +21,10 @@ export default [
     },
     component: () => import('@/view/login/login.vue')
   },
-
+  // 系统管理
   {
-    path: '/components',
-    name: 'components',
+    path: '/system',
+    name: 'system_manager',
     meta: {
       icon: 'logo-buffer',
       title: '系统管理'
@@ -33,101 +32,168 @@ export default [
     component: Main,
     children: [
       {
-        path: 'count_to_page',
-        name: 'count_to_page',
+        path: 'admin-manager',
+        name: 'admin-manager',
         meta: {
-          icon: 'md-trending-up',
+          icon: 'md-person',
           title: '管理员配置'
         },
-        component: () => import('@/view/components/count-to/count-to.vue')
+        component: () => import('@/view/system/admin-manager/admin-manager.vue')
       },
       {
-        path: 'count_to_page',
-        name: 'count_to_page',
+        path: 'person-manager',
+        name: 'person-manager',
         meta: {
-          icon: 'md-trending-up',
+          icon: 'ios-people',
           title: '角色管理'
         },
-        component: () => import('@/view/components/count-to/count-to.vue')
+        component: () => import('@/view/system/person-manager/person-manager.vue')
       },
       {
-        path: 'role-manager',
-        name: 'role-manager',
+        path: 'permission-manager',
+        name: 'permission-manager',
         meta: {
-          icon: 'md-trending-up',
+          icon: 'ios-key',
           title: '权限管理'
         },
-        component: () => import('@/view/components/role-manager/role-manager.vue')
+        component: () => import('@/view/system/permission-manager/permission-manager.vue')
       },
       {
-        path: 'count_to_page',
-        name: 'count_to_page',
+        path: 'dictionary-setting',
+        name: 'dictionary-setting',
         meta: {
-          icon: 'md-trending-up',
+          icon: 'ios-book',
           title: '字典配置'
         },
-        component: () => import('@/view/components/count-to/count-to.vue')
+        component: () => import('@/view/system/dictionary-setting/dictionary-setting.vue')
       },
       {
-        path: 'tables_page',
-        name: 'tables_page',
+        path: 'inform_manager',
+        name: 'inform_manager',
         meta: {
-          icon: 'md-grid',
-          title: '多功能表格'
+          icon: 'md-notifications',
+          title: '通知管理'
         },
-        component: () => import('@/view/components/tables/tables.vue')
+        component: () => import('@/view/system/inform-manager/inform-manager.vue')
+      },
+      {
+        path: 'notice_manager',
+        name: 'notice_manager',
+        meta: {
+          icon: 'ios-text',
+          title: '内容管理'
+        },
+        component: () => import('@/view/system/notice-manager/notice-manager.vue')
       },
     ]
   },
-
+  // 个人配置
   {
-    path: '/components',
-    name: 'components',
+    path: '/setting',
+    name: 'personal_setting',
     meta: {
-      icon: 'logo-buffer',
+      icon: 'ios-construct',
       title: '个人配置'
     },
     component: Main,
     children: [
       {
-        path: 'count_to_page',
-        name: 'count_to_page',
+        path: 'person-info',
+        name: 'person-info',
         meta: {
-          icon: 'md-trending-up',
+          icon: 'md-contact',
           title: '个人信息'
         },
-        component: () => import('@/view/components/count-to/count-to.vue')
+        component: () => import('@/view/personal-setting/person-info/person-info.vue')
       },
       {
-        path: 'count_to_page',
-        name: 'count_to_page',
+        path: 'safe-config',
+        name: 'safe-config',
         meta: {
-          icon: 'md-trending-up',
+          icon: 'md-finger-print',
           title: '安全配置'
         },
-        component: () => import('@/view/components/count-to/count-to.vue')
+        component: () => import('@/view/personal-setting/safe-config/safe-config.vue')
       },
       {
-        path: 'count_to_page',
-        name: 'count_to_page',
+        path: 'system-notice',
+        name: 'system_notice',
         meta: {
-          icon: 'md-trending-up',
+          icon: 'md-notifications',
           title: '系统通知'
         },
-        component: () => import('@/view/components/count-to/count-to.vue')
+        component: () => import('@/view/personal-setting/system-notice/system-notice.vue')
       },
-      {
-        path: 'count_to_page',
-        name: 'count_to_page',
-        meta: {
-          icon: 'md-trending-up',
-          title: '注销'
-        },
-        component: () => import('@/view/components/count-to/count-to.vue')
-      },
+      // {
+      //   path: 'count_to_page',
+      //   name: 'count_to_page',
+      //   meta: {
+      //     icon: 'md-close',
+      //     title: '注销'
+      //   },
+      //   component: () => import('@/view/components/count-to/count-to.vue')
+      // },
     ]
   },
+  // 信用卡管理页面
+  {
+    path: '/credit',
+    name: 'credit-managers',
+    meta: {
+      icon: 'ios-card',
+      title: '信用卡APP管理'
+    },
+    component: Main,
+    children: [
 
+      {
+        path: '/bank-manager',
+        name: 'bank-manager',
+        meta: {
+          icon: 'md-home',
+          title: '信用卡银行管理'
+        },
+        component: () => import('@/view/credit-manager/bank-manager/bank-manager.vue')
+      },
+      {
+        path: '/credit-manage',
+        name: 'credit-manager',
+        meta: {
+          icon: 'md-card',
+          title: '信用卡管理'
+        },
+        component: () => import('@/view/credit-manager/credit-manager/credit-manager.vue')
+      },
+      {
+        path: '/banner-manage',
+        name: 'banner-manager',
+        meta: {
+          icon: 'ios-card',
+          title: 'Banner管理'
+        },
+        component: () => import('@/view/credit-manager/banner-manager/banner-manager.vue')
+      },
+      {
+        path: '/loans-manage',
+        name: 'loans-manager',
+        meta: {
+          icon: 'ios-card',
+          title: '贷款管理'
+        },
+        component: () => import('@/view/credit-manager/loans-manager/loans-manager.vue')
+      },
+      {
+        path: '/approve-manage',
+        name: 'approve-manager',
+        meta: {
+          icon: 'ios-card',
+          title: '认证管理'
+        },
+        component: () => import('@/view/credit-manager/approve-manager/approve-manager.vue')
+      }
+    ]
+  },
+  // home页面
   {
     path: '/',
     name: '_home',
@@ -150,7 +216,7 @@ export default [
       }
     ]
   },
-
+  // 
   {
     path: '/argu',
     name: 'argu',
@@ -205,10 +271,18 @@ export default [
       hideInMenu: true
     },
     component: () => import('@/view/error-page/404.vue')
-  }
+  },
+  // 
+  {
+    path: '',
+    name: 'doc',
+    meta: {
+      title: '文档',
+      href: 'https://lison16.github.io/iview-admin-doc/#/',
+      icon: 'ios-book'
+    }
+  },
 ]
-
-
 /*
 *
 *
@@ -456,7 +530,12 @@ export default [
           title: '二级-3'
         },
         component: () => import('@/view/multilevel/level-2-3.vue')
-      },
+      }, 
     ]
   },
 * */
+/* 
+*/
+/**
+ *
+ *  */

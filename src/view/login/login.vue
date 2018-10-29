@@ -1,5 +1,5 @@
 <style lang="less">
-  @import './login.less';
+@import "./login.less";
 </style>
 
 <template>
@@ -23,14 +23,14 @@ export default {
     LoginForm
   },
   methods: {
-    ...mapActions([
-      'handleLogin',
-      'getUserInfo'
-    ]),
+    ...mapActions(['handleLogin', 'getUserInfo']),
     handleSubmit ({ userName, password }) {
       this.handleLogin({ userName, password }).then(res => {
         if (res.status === 0) {
           this.getUserInfo().then(res => {
+            var res = JSON.stringify(res)
+            localStorage.setItem('loginObj', res)
+            localStorage.setItem('nickName', res.nickname)
             this.$router.push({
               name: 'home'
             })
@@ -43,5 +43,4 @@ export default {
 </script>
 
 <style>
-
 </style>

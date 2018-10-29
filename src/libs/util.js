@@ -6,7 +6,7 @@ import { forEach, hasOneOf, objEqual } from '@/libs/tools'
 export const TOKEN_KEY = 'token'
 
 export const setToken = (token) => {
-  Cookies.set(TOKEN_KEY, token, {expires: config.cookieExpires || 1})
+  Cookies.set(TOKEN_KEY, token, { expires: config.cookieExpires || 1 })
 }
 
 export const getToken = () => {
@@ -57,7 +57,7 @@ export const getBreadCrumbList = (route, homeRoute) => {
   let res = routeMetched.filter(item => {
     return item.meta === undefined || !item.meta.hide
   }).map(item => {
-    let meta = {...item.meta}
+    let meta = { ...item.meta }
     if (meta.title && typeof meta.title === 'function') meta.title = meta.title(route)
     let obj = {
       icon: (item.meta && item.meta.icon) || '',
@@ -71,10 +71,9 @@ export const getBreadCrumbList = (route, homeRoute) => {
   })
   return [Object.assign(homeRoute, { to: homeRoute.path }), ...res]
 }
-
 export const getRouteTitleHandled = route => {
-  let router = {...route}
-  let meta = {...route.meta}
+  let router = { ...route }
+  let meta = { ...route.meta }
   if (meta.title && typeof meta.title === 'function') meta.title = meta.title(router)
   router.meta = meta
   return router
@@ -320,3 +319,5 @@ export const routeHasExist = (tagNavList, routeItem) => {
   })
   return res
 }
+
+export const baseUrl = process.env.NODE_ENV === 'development' ? config.baseUrl.dev : config.baseUrl.pro

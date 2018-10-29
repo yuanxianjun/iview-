@@ -1,5 +1,5 @@
-import {login, getUserInfo} from '@/api/user'
-import {setToken, getToken} from '@/libs/util'
+import { login, getUserInfo } from '@/api/user'
+import { setToken, getToken } from '@/libs/util'
 
 export default {
   state: {
@@ -37,7 +37,7 @@ export default {
   },
   actions: {
     // 登录
-    handleLogin ({commit}, {userName, password}) {
+    handleLogin ({ commit }, { userName, password }) {
       userName = userName.trim()
       return new Promise((resolve, reject) => {
         login({
@@ -57,7 +57,7 @@ export default {
       })
     },
     // 退出登录
-    handleLogOut ({state, commit}) {
+    handleLogOut ({ state, commit }) {
       // return new Promise((resolve, reject) => {
       //   logout(state.token).then(() => {
       //     commit('setToken', '')
@@ -66,14 +66,14 @@ export default {
       //   }).catch(err => {
       //     reject(err)
       //   })
-      return new Promise((resolve => {
+      return new Promise(resolve => {
         commit('setToken', '')
         commit('setAccess', [])
         resolve()
-      }))
+      })
     },
     // 获取用户相关信息
-    getUserInfo ({state, commit}) {
+    getUserInfo ({ state, commit }) {
       return new Promise((resolve, reject) => {
         try {
           getUserInfo().then(res => {
@@ -81,10 +81,9 @@ export default {
               const data = res.data
               if (data.avarstart === undefined || data.avarstart === '' || avastart === null) {
                 commit('setAvator', 'https://file.iviewui.com/dist/a0e88e83800f138b94d2414621bd9704.png')
-              }else{
+              } else {
                 commit('setAvator', data.avastart)
               }
-
               commit('setUserName', data.username)
               commit('setNickName', data.nickname)
               commit('setUserId', data.id)
