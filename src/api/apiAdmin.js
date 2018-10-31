@@ -10,7 +10,7 @@ export const list = (page, rows, searchKey, searchValue) => {
     searchValue
   }
   return axios.post({
-    url: API_USER_ADMIN_PREFIX + '/page',
+    url: API_USER_ADMIN_PREFIX + '/operator/page',
     data
   })
 }

@@ -1,7 +1,7 @@
 <template>
   <div>
     <Card>
-    <Tabs :value="ban">
+    <Tabs >
         <TabPane label="字典列表" name="item">
               <Tables ref="tables" editable searchable search-place="top" v-model="tableData2" :columns="columns2"
               @on-delete="itemDelete" @on-edit="handleEdit2" @on-search="itemSearch"/>
@@ -9,6 +9,7 @@
           <Page :total="totalNum2" :page-size = 8 show-elevator  @on-change="pageChange2"/>
         </div>
          <Button type="primary" @click="modal1 = true;isEdit='添加item';" >添加item</Button>
+         <Button style="margin-left:10px;" type="primary" @click="backToIndex" >返回</Button>
         </TabPane>
     </Tabs>
     <Modal
@@ -49,7 +50,7 @@ export default {
       currentPage: 1,
       currentPage2: 1,
       // 当前显示面板
-      ban: 'type',
+      ban: 'item',
       searchKey: '',
       searchValue: '',
       columns2: [
@@ -99,15 +100,22 @@ export default {
     }
   },
   methods: {
+    // 返回
+    backToIndex () {
+      this.searchKey = ''
+      this.searchValue = ''
+      this.currentPage = 1
+      this.$router.push({ name: 'dictionary-setting', query: {} })
+    },
     intItemData (page, rows, searchKey, searchValue) {
       apiDic.dicItemList(page, 8, searchKey, searchValue).then(res => {
+        console.log('查看查询到信息', res)
         if (res.status == 0) {
           this.tableData2 = res.data.rows
           this.totalNum2 = res.data.total
         }
       })
     },
-
     // 删除item
     itemDelete (params) {
       var delId = params.row.id
@@ -118,15 +126,13 @@ export default {
       })
     },
     // 编辑列表
-
     handleEdit2 (params) {
       this.modal1 = true
       this.isEdit = '编辑item'
       this.formData = params.row.id
-      // console.log(changeId, _this.formData);
+      this.CODE = this.$route.query.id
+      console.log('查看code', this.CODE)
     },
-    // type字段搜索
-
     // item字段搜索
     itemSearch (searchKey, searchValue) {
       // console.log(searchKey, searchValue);
@@ -146,12 +152,19 @@ export default {
     // 关闭窗口
     closeWin () {
       this.modal1 = false
-      this.intItemData(this.currentPage, 8, this.searchKey, this.searchValue)
+      this.intItemData(this.currentPage, 8, 'typeId', this.searchValue)
       this.formData = ''
     }
   },
   mounted () {
-    this.intItemData(this.currentPage2, 8)
+    console.log('查看item页面', this.$route)
+    this.searchValue = this.$route.query.id
+    this.CODE = this.$route.query.id
+    if (this.searchValue) {
+      this.intItemData(this.currentPage2, 8, 'typeId', this.searchValue)
+    } else {
+      this.intItemData(this.currentPage2, 8)
+    }
   }
 }
 </script>

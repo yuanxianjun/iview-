@@ -78,20 +78,6 @@ export default {
           searchable: true,
           width: 90
         },
-        // {
-        //   title: "信用卡描述",
-        //   key: "creditDescription",
-        //   sortable: true,
-        //   editable: true,
-        //   searchable: true
-        // },
-        // {
-        //   title: "年费",
-        //   key: "creditAnnualFee",
-        //   sortable: true,
-        //   editable: true,
-        //   searchable: true
-        // },
         {
           title: '申请人数',
           key: 'creditApplyCount',
@@ -108,36 +94,12 @@ export default {
           searchable: false,
           width: 80
         },
-        // {
-        //   title: "用途",
-        //   key: "creditPurpose",
-        //   sortable: true,
-        //   // editable: true,
-        //   searchable: true
-        // },
         {
           title: '卡组织',
           key: 'creditOrganization',
           sortable: true,
           // editable: true,
           searchable: false
-          // render: (h, params) => {
-          //   console.log(this._data.cardOrganizations);
-          //   this.cardOrganizations.forEach(item => {
-          //     console.log(item);
-          //   });
-          //   return createElement(
-          //     "ul",
-          //     this.items.map(function(item) {
-          //       return createElement("li", item.name);
-          //     })
-          //   );
-          //   return h("span", {
-          //     domProps: {
-          //       innerHTML: params.row.creditOrganization
-          //     }
-          //   });
-          // }
         },
         {
           title: '是否推荐',

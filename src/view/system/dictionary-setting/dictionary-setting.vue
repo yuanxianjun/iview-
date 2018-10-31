@@ -1,7 +1,7 @@
 <template>
   <div>
     <Card>
-    <Tabs :value="ban" @on-click="changeTab">
+    <Tabs  @on-click="changeTab">
         <TabPane label="字典类型" name="type">
              <Tables ref="tables" editable searchable search-place="top" v-model="tableData" :columns="columns"
               @on-delete="handleDelete" @on-edit="handleEdit" @on-search="handleSearch"  />
@@ -9,14 +9,6 @@
           <Page  :total="totalNum" :page-size = 8 show-elevator   @on-change="pageChange"/>
         </div>
           <Button type="primary" @click="modal1 = true;isEdit='添加类型'" >添加类型</Button>
-        </TabPane>
-        <TabPane label="字典列表" name="item">
-              <Tables ref="tables" editable searchable search-place="top" v-model="tableData2" :columns="columns2"
-              @on-delete="itemDelete" @on-edit="handleEdit2" @on-search="itemSearch"/>
-             <div class="pagenation">
-          <Page :total="totalNum2" :page-size = 8 show-elevator  @on-change="pageChange2"/>
-        </div>
-         <Button type="primary" @click="modal1 = true;isEdit='添加item';" >添加item</Button>
         </TabPane>
     </Tabs>
     <Modal
@@ -52,11 +44,8 @@ export default {
       CODE: '',
       // 列表相关
       tableData: [],
-      tableData2: [],
       totalNum: 0,
-      totalNum2: 0,
       currentPage: 1,
-      currentPage2: 1,
       // 当前显示面板
       ban: 'type',
       searchKey: '',
@@ -156,50 +145,6 @@ export default {
             }
           ]
         }
-      ],
-      columns2: [
-        {
-          title: 'ID',
-          key: 'id',
-          sortable: true,
-          // editable: true,
-          searchable: true
-        },
-        {
-          title: '序号',
-          key: 'sort',
-          sortable: true,
-          // editable: true,
-          searchable: true
-        },
-        {
-          title: '字典内容',
-          key: 'text',
-          sortable: true,
-          // editable: true,
-          searchable: true
-        },
-
-        {
-          title: '类型',
-          key: 'typeId',
-          sortable: true,
-          // editable: true,
-          searchable: true
-        },
-        {
-          title: '值',
-          key: 'value',
-          sortable: true,
-          // editable: true,
-          searchable: true
-        },
-        {
-          title: '操作',
-          key: 'handle',
-          options: ['delete', 'edit'],
-          button: []
-        }
       ]
     }
   },
@@ -217,15 +162,6 @@ export default {
           this.tableData = originalData
         }
       })
-      // 查询字典列表
-    },
-    intItemData (page, rows, searchKey, searchValue) {
-      apiDic.dicItemList(page, 8, searchKey, searchValue).then(res => {
-        if (res.status == 0) {
-          this.tableData2 = res.data.rows
-          this.totalNum2 = res.data.total
-        }
-      })
     },
     // 删除type
     handleDelete (params) {
@@ -237,26 +173,12 @@ export default {
         }
       })
     },
-    // 删除item
-    itemDelete (params) {
-      var delId = params.row.id
-      apiDic.dicItemDel(delId).then(res => {
-        if (res.status == 0) {
-          this.$Message.success('删除成功')
-        }
-      })
-    },
     // 编辑列表
     handleEdit (params) {
       this.modal1 = true
       this.isEdit = '编辑类型'
       this.formData = params.row.id
-      // console.log(changeId, _this.formData);
-    },
-    handleEdit2 (params) {
-      this.modal1 = true
-      this.isEdit = '编辑item'
-      this.formData = params.row.id
+      this.CODE = params.row.code
       // console.log(changeId, _this.formData);
     },
     // type字段搜索
@@ -270,32 +192,21 @@ export default {
         }
       })
     },
-    // item字段搜索
-    itemSearch (searchKey, searchValue) {
-      // console.log(searchKey, searchValue);
-      apiDic.dicItemList('', 8, searchKey, searchValue).then(res => {
-        if (res.status == 0) {
-          this.tableData2 = res.data.rows
-          this.totalNum2 = res.data.total
-        }
-      })
-    },
     // 跳转到详情列表页
     skipToDetail (params) {
       var _this = this
       var code = params.row.code
       this.ban = 'item'
-      this.currentPage = 1
-      this.searchKey = 'typeId'
-      this.searchValue = code
+
       this.CODE = code
-      apiDic.dicItemList('', 8, 'typeId', code).then(res => {
-        if (res.status == 0) {
-          _this.tableData2 = res.data.rows
-          _this.totalNum2 = res.data.total
-        }
+      this.currentPage = 1
+
+      this.$router.push({
+        name: 'ditItem-list',
+        query: { id: code, name: params.row.text }
       })
     },
+
     uploadFile () {
       console.log('上传文件')
     },
@@ -312,12 +223,6 @@ export default {
       this.intData(currentPage, 8, this.searchKey, this.searchValue)
       this.currentPage = currentPage
     },
-    // item分类
-    pageChange2 (currentPage) {
-      console.log(this.searchKey, this.searchValue)
-      this.intItemData(currentPage, 8, this.searchKey, this.searchValue)
-      this.currentPage = currentPage
-    },
     // 关闭窗口
     closeWin () {
       this.modal1 = false
@@ -330,9 +235,7 @@ export default {
     }
   },
   mounted () {
-    console.log(apiGuideUpload)
     this.intData()
-    this.intItemData(this.currentPage2, 8)
   }
 }
 </script>

@@ -31,8 +31,10 @@
         </FormItem>
         <!-- 写入标签 -->
          <FormItem label="信用卡标签" prop="loanTips">
-          <Input v-model="formValidate.loanTips" type="textarea" :autosize="{minRows: 1,maxRows: 5}" placeholder="信用卡简单描述，不超过40字
-"></Input>
+          <div class="tipsBan" >
+               <Tag closable @on-close="handleClose(index)" v-for="(item ,index) in formValidate.loanTips" :key="index">{{item}}</Tag>
+          </div>
+          <Input style = "margin-top:10px;" v-model="inputIip" placeholder="输入标签使用enter键作为隔断" @on-enter="enterTips"></Input>
         </FormItem>
         <!-- 下拉 -->
           <FormItem label="最高借贷金额" prop="loanMaxLimit">
@@ -118,7 +120,8 @@ export default {
       // 字典查询的列表
       purpose: [],
       loanLevel: [],
-
+      // 输入标签的input框
+      inputIip: '',
       // form表单的内容
       formValidate: {
         loanDescription: '',
@@ -189,6 +192,25 @@ export default {
     }
   },
   methods: {
+    // 当输入完毕按下enter键的时候，将input框中的内容，添加到input为textarea中形成标签，inputarea中的一个个标签是一数组的形式存储的
+    enterTips (value) {
+      console.log('查看输入框中的内容', this.inputIip.length)
+      var regu = '^[ ]+$'
+      var re = new RegExp(regu)
+      var result = re.test(this.inputIip)
+      console.log(result)
+      if (this.inputIip && !result) {
+        this.formValidate.loanTips.push(this.inputIip)
+      } else {
+        this.$Message.error('请输入内容')
+      }
+      this.inputIip = ''
+    },
+    // 关闭一个标签
+    handleClose (index) {
+      this.formValidate.loanTips.splice(index, 1)
+      console.log(this.formValidate.loanTips)
+    },
     // 查询所需要的字典
     getDictionarys () {
       var _this = this
@@ -220,6 +242,7 @@ export default {
             this.formValidate.loanRecommandCard = String(
               this.formValidate.loanRecommandCard
             )
+            this.formValidate.loanTips = this.formValidate.loanTips.split(',')
             // console.log(typeof this.formValidate.loanHotCard);
             // radio的value值必须为String | Numberf 使用typeof 测试String转码后的类型为string
             if (this.formValidate.loanImg) {
@@ -240,13 +263,24 @@ export default {
           loanLevel: 'VIP',
           loanOrganization: 'VISA',
           loanAnnualFee: 'FOREVER_FREE',
-          loanPurpose: 'WITHDRAW'
+          loanPurpose: 'WITHDRAW',
+          loanTips: []
         }
       }
     },
     handleSubmit (name) {
       this.$refs[name].validate(valid => {
+        var inputValue = this.formValidate.loanTips.join(',')
+        var commalength = (inputValue.match(/,g/) || []).legnth
+        var inputValuelength = inputValue.length - commalength
+        console.log('实际字数', inputValuelength)
         if (valid && this.formValidate.loanImg) {
+          if (inputValue.length >= 40) {
+            this.$Message.error('标签总字数不能超过40个字')
+            return
+          } else {
+            this.formValidate.loanTips = inputValue
+          }
           apiLoan.loanSave(this.formValidate).then(res => {
             if (res.status == 0) {
               this.$Message.success('添加成功')

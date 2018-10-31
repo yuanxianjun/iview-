@@ -17,6 +17,7 @@
                 :action="uploadUrl"
                 :data = "uploadParam"
                 style="display: inline-block;width:100px;">
+
                 <div  style="width: 100px;height:58px;line-height: 58px;">
                     <Icon v-if="!showImg" type="ios-add" size="50"></Icon>
                     <img class="img" v-if="showImg" :src="formValidate.creditImg" alt="" style="width:100px;height:60px;">
@@ -31,14 +32,13 @@
         </FormItem>
         <!-- 写入标签 -->
          <FormItem label="信用卡标签" prop="creditTips">
-          <div class="tipsBan" >
-               <Tag closable @on-close="handleClose(index)" v-for="(item ,index) in formValidate.creditTips" :key="index">{{item}}</Tag>
-          </div>
-          <Input style = "margin-top:10px;" v-model="inputIip" placeholder="输入标签使用enter键作为隔断" @on-enter="enterTips"></Input>
+          <Input v-model="formValidate.creditTips" type="textarea" :autosize="{minRows: 1,maxRows: 5}" placeholder="信用卡简单描述，不超过40字
+"></Input>
         </FormItem>
         <!-- 下拉 -->
           <FormItem label="年费" prop="creditAnnualFee">
             <!-- <Input  v-model="formValidate.creditAnnualFee" placeholder=""></Input> -->
+
             <Select v-model="formValidate.creditAnnualFee" placeholder="选择信用卡年费">
                 <Option v-for="item in yearMoney" :key = "item.value" :value="item.value">{{item.text}}</Option>
             </Select>
@@ -76,10 +76,11 @@
                 <Radio label="false">否</Radio>
             </RadioGroup>
         </FormItem>
+
          <FormItem label="信用卡级别" prop="creditLevel">
               <Select v-model="formValidate.creditLevel" placeholder="选择信用卡级别">
                 <Option v-for="item in creditLevel" :key = "item.id" :value="item.value">{{item.text}}</Option>
-              </Select>
+            </Select>
         </FormItem>
          <FormItem label="所属银行" prop="creditBank">
             <Input  v-model="formValidate.creditBank" placeholder="输入信用卡所属银行"></Input>
@@ -118,8 +119,7 @@ export default {
       purpose: [],
       yearMoney: [],
       creditLevel: [],
-      // 输入标签的input框
-      inputIip: '',
+
       // form表单的内容
       formValidate: {
         creditDescription: '',
@@ -132,8 +132,7 @@ export default {
         creditLevel: 'VIP',
         creditOrganization: 'VISA',
         creditAnnualFee: 'FOREVER_FREE',
-        creditPurpose: 'WITHDRAW',
-        creditTips: []
+        creditPurpose: 'WITHDRAW'
       },
       ruleValidate: {
         creditName: [
@@ -148,7 +147,7 @@ export default {
         ],
 
         creditApplyCount: [
-          { required: true, message: '申请人数不能为空', trigger: 'blur' }
+          { required: true, message: '信用卡描述不能为空', trigger: 'blur' }
         ],
         creditBank: [
           { required: true, message: '信用卡所属不能为空', trigger: 'blur' }
@@ -167,25 +166,6 @@ export default {
     }
   },
   methods: {
-    // 当输入完毕按下enter键的时候，将input框中的内容，添加到input为textarea中形成标签，inputarea中的一个个标签是一数组的形式存储的
-    enterTips (value) {
-      console.log('查看输入框中的内容', this.inputIip.length)
-      var regu = '^[ ]+$'
-      var re = new RegExp(regu)
-      var result = re.test(this.inputIip)
-      console.log(result)
-      if (this.inputIip && !result) {
-        this.formValidate.creditTips.push(this.inputIip)
-      } else {
-        this.$Message.error('请输入内容')
-      }
-      this.inputIip = ''
-    },
-    // 关闭一个标签
-    handleClose (index) {
-      this.formValidate.creditTips.splice(index, 1)
-      console.log(this.formValidate.creditTips)
-    },
     // 查询所需要的字典
     getDictionarys () {
       var _this = this
@@ -219,12 +199,6 @@ export default {
             this.formValidate.creditRecommandCard = String(
               this.formValidate.creditRecommandCard
             )
-            this.formValidate.creditApplyCount = String(
-              this.formValidate.creditApplyCount
-            )
-            this.formValidate.creditTips = this.formValidate.creditTips.split(
-              ','
-            )
             // console.log(typeof this.formValidate.creditHotCard);
             // radio的value值必须为String | Numberf 使用typeof 测试String转码后的类型为string
             if (this.formValidate.creditImg) {
@@ -240,28 +214,17 @@ export default {
           creditRecommandCard: 'true',
           creditImg: '',
           creditName: '',
+
           creditLevel: 'VIP',
           creditOrganization: 'VISA',
           creditAnnualFee: 'FOREVER_FREE',
-          creditPurpose: 'WITHDRAW',
-          creditTips: []
+          creditPurpose: 'WITHDRAW'
         }
       }
     },
     handleSubmit (name) {
       this.$refs[name].validate(valid => {
-        var inputValue = this.formValidate.creditTips.join(',')
-        var commalength = (inputValue.match(/,g/) || []).legnth
-        var inputValuelength = inputValue.length - commalength
-        console.log('实际字数', inputValuelength)
-
         if (valid && this.formValidate.creditImg) {
-          if (inputValue.length >= 40) {
-            this.$Message.error('标签总字数不能超过40个字')
-            return
-          } else {
-            this.formValidate.creditTips = inputValue
-          }
           apiCredit.creditSave(this.formValidate).then(res => {
             if (res.status == 0) {
               this.$Message.success('添加成功')
@@ -269,7 +232,7 @@ export default {
             }
           })
         } else {
-          this.$Message.error('请上传图片')
+          this.$Message.error('请将信息填写完整')
         }
       })
     },
@@ -292,9 +255,10 @@ export default {
     handleMaxSize (file) {
       this.$Notice.warning({
         title: '上传扥文件大小超过限制',
-        desc: '文件' + file.name + '太大,大小不能超过2M.'
+        desc: '文件  ' + file.name + '太大,大小不能超过2M.'
       })
     },
+
     // 重置表单
     handleReset (name) {
       this.$refs[name].resetFields()
@@ -311,11 +275,5 @@ export default {
   width: 50px;
   height: 50px;
   vertical-align: middle;
-}
-.tipsBan {
-  min-height: 40px;
-  height: auto;
-  border: 1px solid #80869559;
-  padding: 4px;
 }
 </style>

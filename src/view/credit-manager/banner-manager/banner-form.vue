@@ -53,8 +53,20 @@
         <FormItem label="banner排序字段" prop="bannerSortNumber">
           <Input v-model="formValidate.bannerSortNumber" placeholder="输入banner排序字段"></Input>
         </FormItem>
-          <FormItem label="推荐链接" prop="bannerLink">
-            <Input  v-model="formValidate.bannerLink" placeholder="输入banner推荐链接"></Input>
+          <FormItem label="落地页链接" prop="bannerLink">
+            <Input  v-model="formValidate.bannerLink" placeholder="输入banner落地页链接"></Input>
+        </FormItem>
+         </FormItem>
+          <FormItem label="banner小提示" prop="bannerTips">
+            <Input  v-model="formValidate.bannerTips" placeholder="输入banner小提示"></Input>
+        </FormItem>
+         </FormItem>
+          <FormItem label="配置点击上报地址" prop="bannerTrackClickUrl">
+             <Input  v-model="formValidate.bannerTrackClickUrl" type="textarea" :autosize="{minRows: 3,maxRows: 6}" placeholder="输入配置点击上报地址"></Input>
+        </FormItem>
+         </FormItem>
+          <FormItem label="配置曝光上报地址" prop="bannerTrackExposeUrl">
+            <Input  v-model="formValidate.bannerTrackExposeUrl" type="textarea" :autosize="{minRows: 3,maxRows: 6}" placeholder="输入配置曝光上报地址"></Input>
         </FormItem>
         <FormItem>
             <Button type="primary" @click="handleSubmit('formValidate')">{{formData?"修改":"提交"}}</Button>
@@ -160,12 +172,12 @@ export default {
       getDatas('bannerPurpose', 'purpose')
       getDatas('bannerAnnualFee', 'yearMoney')
       getDatas('bannerLevel', 'bannerLevel')
-      console.log(this.cardOrganization)
+      // console.log(this.cardOrganization);
       function getDatas (id, key) {
         return typeList(id).then(res => {
           if (res.status == 0) {
             _this[key] = res.data
-            console.log('查询到的值', _this[key])
+            // console.log("查询到的值", _this[key]);
           }
         })
       }
@@ -182,6 +194,10 @@ export default {
             )
             this.formValidate.deleteStatus = String(
               this.formValidate.deleteStatus
+            )
+            this.formValidate.bannerType = String(this.formValidate.bannerType)
+            this.formValidate.bannerSortNumber = String(
+              this.formValidate.bannerSortNumber
             )
             // console.log(typeof this.formValidate.bannerHotCard);
             // radio的value值必须为String | Numberf 使用typeof 测试String转码后的类型为string
@@ -200,6 +216,27 @@ export default {
     handleSubmit (name) {
       this.$refs[name].validate(valid => {
         if (valid && this.formValidate.bannerImg) {
+          // 去除空格，制表符并且将
+          function detailStr (str) {
+            // 将所有的空格转化成换行
+            var strBr = ''
+            strBr = str.replace(/\s/g, '<br>')
+            strBr = strBr.replace(/,/g, '<br>')
+            strBr = strBr.replace(/\n/g, '<br>')
+            var strArr = strBr.split('<br>')
+            strArr = strArr.filter(function (item) {
+              return item !== ''
+            })
+            return strArr.join(',')
+          }
+          detailStr(this.formValidate.bannerTrackClickUrl)
+          this.formValidate.bannerTrackExposeUrl = detailStr(
+            this.formValidate.bannerTrackExposeUrl
+          )
+          this.formValidate.bannerTrackClickUrl = detailStr(
+            this.formValidate.bannerTrackClickUrl
+          )
+          // 向数据库提交数据
           apiBanner.bannerSave(this.formValidate).then(res => {
             if (res.status == 0) {
               this.$Message.success('添加成功')

@@ -102,31 +102,6 @@ export default {
           }
         ],
         code: [{ validator: validateStrCheck, trigger: 'blur' }],
-        // 以下是item相关
-        // typeId: [
-        //   {
-        //     required: true,
-        //     message: "类型不能为空",
-        //     trigger: "blur"
-        //   }
-        // ],
-        // sort: [
-        //   // {
-        //   //   required: true,
-        //   //   type: "number",
-        //   //   message: "sort不能为空",
-        //   //   trigger: "blur"
-        //   // },
-        //   {
-        //     // required: true,
-        //     // type: "number",
-        //     // message: "权值必须大于1",
-        //     // trigger: "change"
-        //     // transform(value) {
-        //     //   return Number(value);
-        //     // }
-        //   }
-        // ],
         value: [
           {
             required: true,
@@ -140,11 +115,10 @@ export default {
   methods: {
     // 查询信息
     getType () {
-      console.log(this.CODE)
-
+      console.log('查看code', this.CODE)
       apiDic.typeList(1, 10, 'code', this.CODE).then(res => {
         if (res.status == 0) {
-          console.log('查看是否获取到了type信息', res)
+          //  只能取出来10条，所以如果没有匹配上的需要接着请求下一页的数据，这一条直接就让他其显示出来就行
           this.formValidate.typeId = this.CODE
           this.types = res.data.rows
         }

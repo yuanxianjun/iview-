@@ -59,13 +59,21 @@ export default [
         component: () => import('@/view/system/permission-manager/permission-manager.vue')
       },
       {
-        path: 'dictionary-setting',
+        path: '/dictionary-setting',
         name: 'dictionary-setting',
         meta: {
           icon: 'ios-book',
           title: '字典配置'
         },
-        component: () => import('@/view/system/dictionary-setting/dictionary-setting.vue')
+        component: () => import('@/view/system/dictionary-setting/dictionary-setting.vue'),
+      },
+      {
+        path: '/dictionary-setting/detail',
+        name: 'ditItem-list',
+        meta: {
+          hideInMenu: true
+        },
+        component: () => import('@/view/system/dictionary-setting/dicItem-list.vue'),
       },
       {
         path: 'inform_manager',
@@ -124,15 +132,35 @@ export default [
         },
         component: () => import('@/view/personal-setting/system-notice/system-notice.vue')
       },
-      // {
-      //   path: 'count_to_page',
-      //   name: 'count_to_page',
-      //   meta: {
-      //     icon: 'md-close',
-      //     title: '注销'
-      //   },
-      //   component: () => import('@/view/components/count-to/count-to.vue')
-      // },
+    ]
+  },
+  {
+    path: "/user-manager",
+    name: "user-manager",
+    meta: {
+      title: "用户管理",
+      icon: "ios-contacts"
+    },
+    component: Main,
+    children: [
+      {
+        path: "/users-manager",
+        name: "users-manager",
+        meta: {
+          icon: "ios-text",
+          title: "用户管理"
+        },
+        component: () => import('@/view/user-manager/user-manager/user-manager.vue')
+      },
+      {
+        path: "/approve-manager",
+        name: "approve-manager",
+        meta: {
+          icon: "ios-text",
+          title: "认证管理"
+        },
+        component: () => import('@/view/user-manager/approve-manager/approve-manager.vue')
+      }
     ]
   },
   // 信用卡管理页面
@@ -182,15 +210,7 @@ export default [
         },
         component: () => import('@/view/credit-manager/loans-manager/loans-manager.vue')
       },
-      {
-        path: '/approve-manage',
-        name: 'approve-manager',
-        meta: {
-          icon: 'ios-card',
-          title: '认证管理'
-        },
-        component: () => import('@/view/credit-manager/approve-manager/approve-manager.vue')
-      }
+
     ]
   },
   // home页面
