@@ -73,7 +73,11 @@ export default {
       return this.$store.state.user.avatorImgPath
     },
     cacheList () {
-      return this.tagNavList.length ? this.tagNavList.filter(item => !(item.meta && item.meta.notCache)).map(item => item.name) : []
+      return this.tagNavList.length
+        ? this.tagNavList
+          .filter(item => !(item.meta && item.meta.notCache))
+          .map(item => item.name)
+        : []
     },
     menuList () {
       return this.$store.getters.menuList
@@ -83,15 +87,8 @@ export default {
     }
   },
   methods: {
-    ...mapMutations([
-      'setBreadCrumb',
-      'setTagNavList',
-      'addTag',
-      'setLocal'
-    ]),
-    ...mapActions([
-      'handleLogin'
-    ]),
+    ...mapMutations(['setBreadCrumb', 'setTagNavList', 'addTag', 'setLocal']),
+    ...mapActions(['handleLogin']),
     turnToPage (route) {
       let { name, params, query } = {}
       if (typeof route === 'string') name = route
@@ -130,7 +127,7 @@ export default {
     }
   },
   watch: {
-    '$route' (newRoute) {
+    $route (newRoute) {
       const { name, query, params, meta } = newRoute
       this.addTag({
         route: { name, query, params, meta },

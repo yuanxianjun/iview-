@@ -12,6 +12,29 @@ import parentView from '@/components/parent-view'
  * }
  */
 export default [
+  // 服务协议内容
+  {
+    path: "/serviceAgreement",
+    name: "serviceAgreement",
+    meta: {
+      hideInMenu: true,
+      title: "展示文章",
+      annoymous: true
+    },
+    component: () => import("@/view/service-agreement/serviceHtml.vue")
+  },
+  // 文章的显示页面
+  {
+    path: "/articleHtml",
+    name: "articleHtml",
+    meta: {
+      hideInMenu: true,
+      title: "展示文章",
+      annoymous: true
+    },
+    component: () => import("@/view/article-manager/article-html/articleHtml.vue")
+  },
+
   {
     path: '/login',
     name: 'login',
@@ -21,6 +44,8 @@ export default [
     },
     component: () => import('@/view/login/login.vue')
   },
+
+
   // 系统管理
   {
     path: '/system',
@@ -71,7 +96,8 @@ export default [
         path: '/dictionary-setting/detail',
         name: 'ditItem-list',
         meta: {
-          hideInMenu: true
+          hideInMenu: true,
+          title: "字典列表"
         },
         component: () => import('@/view/system/dictionary-setting/dicItem-list.vue'),
       },
@@ -134,6 +160,7 @@ export default [
       },
     ]
   },
+  // 用户管理
   {
     path: "/user-manager",
     name: "user-manager",
@@ -157,7 +184,8 @@ export default [
         name: "approve-manager",
         meta: {
           icon: "ios-text",
-          title: "认证管理"
+          title: "认证管理",
+          hideInMenu: true
         },
         component: () => import('@/view/user-manager/approve-manager/approve-manager.vue')
       }
@@ -211,6 +239,36 @@ export default [
         component: () => import('@/view/credit-manager/loans-manager/loans-manager.vue')
       },
 
+    ]
+  },
+  // 文章管理
+  {
+    path: "/article-manager",
+    name: "article-manager",
+    meta: {
+      icon: "ios-text",
+      title: "文章管理"
+    },
+    component: Main,
+    children: [
+      {
+        path: "/article-list-manager",
+        name: "article-list-manager",
+        meta: {
+          icon: "ios-text",
+          title: "管理文章列表"
+        },
+        component: () => import("@/view/article-manager/article-manager/article-manager.vue")
+      },
+      {
+        path: "/comment-manager",
+        name: "comment-manager",
+        meta: {
+          icon: "ios-text",
+          title: "评论管理"
+        },
+        component: () => import('@/view/user-manager/approve-manager/approve-manager.vue')
+      },
     ]
   },
   // home页面

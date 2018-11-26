@@ -10,7 +10,6 @@
                 :show-upload-list="false"
                 :format="['jpg','jpeg','png']"
                 :max-size="2048"
-
                 :on-format-error="handleFormatError"
                 :on-exceeded-size="handleMaxSize"
                 :on-success="handleSuccess"
@@ -66,11 +65,13 @@ export default {
   props: ['formData'],
   data () {
     return {
+      // 长传图片
       uploadUrl: apiUpload,
       uploadParam: {
         fileType: 'headImg'
       },
       showImg: false,
+
       hiddenPassword: true,
       isDisabled: false,
       roleNames: [],
@@ -235,7 +236,6 @@ export default {
         desc: '文件  ' + file.name + '太大,大小不能超过2M.'
       })
     },
-
     // 重置表单
     handleReset (name) {
       this.$refs[name].resetFields()

@@ -16,12 +16,19 @@ const turnTo = (to, access, next) => {
   if (canTurnTo(to.name, access, routes)) next() // 有权限，可访问
   else next({ replace: true, name: 'error_401' }) // 无权限，重定向到401页面
 }
+
 router.beforeEach((to, from, next) => {
   iView.LoadingBar.start()
   const token = getToken()
-  if (!token && to.name !== LOGIN_PAGE_NAME) {
+  console.log(!token && to.meta.annoymous)
+
+  if (!token && to.meta.annoymous) {
+    console.log('测试')
+    next()
+  } else if (!token && to.name !== LOGIN_PAGE_NAME) {
     // 未登录且要跳转的页面不是登录页
     next({
+      replace: true,
       name: LOGIN_PAGE_NAME // 跳转到登录页
     })
   } else if (!token && to.name === LOGIN_PAGE_NAME) {
@@ -48,6 +55,7 @@ router.beforeEach((to, from, next) => {
     }
   }
 })
+
 router.afterEach(to => {
   iView.LoadingBar.finish()
   window.scrollTo(0, 0)

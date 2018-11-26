@@ -14,7 +14,7 @@ export default {
    *     //dev: 'https://www.easy-mock.com/mock/5add9213ce4d0e69998a6f51/iview-admin/',
    */
   baseUrl: {
-    dev: 'http://192.168.0.7:9010/',
+    dev: 'http://credit.charmatd.com/',
     pro: 'https://produce.com'
   }
 }

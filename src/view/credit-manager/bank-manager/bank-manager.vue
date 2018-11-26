@@ -4,10 +4,10 @@
       <tables ref="tables" editable searchable search-place="top" v-model="tableData" :columns="columns"
               @on-delete="handleDelete" @on-edit="handleEdit" @on-search="handleSearch" />
         <div class="pagenation">
-          <Page :total="totalNum"  show-elevator  :page-size=10 @on-change="pageChange" />
+          <Page :total="totalNum"  show-elevator  :page-size=8 @on-change="pageChange" />
         </div>
         <Button type="primary" @click="modal1 = true;isEdit=false;" >添加银行</Button>
-        <Button style="margin: 10px 10px;" type="primary" @click="exportExcel">导出为Csv文件</Button>
+        <Button style="margin: 8px 8px;" type="primary" @click="exportExcel">导出为Csv文件</Button>
         <Modal
             v-model="modal1"
             v-bind:title="isEdit?'修改银行信息':'添加银行'"
@@ -74,6 +74,7 @@ export default {
           // editable: true,
           searchable: true
         },
+
         {
           title: '银行描述',
           key: 'bankDescription',
@@ -81,6 +82,7 @@ export default {
           // editable: true,
           searchable: true
         },
+
         {
           title: '是否热门',
           sortable: true,
@@ -111,11 +113,10 @@ export default {
     // 点击切换页面的时候的回调函数
     pageChange (currentPage) {
       console.log(currentPage)
-      this.searchList(currentPage, 10, this.sKey, this.sValue)
+      this.searchList(currentPage, 8, this.sKey, this.sValue)
     },
-
     // 更新数据
-    searchList (pageNum, rows = 10) {
+    searchList (pageNum, rows = 8) {
       apiBank.bankPage(pageNum, rows).then(res => {
         this.tableData = res.data.rows
         this.totalNum = res.data.total
@@ -143,7 +144,7 @@ export default {
     handleSearch (searchKey, searchValue) {
       this.sKey = searchKey
       this.sValue = searchValue
-      apiBank.bankPage('', 10, searchKey, searchValue).then(res => {
+      apiBank.bankPage('', 8, searchKey, searchValue).then(res => {
         if (res.status == 0) {
           // console.log(this.tableData);
           this.tableData = res.data.rows
@@ -161,7 +162,7 @@ export default {
     closeWin () {
       this.modal1 = false
       this.isEdit = false
-      this.searchList(this.currentPage, 10)
+      this.searchList(this.currentPage, 8)
     }
   },
 
@@ -176,6 +177,6 @@ export default {
 </script>
 <style>
 .pagenation {
-  margin-top: 10px;
+  margin-top: 8px;
 }
 </style>

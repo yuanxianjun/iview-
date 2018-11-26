@@ -217,4 +217,7 @@ export default {
 .pagenation {
   margin-top: 8px;
 }
+.ivu-modal-content {
+  overflow: auto;
+}
 </style>
