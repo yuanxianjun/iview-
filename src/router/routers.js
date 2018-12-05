@@ -12,6 +12,28 @@ import parentView from '@/components/parent-view'
  * }
  */
 export default [
+  // 服务协议内容
+  {
+    path: "/serviceAgreement",
+    name: "serviceAgreement",
+    meta: {
+      hideInMenu: true,
+      title: "展示协议",
+      annoymous: true
+    },
+    component: () => import("@/view/service-agreement/serviceHtml.vue")
+  },
+  // 文章的显示页面
+  {
+    path: "/articleHtml",
+    name: "articleHtml",
+    meta: {
+      hideInMenu: true,
+      title: "展示文章",
+      annoymous: true
+    },
+    component: () => import("@/view/article-manager/article-html/articleHtml.vue")
+  },
   {
     path: '/login',
     name: 'login',
@@ -71,7 +93,8 @@ export default [
         path: '/dictionary-setting/detail',
         name: 'ditItem-list',
         meta: {
-          hideInMenu: true
+          hideInMenu: true,
+          title: "字典列表"
         },
         component: () => import('@/view/system/dictionary-setting/dicItem-list.vue'),
       },
@@ -95,6 +118,116 @@ export default [
       },
     ]
   },
+  // 信用卡管理页面
+  {
+    path: '/credit',
+    name: 'credit-managers',
+    meta: {
+      icon: 'ios-card',
+      title: '业务管理'
+    },
+    component: Main,
+    children: [
+      {
+        path: '/bank-manager',
+        name: 'bank-manager',
+        meta: {
+          icon: 'md-home',
+          title: '信用卡银行管理'
+        },
+        component: () => import('@/view/credit-manager/bank-manager/bank-manager.vue')
+      },
+      {
+        path: '/credit-manage',
+        name: 'credit-manager',
+        meta: {
+          icon: 'md-card',
+          title: '信用卡管理'
+        },
+        component: () => import('@/view/credit-manager/credit-manager/credit-manager.vue')
+      },
+      {
+        path: '/banner-manage',
+        name: 'banner-manager',
+        meta: {
+          icon: 'ios-card',
+          title: 'Banner管理'
+        },
+        component: () => import('@/view/credit-manager/banner-manager/banner-manager.vue')
+      },
+      {
+        path: '/loans-manage',
+        name: 'loans-manager',
+        meta: {
+          icon: 'ios-card',
+          title: '贷款管理'
+        },
+        component: () => import('@/view/credit-manager/loans-manager/loans-manager.vue')
+      },
+    ]
+  },
+  // 文章管理
+  {
+    path: "/article-manager",
+    name: "article-manager",
+    meta: {
+      icon: "ios-text",
+      title: "文章管理"
+    },
+    component: Main,
+    children: [
+      {
+        path: "/article-list-manager",
+        name: "article-list-manager",
+        meta: {
+          icon: "ios-text",
+          title: "管理文章列表"
+        },
+        component: () => import("@/view/article-manager/article-manager/article-manager.vue")
+      },
+      {
+        path: "/comment-manager",
+        name: "comment-manager",
+        meta: {
+          icon: "ios-text",
+          title: "评论管理"
+        },
+        component: () => import('@/view/user-manager/approve-manager/approve-manager.vue')
+      },
+    ]
+  },
+  // 用户管理
+  {
+    path: "/user-manager",
+    name: "user-manager",
+    meta: {
+      title: "用户管理",
+      icon: "ios-contacts"
+    },
+    component: Main,
+    children: [
+      {
+        path: "/users-manager",
+        name: "users-manager",
+        meta: {
+          icon: "ios-text",
+          title: "用户管理"
+        },
+        component: () => import('@/view/user-manager/user-manager/user-manager.vue')
+      },
+      {
+        path: "/approve-manager",
+        name: "approve-manager",
+        meta: {
+          icon: "ios-text",
+          title: "认证管理",
+          hideInMenu: true
+        },
+        component: () => import('@/view/user-manager/approve-manager/approve-manager.vue')
+      }
+    ]
+  },
+
   // 个人配置
   {
     path: '/setting',
@@ -134,85 +267,9 @@ export default [
       },
     ]
   },
-  {
-    path: "/user-manager",
-    name: "user-manager",
-    meta: {
-      title: "用户管理",
-      icon: "ios-contacts"
-    },
-    component: Main,
-    children: [
-      {
-        path: "/users-manager",
-        name: "users-manager",
-        meta: {
-          icon: "ios-text",
-          title: "用户管理"
-        },
-        component: () => import('@/view/user-manager/user-manager/user-manager.vue')
-      },
-      {
-        path: "/approve-manager",
-        name: "approve-manager",
-        meta: {
-          icon: "ios-text",
-          title: "认证管理"
-        },
-        component: () => import('@/view/user-manager/approve-manager/approve-manager.vue')
-      }
-    ]
-  },
-  // 信用卡管理页面
-  {
-    path: '/credit',
-    name: 'credit-managers',
-    meta: {
-      icon: 'ios-card',
-      title: '信用卡APP管理'
-    },
-    component: Main,
-    children: [
 
-      {
-        path: '/bank-manager',
-        name: 'bank-manager',
-        meta: {
-          icon: 'md-home',
-          title: '信用卡银行管理'
-        },
-        component: () => import('@/view/credit-manager/bank-manager/bank-manager.vue')
-      },
-      {
-        path: '/credit-manage',
-        name: 'credit-manager',
-        meta: {
-          icon: 'md-card',
-          title: '信用卡管理'
-        },
-        component: () => import('@/view/credit-manager/credit-manager/credit-manager.vue')
-      },
-      {
-        path: '/banner-manage',
-        name: 'banner-manager',
-        meta: {
-          icon: 'ios-card',
-          title: 'Banner管理'
-        },
-        component: () => import('@/view/credit-manager/banner-manager/banner-manager.vue')
-      },
-      {
-        path: '/loans-manage',
-        name: 'loans-manager',
-        meta: {
-          icon: 'ios-card',
-          title: '贷款管理'
-        },
-        component: () => import('@/view/credit-manager/loans-manager/loans-manager.vue')
-      },
 
-    ]
-  },
+
   // home页面
   {
     path: '/',

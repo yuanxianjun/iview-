@@ -48,6 +48,31 @@ export const roleSave = (data) => {
     data
   })
 }
+// 普通用户查询
+export const generalUseFind = (page, rows, searchKey, searchValue) => {
+  var data = {
+    'orderAsc': false,
+    'orderKey': 1,
+    page,
+    rows,
+    searchKey,
+    searchValue
+  }
+  return axios.post({
+    url: API_USER_ADMIN_PREFIX + '/user/page',
+    data
+  })
+}
+// 管理员根据ID查询用户信息及其角色
+export const generalUseIdFind = (id) => {
+  var data = {
+    id
+  }
+  return axios.post({
+    url: API_USER_ADMIN_PREFIX + '/get',
+    data
+  })
+}
 // 文件上传的地址
 export const uploadUrl = '/api/v1/storage/upload'
 export default {
@@ -56,5 +81,9 @@ export default {
   adminDelete,
   adminIdSearch,
   roleSave,
-  uploadUrl
+  uploadUrl,
+  // 普通用户查询
+  generalUseFind,
+  // 根据id查询用户详情
+  generalUseIdFind
 }

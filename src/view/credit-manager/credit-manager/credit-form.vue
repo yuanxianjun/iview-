@@ -87,6 +87,10 @@
           <FormItem label="推荐链接" prop="creditLink">
             <Input  v-model="formValidate.creditLink" placeholder="输入信用卡推荐链接"></Input>
         </FormItem>
+         </FormItem>
+          <FormItem label="办卡攻略" prop="credit_guide">
+            <Input  v-model="formValidate.credit_guide" placeholder="从文章列表粘贴链接"></Input>
+        </FormItem>
         <FormItem>
             <Button type="primary" @click="handleSubmit('formValidate')">{{formData?"修改":"提交"}}</Button>
             <Button @click="handleReset('formValidate')" style="margin-left: 8px">重置</Button>
@@ -222,9 +226,11 @@ export default {
             this.formValidate.creditApplyCount = String(
               this.formValidate.creditApplyCount
             )
-            this.formValidate.creditTips = this.formValidate.creditTips.split(
-              ','
-            )
+            if (this.formValidate.creditTips.length > 0) {
+              this.formValidate.creditTips = this.formValidate.creditTips.split(
+                ','
+              )
+            }
             // console.log(typeof this.formValidate.creditHotCard);
             // radio的value值必须为String | Numberf 使用typeof 测试String转码后的类型为string
             if (this.formValidate.creditImg) {
@@ -250,7 +256,10 @@ export default {
     },
     handleSubmit (name) {
       this.$refs[name].validate(valid => {
-        var inputValue = this.formValidate.creditTips.join(',')
+        if (this.formValidate.creditTips.legnth > 0) {
+          var inputValue = this.formValidate.creditTips.join(',')
+        }
+
         var commalength = (inputValue.match(/,g/) || []).legnth
         var inputValuelength = inputValue.length - commalength
         console.log('实际字数', inputValuelength)
@@ -292,7 +301,7 @@ export default {
     handleMaxSize (file) {
       this.$Notice.warning({
         title: '上传扥文件大小超过限制',
-        desc: '文件' + file.name + '太大,大小不能超过2M.'
+        desc: '文件' + file.name + '太大,大小不能超过2M'
       })
     },
     // 重置表单

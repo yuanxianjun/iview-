@@ -21,7 +21,7 @@ export default {
     valueType: {
       type: String,
       default: 'html',
-      validator: (val) => {
+      validator: val => {
         return oneOf(val, ['html', 'text'])
       }
     },
@@ -52,7 +52,7 @@ export default {
   },
   mounted () {
     this.editor = new Editor(`#${this.editorId}`)
-    this.editor.customConfig.onchange = (html) => {
+    this.editor.customConfig.onchange = html => {
       let text = this.editor.txt.text()
       if (this.cache) localStorage.editorCache = html
       this.$emit('input', this.valueType === 'html' ? html : text)
@@ -69,5 +69,4 @@ export default {
 </script>
 
 <style>
-
 </style>

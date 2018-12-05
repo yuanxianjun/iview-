@@ -1,19 +1,18 @@
 <template>
   <div>
     <Card>
-      <tables ref="tables" editable searchable search-place="top" v-model="tableData" :columns="columns"
-              @on-delete="handleDelete" @on-edit="handleEdit" @on-search="handleSearch" />
+      <Tables ref="tables" editable searchable search-place="top" v-model="tableData" :columns="columns"
+               @on-search="handleSearch" />
+
         <div class="pagenation">
-          <Page :total="totalNum"  show-elevator  :page-size=10 @on-change="pageChange" />
+          <Page :total="totalNum" :page-size = 8 show-elevator @on-change="pageChange" />
         </div>
-        <Button type="primary" @click="modal1 = true;isEdit=false;" >添加银行</Button>
-        <Button style="margin: 10px 10px;" type="primary" @click="exportExcel">导出为Csv文件</Button>
         <Modal
             v-model="modal1"
-            v-bind:title="isEdit?'修改银行信息':'添加银行'"
+            v-bind:title="isEdit?'编辑管理员':'添加管理员'"
             footer-hide
             >
-          <bankForm v-if="modal1" :formData="isEdit?formData:''" @close-win="closeWin"></bankForm>
+          <userForm v-if="modal1" :formData="formData" @close-win="closeWin"></userForm>
         </Modal>
     </Card>
   </div>
@@ -21,14 +20,14 @@
 <script>
 import Tables from '_c/tables'
 
-import apiBank from '@/api/credit-api/apiBank.js'
+import apiAdmin from '@/api/apiAdmin.js'
 
-import bankForm from './bank-form.vue'
+import userForm from './user-form.vue'
 export default {
-  name: 'bank-manager',
+  name: 'admin-manager-manager',
   components: {
     Tables,
-    bankForm
+    userForm
   },
   data () {
     return {
@@ -38,70 +37,103 @@ export default {
       formData: [],
       totalNum: 0,
       currentPage: 1,
-      // 搜索内容
-      sKey: '',
-      sValue: '',
-
       columns: [
         {
           title: 'ID',
-          key: 'bankId',
+          key: 'id',
           sortable: true,
-          searchable: true,
-          width: 130
+          searchable: true
           // editable: true
         },
         {
-          title: '银行图片',
+          title: '头像',
+          key: 'avastart',
           sortable: true,
-          searchable: false,
+          searchable: true,
+          // editable: true
           render: (h, params) => {
             return h('img', {
               attrs: {
-                src: params.row.bankImg
+                src: params.row.avastart
               },
               style: {
-                width: '60px',
-                height: '60px'
+                width: '40px',
+                height: '40px'
               }
             })
           }
         },
         {
-          title: '银行名称',
-          key: 'bankName',
+          title: '管理员名称',
+          key: 'username',
           sortable: true,
           // editable: true,
           searchable: true
         },
         {
-          title: '银行描述',
-          key: 'bankDescription',
+          title: '昵称',
+          key: 'nickname',
           sortable: true,
           // editable: true,
           searchable: true
         },
         {
-          title: '是否热门',
+          title: '邮箱',
+          key: 'email',
           sortable: true,
-          key: 'bankHot',
           // editable: true,
-          searchable: true,
-          render: (h, params) => {
-            return h('i-switch', {
-              props: {
-                value: params.row.bankHot,
-                'true-value': true,
-                'false-value': false
-              }
-            })
-          }
+          searchable: true
+        },
+        {
+          title: '手机号',
+          key: 'phone',
+          sortable: true,
+          // editable: true,
+          searchable: true
         },
         {
           title: '操作',
           key: 'handle',
-          options: ['delete', 'edit'],
-          button: []
+          width: 200,
+          options: [],
+          button: [
+            // (h, params, vm) => {
+            //   return h(
+            //     "Button",
+            //     {
+            //       props: {
+            //         type: "primary"
+            //       },
+            //       on: {
+            //         click: () => {
+            //           this.toDetialPage(params.row.id);
+            //           // console.log(this.toDetialPage);
+            //         }
+            //       }
+            //     },
+            //     "详情"
+            //   );
+            // },
+            (h, params, vm) => {
+              return h(
+                'Button',
+                {
+                  style: {
+                    'margin-left': '10px'
+                  },
+                  props: {
+                    type: 'primary'
+                  },
+                  on: {
+                    click: () => {
+                      this.jumpToUserInformation(params.row.id)
+                    }
+                  }
+                },
+                '认证信息'
+              )
+            }
+          ]
         }
       ],
       tableData: []
@@ -110,48 +142,44 @@ export default {
   methods: {
     // 点击切换页面的时候的回调函数
     pageChange (currentPage) {
-      console.log(currentPage)
-      this.searchList(currentPage, 10, this.sKey, this.sValue)
+      this.currentPage = currentPage
+      this.searchList(currentPage, 8)
     },
-
-    // 更新数据
-    searchList (pageNum, rows = 10) {
-      apiBank.bankPage(pageNum, rows).then(res => {
+    // 更新数据page
+    searchList (page, rows, searchKey, searchValue) {
+      // console.log(apiAdmin);
+      apiAdmin.generalUseFind(page, rows, searchKey, searchValue).then(res => {
+        console.log('向后台请求的数据', res.data.total)
         this.tableData = res.data.rows
         this.totalNum = res.data.total
       })
     },
-    // 删除数据
-    handleDelete (params) {
-      var delId = params.row.bankId
-      // console.log(apiBank.apiBankDelete);
-      apiBank.bankDel(delId).then(res => {
-        if (res.status == 0) {
-          this.$Message.success(res.message)
-          // this.searchList();
-        }
-      })
+    // 跳转到用户详情页面
+    toDetialPage (paramsId) {
+      if (paramsId) {
+        this.modal1 = true
+        this.formData = paramsId
+      }
     },
-    // 编辑列表
-    handleEdit (params) {
-      this.modal1 = true
-      this.isEdit = true
-      this.formData = params.row.bankId
-      var _this = this
-    },
-    // 字段搜索
+    // 搜索用户
     handleSearch (searchKey, searchValue) {
-      this.sKey = searchKey
-      this.sValue = searchValue
-      apiBank.bankPage('', 10, searchKey, searchValue).then(res => {
+      apiAdmin.generalUseFind('', 8, searchKey, searchValue).then(res => {
         if (res.status == 0) {
-          // console.log(this.tableData);
           this.tableData = res.data.rows
-          this.totalNum = res.data.total
+          return res.data.rows
         }
       })
     },
-    // 下载表格
+    // 查看认证信息
+    jumpToUserInformation (id) {
+      if (id) {
+        console.log(this)
+        this.$router.push({
+          name: 'approve-manager',
+          query: { id }
+        })
+      }
+    },
     exportExcel () {
       this.$refs.tables.exportCsv({
         filename: `table-${new Date().valueOf()}.csv`
@@ -161,11 +189,13 @@ export default {
     closeWin () {
       this.modal1 = false
       this.isEdit = false
-      this.searchList(this.currentPage, 10)
+      this.searchList(this.currentPage, 8, this.searchKey, this.searchValue)
     }
   },
+
   mounted () {
     this.searchList()
+
     // getTableData().then(res => {
     //   console.log("取得的数据", res);
     //   this.tableData = res.data;

@@ -29,9 +29,30 @@
         <FormItem label="银行名称" prop="bankName">
             <Input v-model="formValidate.bankName" placeholder="输入银行名称"></Input>
         </FormItem>
-        <FormItem label="银行描述" prop="bankDescription">
+         <FormItem label="银行描述" prop="bankDescription">
           <Input v-model="formValidate.bankDescription" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="输入银行描述"></Input>
         </FormItem>
+
+        <FormItem label="银行攻略" prop="bankGuide">
+          <Input v-model="formValidate.bankGuide"  :autosize="{minRows: 2,maxRows: 5}" placeholder="请粘贴攻略地址"></Input>
+        </FormItem>
+
+         <FormItem label="银行标签" prop="bankLabels">
+           <div class="tipsBan" >
+               <Tag closable @on-close="handleClose(index)" v-for="(item ,index) in formValidate.bankLabels" :key="index">{{item}}</Tag>
+          </div>
+          <Input style = "margin-top:10px;" v-model="inputIip" placeholder="输入标签使用enter键作为隔断" @on-enter="enterTips"></Input>
+
+        </FormItem>
+
+         <FormItem label="小提示" prop="bankTips">
+           <div class="tipsBan" >
+               <Tag closable @on-close="handleClose(index)" v-for="(item ,index) in formValidate.bankTips" :key="index">{{item}}</Tag>
+          <Input style = "margin-top:10px;" v-model="inputbankTip" placeholder="输入小提示使用enter键作为隔断" @on-enter="enterTips"></Input>
+          </div>
+
+        </FormItem>
+
         <FormItem label="是否热门" prop="bankHot">
              <RadioGroup v-model="formValidate.bankHot">
               <Radio label="true">是</Radio>
@@ -58,6 +79,9 @@ export default {
   props: ['formData'],
   data () {
     return {
+      // 输入标签的input框
+      inputIip: '',
+      inputbankTip: '',
       // 上传头像的地址
       uploadUrl: apiUpload,
       uploadParam: {
@@ -71,7 +95,8 @@ export default {
         bankHot: true,
         bankId: '',
         bankImg: '',
-        bankName: ''
+        bankName: '',
+        bankLabels: []
       },
       ruleValidate: {
         bankCode: [
@@ -95,6 +120,38 @@ export default {
     }
   },
   methods: {
+    // 将输入的东西转化成一个个的小标签
+    enterTips (value) {
+      console.log(
+        '查看输入框中的内容',
+        this.inputIip.length,
+        this.inputbankTip.length
+      )
+
+      var regu = '^[ ]+$'
+      var re = new RegExp(regu)
+
+      if (this.inputIip) {
+        var result = re.test(this.inputIip)
+        if (!result) {
+          this.formValidate.bankLabels.push(this.inputIip)
+        }
+      } else if (this.inputbankTip) {
+        var result = re.test(this.inputbankTip)
+        if (!result) {
+          this.formValidate.bankTips.push(this.inputbankTip)
+        }
+      } else {
+        this.$Message.error('请输入内容')
+      }
+      this.inputbankTip = ''
+      this.inputIip = ''
+    },
+    // 关闭一个标签
+    handleClose (index) {
+      this.formValidate.bankLabels.splice(index, 1)
+      console.log(this.formValidate.bankLabels)
+    },
     checkData () {
       if (this.formData) {
         var id = this.formData
@@ -111,11 +168,25 @@ export default {
         this.formValidate = {}
         // 设置单选框的默认值
         this.formValidate.bankHot = 'true'
+        this.formValidate.bankLabels = ''
+        this.formValidate.bankTips = ''
       }
     },
     handleSubmit (name) {
       this.$refs[name].validate(valid => {
         if (valid && this.formValidate.bankImg) {
+          console.log(this.formValidate.bankTips.length > 0)
+
+          if (this.formValidate.bankLabels.length > 0) {
+            this.formValidate.bankLabels = this.formValidate.bankLabels.join(
+              ','
+            )
+          }
+          if (this.formValidate.bankTips.length > 0) {
+            this.formValidate.bankTips = this.formValidate.bankTips.join(',')
+          }
+
+          console.log(this.formValidate)
           apiBank.bankSave(this.formValidate).then(res => {
             if (res.status == 0) {
               this.$Message.success('添加成功')
@@ -165,5 +236,11 @@ export default {
   width: 50px;
   height: 50px;
   vertical-align: middle;
+}
+.tipsBan {
+  min-height: 40px;
+  height: auto;
+  border: 1px solid #80869559;
+  padding: 4px;
 }
 </style>

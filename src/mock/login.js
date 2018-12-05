@@ -18,7 +18,6 @@ const USER_MAP = {
   tt: { 'status': 0, 'message': 'success', 'data': 'eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE1MzkzMzgxNTIsInN1YiI6IjQtUk9MRV9BRE1JTiJ9.t5_CLr2ntP195Z_IzvJDcI0t4_Amb1ma0GmxrFG8yvCR_YKNTY4N9Y7E1klP0xyFaTKDdT3RtRCCXRMUAp16ZQ' },
   userInfo: { 'status': 0, 'message': 'success', 'data': { 'id': 4, 'username': 'admin', 'email': '3163504123@163.com', 'phone': '15652750943', 'nickname': '3163054123', 'avastart': null, 'roles': [] } }
 }
-
 export const login = req => {
   req = JSON.parse(req.body)
   return { token: USER_MAP[req.userName].token }

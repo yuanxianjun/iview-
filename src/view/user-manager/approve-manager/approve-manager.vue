@@ -1,150 +1,152 @@
 <template>
   <div>
     <Card>
-      <Row>
+       <Row class="border-row" >
           <Col span="6">证件用户名
 :</Col>
           <Col span="12">{{approveData.certificationCertUsername}}</Col>
       </Row>
-       <Row>
+        <Row class="border-row">
           <Col span="6">出生日期
 :</Col>
           <Col span="12">{{approveData.certificationBrithday}}</Col>
       </Row>
-       <Row>
+        <Row class="border-row">
           <Col span="6">性别
 :</Col>
           <Col span="12">
-          单选框{{approveData.certificationGender}}</Col>
+  <RadioGroup v-model="approveData.certificationGender">
+                <Radio label="male">男</Radio>
+                <Radio label="female">女</Radio>
+            </RadioGroup>
+          </Col>
       </Row>
-       <Row>
+        <Row class="border-row">
           <Col span="6">证件号码
 :</Col>
           <Col span="12">{{approveData.certificationCertNumber}}</Col>
       </Row>
-       <Row>
+        <Row class="border-row">
           <Col span="6">证件号码
 :</Col>
           <Col span="12">{{approveData.certificationCertNumber}}</Col>
       </Row>
-       <Row>
+        <Row class="border-row">
           <Col span="6">婚姻状况 字典表（marital)
-
 :</Col>
           <Col span="12">{{approveData.certificationMaritalStatus}}</Col>
       </Row>
-       <Row>
+        <Row class="border-row">
           <Col span="6">最高学历（字典表education）
-
 :</Col>
           <Col span="12">{{approveData.certificationHighestEducation}}</Col>
       </Row>
-      <Row>
+       <Row class="border-row">
           <Col span="6">联系人1电话
 
 :</Col>
           <Col span="12">{{approveData.certificationContactsPhone1}}</Col>
       </Row>
-      <Row>
+       <Row class="border-row">
           <Col span="6">联系人2电话
 
 :</Col>
           <Col span="12">{{approveData.certificationContactsPhone2}}</Col>
       </Row>
-       <Row>
+        <Row class="border-row">
           <Col span="6">联系人1姓名
 :</Col>
           <Col span="12">{{approveData.certificationContactsUsername1}}</Col>
           </Row>
-          <Row>
+           <Row class="border-row">
           <Col span="6">联系人2姓名
 :</Col>
           <Col span="12">{{approveData.certificationContactsUsername2}}</Col>
       </Row>
-      <Row>
+       <Row class="border-row">
           <Col span="6">联系人1关系
 :</Col>
           <Col span="12">{{approveData.certificationContactsRelationship1}}</Col>
       </Row>
-      <Row>
+       <Row class="border-row">
           <Col span="6">联系人2关系
 :</Col>
           <Col span="12">{{approveData.certificationContactsRelationship2}}</Col>
       </Row>
-       <Row>
+        <Row class="border-row">
           <Col span="6">用户ID
 :</Col>
           <Col span="12">{{approveData.certificationUserId}}</Col>
-      </Row> <Row>
+      </Row>  <Row class="border-row">
           <Col span="6">公司名称
 :</Col>
           <Col span="12">{{approveData.certificationCompanyName}}</Col>
-      </Row> <Row>
+      </Row>  <Row class="border-row">
           <Col span="6">公司地址
 :</Col>
           <Col span="12">{{approveData.certificationCompanyAddress}}</Col>
-      </Row> <Row>
+      </Row>  <Row class="border-row">
           <Col span="6">单位地区编码
 :</Col>
           <Col span="12">{{approveData.certificationCompanyAreaId}}</Col>
       </Row>
-             <Row>
+              <Row class="border-row">
           <Col span="6">居住状态（字典表）
 :</Col>
           <Col span="12">{{approveData.certificationLivingStatus}}</Col>
       </Row>
-       <Row>
+        <Row class="border-row">
           <Col span="6">家庭住址
 :</Col>
           <Col span="12">{{approveData.certificationHomeAddress}}</Col>
       </Row>
-      <Row>
+       <Row class="border-row">
           <Col span="6">家庭住址区域ID
 :</Col>
           <Col span="12">{{approveData.certificationHomeAreaId}}</Col>
-      </Row> <Row>
+      </Row>  <Row class="border-row">
           <Col span="6">所在部门名称
 :</Col>
           <Col span="12">{{approveData.certificationDepartmentName}}</Col>
-      </Row> <Row>
+      </Row>  <Row class="border-row">
           <Col span="6">职位名称
 :</Col>
           <Col span="12">{{approveData.certificationPositionName}}</Col>
-      </Row> <Row>
+      </Row>  <Row class="border-row">
           <Col span="6">开始工作年份
 :</Col>
           <Col span="12">{{approveData.certificationStartWorkDate}}年</Col>
       </Row>
-      <Row>
+       <Row class="border-row">
           <Col span="6">身份证正面
 :</Col>
           <Col span="12">
           <img class="certificationImg" :src="approveData.certificationCertFrontImgUrl" alt="">
           </Col>
-      </Row><Row>
+      </Row> <Row class="border-row">
           <Col span="6">身份证反面
 :</Col>
           <Col span="12">
           <img class="certificationImg" :src="approveData.certificationCertBackImgUrl" alt="">
           </Col>
-      </Row><Row>
+      </Row> <Row class="border-row">
           <Col span="6">认证邮箱状态
 :</Col>
           <Col span="12">{{approveData.certificationEmailStatus}}</Col>
-      </Row><Row>
+      </Row> <Row class="border-row">
           <Col span="6">认证手机通讯录状态
 :</Col>
           <Col span="12">{{approveData.certificationPhoneBookAddressState}}</Col>
-      </Row><Row>
+      </Row> <Row class="border-row">
           <Col span="6">手机认证状态
 :</Col>
           <Col span="12">{{approveData.certificationPhoneStatus}}</Col>
-      </Row><Row>
+      </Row> <Row class="border-row">
           <Col span="6">认证QQ状态
 
 :</Col>
           <Col span="12">{{approveData.certificationQqStatus}}</Col>
-      </Row><Row>
+      </Row> <Row class="border-row">
           <Col span="6">认证微信状态
 
 :</Col>
@@ -189,8 +191,8 @@ export default {
   methods: {
     // 获取登录者的id信息
     getId () {
-      this.loginId = JSON.parse(localStorage.getItem('loginObj')).id
-      // console.log(this.loginId);
+      this.loginId = this.$route.query.id
+      console.log(this.loginId)
     },
     // 通过当前的id获取认证信息
     getMess () {
@@ -211,6 +213,8 @@ export default {
 .ivu-row {
   line-height: 60px;
   margin-bottom: 10px;
+}
+.border-row {
   border-bottom: 1px dashed #808696bd;
 }
 .certificationImg {

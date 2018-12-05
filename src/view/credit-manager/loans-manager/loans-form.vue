@@ -38,7 +38,7 @@
         </FormItem>
         <!-- 下拉 -->
           <FormItem label="最高借贷金额" prop="loanMaxLimit">
-            <Input  v-model="formValidate.loanMaxLimit"  placeholder="输入最高借贷金额" style="width:120px;"></Input>  万
+            <Input  v-model="formValidate.loanMaxLimit"  placeholder="输入最高借贷金额" style="width:120px;"></Input> 元
 
             <!-- <Select v-model="formValidate.loanAnnualFee" placeholder="选择信用卡年费">
                 <Option v-for="item in yearMoney" :key = "item.value" :value="item.value">{{item.text}}</Option>
@@ -53,9 +53,9 @@
                 <Option v-for="item in purpose" :key = "item.id" :value="item.value">{{item.text}}</Option>
             </Select>
         </FormItem>
-         <FormItem label="信用卡等级" prop="loanLevel">
+         <FormItem label="信用卡难度等级" prop="loanLevel">
 
-             <Select v-model="formValidate.loanLevel" placeholder="选择信用卡等级">
+             <Select v-model="formValidate.loanLevel" placeholder="选择等级难度">
                 <Option v-for="item in loanLevel" :key = "item.id" :value="item.value">{{item.text}}</Option>
             </Select>
           </FormItem>
@@ -215,8 +215,10 @@ export default {
     getDictionarys () {
       var _this = this
       getDatas('creditPurpose', 'purpose')
-      getDatas('creditLevel', 'loanLevel')
+      getDatas('loan_level', 'loanLevel')
+
       console.log(this.cardOrganization)
+
       function getDatas (id, key) {
         return typeList(id).then(res => {
           if (res.status == 0) {
@@ -242,6 +244,13 @@ export default {
             this.formValidate.loanRecommandCard = String(
               this.formValidate.loanRecommandCard
             )
+            this.formValidate.loanMaxLimit = String(
+              this.formValidate.loanMaxLimit
+            )
+            this.formValidate.loanApplyCount = String(
+              this.formValidate.loanApplyCount
+            )
+
             this.formValidate.loanTips = this.formValidate.loanTips.split(',')
             // console.log(typeof this.formValidate.loanHotCard);
             // radio的value值必须为String | Numberf 使用typeof 测试String转码后的类型为string
@@ -314,7 +323,6 @@ export default {
         desc: '文件  ' + file.name + '太大,大小不能超过2M.'
       })
     },
-
     // 重置表单
     handleReset (name) {
       this.$refs[name].resetFields()

@@ -1,7 +1,7 @@
 <template>
   <div>
     <Card>
-      <Row>
+      <Row class="border-row">
           <Col span="6">证件用户名
 :</Col>
           <Col span="12">{{approveData.certificationCertUsername}}</Col>
@@ -211,6 +211,8 @@ export default {
 .ivu-row {
   line-height: 60px;
   margin-bottom: 10px;
+}
+.border-row {
   border-bottom: 1px dashed #808696bd;
 }
 .certificationImg {

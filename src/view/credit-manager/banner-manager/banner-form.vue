@@ -48,7 +48,11 @@
             </RadioGroup>
         </FormItem>
          <FormItem label="banner类型" prop="bannerType">
-            <Input v-model="formValidate.bannerType" placeholder="选择banner类型"></Input>
+             <Select v-model="formValidate.bannerType" style="width:200px"  placeholder="选择banner类型">
+                <Option value="1" >网页</Option>
+                <Option value="2" >APP</Option>
+                <Option value="3">站内</Option>
+            </Select>
         </FormItem>
         <FormItem label="banner排序字段" prop="bannerSortNumber">
           <Input v-model="formValidate.bannerSortNumber" placeholder="输入banner排序字段"></Input>
@@ -209,13 +213,33 @@ export default {
       } else {
         this.formValidate = {
           bannerStatus: '1',
-          deleteStatus: '1'
+          deleteStatus: '1',
+          bannerType: '1'
         }
       }
     },
     handleSubmit (name) {
       this.$refs[name].validate(valid => {
+        console.log(this.formValidate.bannerImg && valid)
         if (valid && this.formValidate.bannerImg) {
+          if (this.formValidate.bannerTrackClickUrl) {
+            this.formValidate.bannerTrackClickUrl = detailStr(
+              this.formValidate.bannerTrackClickUrl
+            )
+          }
+          if (this.formValidate.bannerTrackExposeUrl) {
+            this.formValidate.bannerTrackExposeUrl = detailStr(
+              this.formValidate.bannerTrackExposeUrl
+            )
+          }
+
+          // 向数据库提交数据
+          apiBanner.bannerSave(this.formValidate).then(res => {
+            if (res.status == 0) {
+              this.$Message.success('添加成功')
+              this.$emit('close-win')
+            }
+          })
           // 去除空格，制表符并且将
           function detailStr (str) {
             // 将所有的空格转化成换行
@@ -224,27 +248,14 @@ export default {
             strBr = strBr.replace(/,/g, '<br>')
             strBr = strBr.replace(/\n/g, '<br>')
             var strArr = strBr.split('<br>')
+
             strArr = strArr.filter(function (item) {
               return item !== ''
             })
             return strArr.join(',')
           }
-          detailStr(this.formValidate.bannerTrackClickUrl)
-          this.formValidate.bannerTrackExposeUrl = detailStr(
-            this.formValidate.bannerTrackExposeUrl
-          )
-          this.formValidate.bannerTrackClickUrl = detailStr(
-            this.formValidate.bannerTrackClickUrl
-          )
-          // 向数据库提交数据
-          apiBanner.bannerSave(this.formValidate).then(res => {
-            if (res.status == 0) {
-              this.$Message.success('添加成功')
-              this.$emit('close-win')
-            }
-          })
         } else {
-          this.$Message.error('请将信息填写完整')
+          this.$Message.error('请上传头像 并且将信息填写完整')
         }
       })
     },

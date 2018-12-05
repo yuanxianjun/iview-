@@ -11,11 +11,12 @@ export default {
 </script>
 
 <style lang="less">
-.size{
+.size {
   width: 100%;
   height: 100%;
 }
-html,body{
+html,
+body {
   .size;
   overflow: hidden;
   margin: 0;
@@ -23,5 +24,6 @@ html,body{
 }
 #app {
   .size;
+  overflow: auto;
 }
 </style>
