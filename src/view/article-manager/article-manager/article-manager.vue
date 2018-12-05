@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class="btns">
+<<<<<<< HEAD
       <Button type="primary" @click="addArticle">添加文章</Button>
     </div>
     <!-- 显示所有的消息 -->
@@ -44,6 +45,52 @@
       <!-- <conShow v-if="false" :formData="formData" @close-win="closeWin"></conShow> -->
       <richText v-if="modal1" :formData="formData" @close-win="closeWin"></richText>
     </Modal>
+=======
+        <Button type="primary" @click="addArticle">添加文章</Button>
+    </div>
+    <!-- 显示所有的消息 -->
+    <div>
+        <Card v-for="(item,index) in messageData " :key="index" >
+                <Row>
+                    <Col span="6">{{item.postTitle}}</Col>
+                    <Col span="4">{{item.authorName}}</Col>
+                    <Col span="4">{{$moment(item.createTime).format("YYYY/MM/DD")}}</Col>
+
+                    <Col span="2">
+                     <Poptip
+                        confirm
+                        title="你确定删除这篇文章吗？"
+                        width="220"
+                        @on-ok="delArticle(item)"
+                        @on-cancel="cancel">
+                        <Button type="warning" >删除</Button>
+                    </Poptip>
+                    </Col>
+                    <Col span="2"><Button type="primary" @click="editArticle(item)">编辑</Button></Col>
+                    <Col span="3"><Button @click="showDetail(item)">查看全文</Button></Col>
+                     <Col span="3">
+
+                      <Button type="default"
+                          id="tagCopy"
+
+                        title="点击复制"
+                        @click="copyUrl($event,item)"
+                      >复制链接</Button>
+                    </Col>
+                </Row>
+        </Card>
+        <div class="pagenation">
+          <Page :total="totalNum" show-elevator  @on-change = "changePage"/>
+        </div>
+    </div>
+     <Modal
+            v-model="modal1"
+            width="900"
+            footer-hide>
+          <!-- <conShow v-if="false" :formData="formData" @close-win="closeWin"></conShow> -->
+          <richText v-if="modal1" :formData="formData" @close-win="closeWin"></richText>
+        </Modal>
+>>>>>>> e8eef14b75c47ba4b29c26676ee5ca0615acb081
   </div>
 </template>
 <script>
@@ -86,6 +133,10 @@ export default {
 
       let clipboard = new Clipboard('#tagCopy', {
         text: function () {
+<<<<<<< HEAD
+=======
+          console.log(_this.copyUrls)
+>>>>>>> e8eef14b75c47ba4b29c26676ee5ca0615acb081
           return _this.copyUrls
         }
       })
@@ -149,9 +200,15 @@ export default {
         .apiArticleList(page, rows, searchKey, searchValue)
         .then(res => {
           if (res.status == 0) {
+<<<<<<< HEAD
             this.messageData = res.data.rows || 123123234
             this.totalNum = res.data.total
 
+=======
+            this.messageData = res.data.rows
+            // console.log(this.messageData);
+            this.totalNum = res.data.total
+>>>>>>> e8eef14b75c47ba4b29c26676ee5ca0615acb081
             this.noReadMess = res.data.rows.filter(function (item, index, arr) {
               return item.readed === false
             }, this)
@@ -189,6 +246,10 @@ export default {
 .ivu-modal-content {
   height: 785px;
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> e8eef14b75c47ba4b29c26676ee5ca0615acb081
 /**
   出现点击两次才能正常使用clipboard的on("success")的方法，这时候的clipboard是已经实例出来了，有了实例之后调用不了on("success")f方法，这个问题的关键在与无法调用方法，为什么无法调用方法。试试在html页面中能够调用该方法吗？
   解决方法
