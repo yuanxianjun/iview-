@@ -176,39 +176,6 @@ export default [
       },
     ]
   },
-<<<<<<< HEAD
-  // 文章管理
-  {
-    path: "/article-manager",
-    name: "article-manager",
-    meta: {
-      icon: "ios-text",
-      title: "文章管理"
-    },
-    component: Main,
-    children: [
-      {
-        path: "/article-list-manager",
-        name: "article-list-manager",
-        meta: {
-          icon: "ios-text",
-          title: "管理文章列表"
-        },
-        component: () => import("@/view/article-manager/article-manager/article-manager.vue")
-      },
-      {
-        path: "/comment-manager",
-        name: "comment-manager",
-        meta: {
-          icon: "ios-text",
-          title: "评论管理"
-        },
-        component: () => import('@/view/user-manager/approve-manager/approve-manager.vue')
-      },
-    ]
-  },
-=======
->>>>>>> e8eef14b75c47ba4b29c26676ee5ca0615acb081
   // 用户管理
   {
     path: "/user-manager",
@@ -280,11 +247,6 @@ export default [
       },
     ]
   },
-<<<<<<< HEAD
-
-
-
-=======
   // 文章管理
   {
     path: "/article-manager",
@@ -315,7 +277,6 @@ export default [
       },
     ]
   },
->>>>>>> e8eef14b75c47ba4b29c26676ee5ca0615acb081
   // home页面
   {
     path: '/',
