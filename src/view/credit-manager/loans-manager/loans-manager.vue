@@ -24,19 +24,19 @@
   </div>
 </template>
 <script>
-import Tables from "_c/tables";
+import Tables from '_c/tables'
 
-import apiLoans from "@/api/credit-api/apiLoans.js";
-import loanForm from "./loans-form.vue";
+import apiLoans from '@/api/credit-api/apiLoans.js'
+import loanForm from './loans-form.vue'
 // 使用字典
-import { typeList } from "@/api/apiCom";
+import { typeList } from '@/api/apiCom'
 export default {
-  name: "loan-managers",
+  name: 'loan-managers',
   components: {
     Tables,
     loanForm
   },
-  data() {
+  data () {
     return {
       // 控制新建框的显示和隐藏
       modal1: false,
@@ -47,59 +47,59 @@ export default {
       // 卡组织
       cardOrganizations: [],
       // 搜索内容
-      sKey: "",
-      sValue: "",
+      sKey: '',
+      sValue: '',
       columns: [
         {
-          title: "ID",
-          key: "id",
+          title: 'ID',
+          key: 'id',
           sortable: true,
           searchable: true,
           width: 90
           // editable: true
         },
         {
-          title: "信用卡图片",
+          title: '信用卡图片',
           sortable: true,
           searchable: false,
           width: 200,
           render: (h, params) => {
-            return h("img", {
+            return h('img', {
               attrs: {
                 src: params.row.loanImg
               },
               style: {
-                height: "60px"
+                height: '60px'
               }
-            });
+            })
           }
         },
         {
-          title: "信用卡名称",
-          key: "loanName",
+          title: '信用卡名称',
+          key: 'loanName',
           sortable: true,
           // editable: true,
           searchable: true,
           width: 100
         },
         {
-          title: "申请人数",
-          key: "loanApplyCount",
+          title: '申请人数',
+          key: 'loanApplyCount',
           sortable: false,
           // editable: true,
           searchable: true,
           width: 100
         },
         {
-          title: "用途",
-          key: "loanPurpose",
+          title: '用途',
+          key: 'loanPurpose',
           sortable: true,
           // editable: true,
           searchable: true
         },
         {
-          title: "最大可贷金额",
-          key: "loanMaxLimit",
+          title: '最大可贷金额',
+          key: 'loanMaxLimit',
           sortable: true,
           // editable: true,
           searchable: true
@@ -121,143 +121,143 @@ export default {
         //   }
         // },
         {
-          title: "是否热门",
+          title: '是否热门',
           sortable: true,
-          key: "loanHot",
+          key: 'loanHot',
           // editable: true,
           searchable: true,
           render: (h, params) => {
-            return h("i-switch", {
+            return h('i-switch', {
               props: {
                 value: params.row.loanHot,
-                "true-value": 1,
-                "false-value": 0
+                'true-value': 1,
+                'false-value': 0
               },
               on: {
-                "on-change": () => {
-                  var data = params.row;
-                  data.loanHot = data.loanHot == 1 ? 0 : 1;
+                'on-change': () => {
+                  var data = params.row
+                  data.loanHot = data.loanHot == 1 ? 0 : 1
                   // console.log("查看data.deleteStatus", data);
-                  this.switchUse(data);
+                  this.switchUse(data)
                 }
               }
-            });
+            })
           }
         },
         {
-          title: "是否推荐",
+          title: '是否推荐',
           sortable: true,
-          key: "loanRecommand",
+          key: 'loanRecommand',
           // editable: true,
           searchable: true,
           render: (h, params) => {
-            return h("i-switch", {
+            return h('i-switch', {
               props: {
                 value: params.row.loanRecommand,
-                "true-value": 1,
-                "false-value": 0
+                'true-value': 1,
+                'false-value': 0
               },
               on: {
-                "on-change": () => {
-                  var data = params.row;
-                  data.loanRecommand = data.loanRecommand == 1 ? 0 : 1;
+                'on-change': () => {
+                  var data = params.row
+                  data.loanRecommand = data.loanRecommand == 1 ? 0 : 1
                   // console.log("查看data.deleteStatus", data);
-                  this.switchUse(data);
+                  this.switchUse(data)
                 }
               }
-            });
+            })
           }
         },
         {
-          title: "操作",
-          key: "handle",
-          options: ["delete", "edit"],
+          title: '操作',
+          key: 'handle',
+          options: ['delete', 'edit'],
           button: [],
           width: 180
         }
       ],
       tableData: []
-    };
+    }
   },
   methods: {
     // 点击按钮切换开关
-    switchUse(changeData) {
+    switchUse (changeData) {
       if (changeData) {
         apiLoans.loanSave(changeData).then(res => {
           if (res.status == 0) {
             // this.$Message.success("添加成功");
           }
-        });
+        })
       }
     },
     // 点击切换页面的时候的回调函数
-    pageChange(currentPage) {
-      this.currentPage = currentPage;
-      this.searchList(currentPage, 8, this.sKey, this.sValue);
+    pageChange (currentPage) {
+      this.currentPage = currentPage
+      this.searchList(currentPage, 8, this.sKey, this.sValue)
     },
     // 更新数据
-    searchList(pageNum, rows = 8) {
+    searchList (pageNum, rows = 8) {
       apiLoans.loanPage(pageNum, rows).then(res => {
         if (res.status === 0) {
-          this.tableData = res.data.rows;
-          this.totalNum = res.data.total;
+          this.tableData = res.data.rows
+          this.totalNum = res.data.total
         }
-      });
+      })
     },
     // 删除数据
-    handleDelete(params) {
-      var delId = params.row.id;
+    handleDelete (params) {
+      var delId = params.row.id
       // console.log(apiLoans.apiLoansDelete);
       apiLoans.loanDel(delId).then(res => {
         if (res.status == 0) {
-          this.$Message.success("删除成功");
+          this.$Message.success('删除成功')
           // this.searchList();
         }
-      });
+      })
     },
     // 编辑列表
-    handleEdit(params) {
-      this.modal1 = true;
-      this.isEdit = true;
-      this.formData = params.row.id;
-      var _this = this;
+    handleEdit (params) {
+      this.modal1 = true
+      this.isEdit = true
+      this.formData = params.row.id
+      var _this = this
     },
     // 字段搜索
-    handleSearch(searchKey, searchValue) {
-      this.sKey = searchKey;
-      this.sValue = searchValue;
-      console.log("查看是否有搜索内容", searchKey, searchValue);
-      apiLoans.loanPage("", 8, searchKey, searchValue).then(res => {
+    handleSearch (searchKey, searchValue) {
+      this.sKey = searchKey
+      this.sValue = searchValue
+      console.log('查看是否有搜索内容', searchKey, searchValue)
+      apiLoans.loanPage('', 8, searchKey, searchValue).then(res => {
         if (res.status == 0) {
           // console.log(this.tableData);
-          this.tableData = res.data.rows;
-          this.totalNum = res.data.total;
+          this.tableData = res.data.rows
+          this.totalNum = res.data.total
         }
-      });
+      })
     },
     // 下载表格
-    exportExcel() {
+    exportExcel () {
       this.$refs.tables.exportCsv({
         filename: `table-${new Date().valueOf()}.csv`
-      });
+      })
     },
     // 关闭窗口
-    closeWin() {
-      this.modal1 = false;
-      this.isEdit = false;
-      this.searchList(this.currentPage, 8);
+    closeWin () {
+      this.modal1 = false
+      this.isEdit = false
+      this.searchList(this.currentPage, 8)
     }
   },
-  mounted() {
-    this.searchList(this.currentPage);
+  mounted () {
+    this.searchList(this.currentPage)
     // 匹配卡组织
-    typeList("loanOrganization").then(res => {
+    typeList('loanOrganization').then(res => {
       if (res.status === 0) {
-        this.cardOrganization = res.data;
+        this.cardOrganization = res.data
       }
-    });
+    })
   }
-};
+}
 </script>
 <style>
 .pagenation {

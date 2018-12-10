@@ -44,21 +44,21 @@
   </div>
 </template>
 <script>
-import Tables from "_c/tables";
-import apiArticle from "@/api/apiArticle.js";
-import conShow from "./con-show.vue";
-import richText from "./rich-text.vue";
+import Tables from '_c/tables'
+import apiArticle from '@/api/apiArticle.js'
+import conShow from './con-show.vue'
+import richText from './rich-text.vue'
 // 引入复制到面板所需要的组件
-import Clipboard from "clipboard";
-import { baseUrl } from "@/libs/util.js";
+import Clipboard from 'clipboard'
+import { baseUrl } from '@/libs/util.js'
 
 export default {
-  name: "article-manager",
+  name: 'article-manager',
   components: {
     conShow,
     richText
   },
-  data() {
+  data () {
     return {
       totalNum: 0,
       currentPage: 0,
@@ -67,110 +67,110 @@ export default {
       modal1: false,
       // 控制显示富文本编辑页面
       showRich: false,
-      formData: "",
+      formData: '',
       showTips: false,
       // 复制链接
-      copyUrls: "",
-      clipboard: ""
-    };
+      copyUrls: '',
+      clipboard: ''
+    }
   },
   methods: {
     // 复制链接
-    copyUrl(event, params) {
-      event.preventDefault();
-      var _this = this;
-      this.copyUrls = baseUrl + "articleHtml?id=" + params.postId;
+    copyUrl (event, params) {
+      event.preventDefault()
+      var _this = this
+      this.copyUrls = baseUrl + 'articleHtml?id=' + params.postId
 
-      let clipboard = new Clipboard("#tagCopy", {
-        text: function() {
-          console.log(_this.copyUrls);
-          return _this.copyUrls;
+      let clipboard = new Clipboard('#tagCopy', {
+        text: function () {
+          console.log(_this.copyUrls)
+          return _this.copyUrls
         }
-      });
+      })
 
-      clipboard.on("success", e => {
-        _this.$Message.success("链接复制成功");
+      clipboard.on('success', e => {
+        _this.$Message.success('链接复制成功')
         // 释放内存
-        clipboard.destroy();
-      });
-      clipboard.on("error", e => {
+        clipboard.destroy()
+      })
+      clipboard.on('error', e => {
         // 不支持复制
-        _this.$Message.error("该浏览器不支持自动复制");
+        _this.$Message.error('该浏览器不支持自动复制')
         // 释放内存
-        clipboard.destroy();
-      });
+        clipboard.destroy()
+      })
     },
     // 删除时的气泡提示
-    cancel() {
-      this.$Message.info("你点击了取消");
+    cancel () {
+      this.$Message.info('你点击了取消')
     },
     // 删除自己的文章
-    delArticle(params) {
+    delArticle (params) {
       this.messageData = this.messageData.filter((item, index) => {
-        return item.postId !== params.postId;
-      });
+        return item.postId !== params.postId
+      })
       apiArticle.apiArticleDel(params.postId).then(res => {
         if (res.status === 0) {
-          this.$messageData.successe("删除成功！");
+          this.$messageData.successe('删除成功！')
         }
-      });
+      })
     },
     // 编辑文章
-    editArticle(params) {
+    editArticle (params) {
       if (params) {
-        this.formData = params.postId;
-        this.modal1 = true;
+        this.formData = params.postId
+        this.modal1 = true
       }
     },
     // 添加文章
-    addArticle() {
-      this.modal1 = true;
-      this.showRich = true;
-      this.formData = "";
+    addArticle () {
+      this.modal1 = true
+      this.showRich = true
+      this.formData = ''
     },
     // 切换页面
-    changePage(currentPage) {
-      this.currentPage = currentPage;
-      this.searchList(currentPage, 8);
+    changePage (currentPage) {
+      this.currentPage = currentPage
+      this.searchList(currentPage, 8)
     },
     // 展示每条信息的详情(H5页面)
-    showDetail(params) {
+    showDetail (params) {
       if (params.postId) {
-        var id = params.postId;
-        this.formData = id;
-        this.$router.push({ path: "articleHtml", query: { id } });
+        var id = params.postId
+        this.formData = id
+        this.$router.push({ path: 'articleHtml', query: { id } })
       }
     },
     // 查看全部信息
-    searchList(page, rows, searchKey, searchValue) {
+    searchList (page, rows, searchKey, searchValue) {
       apiArticle
         .apiArticleList(page, rows, searchKey, searchValue)
         .then(res => {
           if (res.status == 0) {
-            this.messageData = res.data.rows;
+            this.messageData = res.data.rows
             // console.log(this.messageData);
-            this.totalNum = res.data.total;
-            this.noReadMess = res.data.rows.filter(function(item, index, arr) {
-              return item.readed === false;
-            }, this);
+            this.totalNum = res.data.total
+            this.noReadMess = res.data.rows.filter(function (item, index, arr) {
+              return item.readed === false
+            }, this)
             if (this.noReadMess.length == 0) {
-              this.noReadMess = [{ messageTitle: "暂时没有未阅消息" }];
+              this.noReadMess = [{ messageTitle: '暂时没有未阅消息' }]
             }
           }
-        });
+        })
     },
     // 关闭详情框
-    closeWin() {
-      this.modal1 = false;
-      this.searchList(this.currentPage, 8);
+    closeWin () {
+      this.modal1 = false
+      this.searchList(this.currentPage, 8)
     }
   },
-  mounted() {
-    this.searchList(this.currentPage, 8);
+  mounted () {
+    this.searchList(this.currentPage, 8)
     // this.copyUrl();
     // this.clipboard = new Clipboard("#tagCopy");
   }
-};
+}
 </script>
 <style>
 .pagenation {

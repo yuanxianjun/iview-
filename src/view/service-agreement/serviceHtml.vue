@@ -79,13 +79,13 @@
 </template>
 <script>
 export default {
-  name: "service-agreement",
+  name: 'service-agreement',
   components: {},
-  data() {
-    return {};
+  data () {
+    return {}
   },
   methods: {}
-};
+}
 </script>
 <style>
 .header {
