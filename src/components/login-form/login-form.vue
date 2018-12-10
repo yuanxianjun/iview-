@@ -15,54 +15,54 @@
       </Input>
     </FormItem>
     <FormItem>
-      <Button  @click="handleSubmit" type="primary" long>登录</Button>
+      <Button @click="handleSubmit" type="primary" long>登录</Button>
     </FormItem>
   </Form>
 </template>
 <script>
 export default {
-  name: 'LoginForm',
+  name: "LoginForm",
   props: {
     userNameRules: {
       type: Array,
       default: () => {
-        return [{ required: true, message: '账号不能为空', trigger: 'blur' }]
+        return [{ required: true, message: "账号不能为空", trigger: "blur" }];
       }
     },
     passwordRules: {
       type: Array,
       default: () => {
-        return [{ required: true, message: '密码不能为空', trigger: 'blur' }]
+        return [{ required: true, message: "密码不能为空", trigger: "blur" }];
       }
     }
   },
-  data () {
+  data() {
     return {
       form: {
-        userName: '15652750943',
-        password: '123456'
+        userName: "",
+        password: ""
       }
-    }
+    };
   },
   computed: {
-    rules () {
+    rules() {
       return {
         userName: this.userNameRules,
         password: this.passwordRules
-      }
+      };
     }
   },
   methods: {
-    handleSubmit () {
+    handleSubmit() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-          this.$emit('on-success-valid', {
+          this.$emit("on-success-valid", {
             userName: this.form.userName,
             password: this.form.password
-          })
+          });
         }
-      })
+      });
     }
   }
-}
+};
 </script>

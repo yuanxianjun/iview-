@@ -59,44 +59,44 @@
   </div>
 </template>
 <script>
-import apiAdmin from "@/api/apiAdmin";
+import apiAdmin from '@/api/apiAdmin'
 
 // 引入富文本编辑器
-import "quill/dist/quill.core.css";
-import "quill/dist/quill.snow.css";
-import "quill/dist/quill.bubble.css";
-import { quillEditor } from "vue-quill-editor";
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+import { quillEditor } from 'vue-quill-editor'
 
-import apiArticle from "@/api/apiArticle.js";
+import apiArticle from '@/api/apiArticle.js'
 
 // 上传需要的地址
-import { apiUpload } from "@/api/apiUpload";
+import { apiUpload } from '@/api/apiUpload'
 export default {
-  name: "rich-text",
+  name: 'rich-text',
   components: {
     quillEditor
   },
-  props: ["formData"],
-  data() {
+  props: ['formData'],
+  data () {
     return {
       // 上传文件
       uploadUrl: apiUpload,
       uploadParam: {
-        fileType: "articleCovers"
+        fileType: 'articleCovers'
       },
       showImg: false,
       detailMess: {
-        postTitle: "",
-        postExcerpt: ""
+        postTitle: '',
+        postExcerpt: ''
       },
-      content: "<h2>输入文章。。。。。</h2>",
+      content: '<h2>输入文章。。。。。</h2>',
       editorOption: {
         modules: {
           toolbar: [
-            [{ size: ["small", false, "large"] }],
-            ["bold", "italic"],
-            [{ list: "ordered" }, { list: "bullet" }],
-            ["link", "image"]
+            [{ size: ['small', false, 'large'] }],
+            ['bold', 'italic'],
+            [{ list: 'ordered' }, { list: 'bullet' }],
+            ['link', 'image']
           ],
           history: {
             delay: 1000,
@@ -106,92 +106,92 @@ export default {
           imageDrop: true,
           imageResize: {
             displayStyles: {
-              backgroundColor: "black",
-              border: "none",
-              color: "white"
+              backgroundColor: 'black',
+              border: 'none',
+              color: 'white'
             },
-            modules: ["Resize", "DisplaySize", "Toolbar"]
+            modules: ['Resize', 'DisplaySize', 'Toolbar']
           }
         }
       }
-    };
+    }
   },
   methods: {
     //   保存文章
-    saveArticle() {
-      this.detailMess.postContent = this.content;
-      console.log(this.detailMess);
+    saveArticle () {
+      this.detailMess.postContent = this.content
+      console.log(this.detailMess)
       apiArticle.apiArticleSave(this.detailMess).then(res => {
         if (res.status == 0) {
-          this.$Message.success("发布成功");
-          this.$emit("close-win");
-          this.detailMess = {};
+          this.$Message.success('发布成功')
+          this.$emit('close-win')
+          this.detailMess = {}
         }
-      });
+      })
     },
-    onEditorBlur(editor) {
+    onEditorBlur (editor) {
       // console.log('editor blur!', editor)
     },
-    onEditorFocus(editor) {
+    onEditorFocus (editor) {
       // console.log('editor focus!', editor)
     },
-    onEditorReady(editor) {
+    onEditorReady (editor) {
       // console.log('editor ready!', editor)
     },
     // 如果有id传入进来进入编辑模式
-    checkData() {
-      console.log(this.formData);
+    checkData () {
+      console.log(this.formData)
       if (
-        this.formData !== "" &&
+        this.formData !== '' &&
         this.formData !== null &&
         this.formData !== {}
       ) {
-        var id = this.formData;
+        var id = this.formData
 
         apiArticle.apiArticleDetail(id).then(res => {
           if (res.status == 0) {
-            this.detailMess = res.data;
+            this.detailMess = res.data
           }
-        });
+        })
       } else {
         this.detailMess = {
-          postStatus: "published",
-          commentStatus: "true",
-          postThumburls: ""
-        };
+          postStatus: 'published',
+          commentStatus: 'true',
+          postThumburls: ''
+        }
       }
     },
     // 上传文件
-    handleSuccess(res, file) {
-      console.log("文件上传成功", res, file);
-      this.detailMess.postThumburls = res.data.previewFileName;
-      this.showImg = true;
-      console.log(res.previewFileName, this.detailMess.postThumburls);
+    handleSuccess (res, file) {
+      console.log('文件上传成功', res, file)
+      this.detailMess.postThumburls = res.data.previewFileName
+      this.showImg = true
+      console.log(res.previewFileName, this.detailMess.postThumburls)
     },
-    handleFormatError(file) {
+    handleFormatError (file) {
       this.$Notice.warning({
-        title: "上传的文件格式不正确",
-        desc: "文件格式" + file.name + " 是不正确的，请选择jpg或者png格式的图片"
-      });
+        title: '上传的文件格式不正确',
+        desc: '文件格式' + file.name + ' 是不正确的，请选择jpg或者png格式的图片'
+      })
     },
-    handleMaxSize(file) {
+    handleMaxSize (file) {
       this.$Notice.warning({
-        title: "上传扥文件大小超过限制",
-        desc: "文件  " + file.name + "太大,大小不能超过2M."
-      });
+        title: '上传扥文件大小超过限制',
+        desc: '文件  ' + file.name + '太大,大小不能超过2M.'
+      })
     },
 
     // 重置表单
-    handleReset(name) {
-      this.$refs[name].resetFields();
+    handleReset (name) {
+      this.$refs[name].resetFields()
     }
   },
-  mounted() {
+  mounted () {
     // 获取文章详情
-    this.checkData();
-    console.log(this.formData);
+    this.checkData()
+    console.log(this.formData)
   }
-};
+}
 </script>
 <style>
 .img {

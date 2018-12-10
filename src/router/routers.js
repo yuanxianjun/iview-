@@ -1,6 +1,5 @@
 import Main from '@/components/main'
 import parentView from '@/components/parent-view'
-
 /**
  * iview-admin中meta除了原生参数外可配置的参数:
  * meta: {
@@ -18,11 +17,7 @@ export default [
     name: "serviceAgreement",
     meta: {
       hideInMenu: true,
-<<<<<<< HEAD
-      title: "展示协议",
-=======
       title: "展示文章",
->>>>>>> e8eef14b75c47ba4b29c26676ee5ca0615acb081
       annoymous: true
     },
     component: () => import("@/view/service-agreement/serviceHtml.vue")
@@ -38,10 +33,6 @@ export default [
     },
     component: () => import("@/view/article-manager/article-html/articleHtml.vue")
   },
-<<<<<<< HEAD
-=======
-
->>>>>>> e8eef14b75c47ba4b29c26676ee5ca0615acb081
   {
     path: '/login',
     name: 'login',
@@ -51,8 +42,6 @@ export default [
     },
     component: () => import('@/view/login/login.vue')
   },
-
-
   // 系统管理
   {
     path: '/system',
@@ -266,15 +255,15 @@ export default [
         },
         component: () => import("@/view/article-manager/article-manager/article-manager.vue")
       },
-      {
-        path: "/comment-manager",
-        name: "comment-manager",
-        meta: {
-          icon: "ios-text",
-          title: "评论管理"
-        },
-        component: () => import('@/view/user-manager/approve-manager/approve-manager.vue')
-      },
+      // {
+      //   path: "/comment-manager",
+      //   name: "comment-manager",
+      //   meta: {
+      //     icon: "ios-text",
+      //     title: "评论管理"
+      //   },
+      //   component: () => import('@/view/user-manager/approve-manager/approve-manager.vue')
+      // },
     ]
   },
   // home页面
@@ -356,16 +345,16 @@ export default [
     },
     component: () => import('@/view/error-page/404.vue')
   },
-  // 
-  {
-    path: '',
-    name: 'doc',
-    meta: {
-      title: '文档',
-      href: 'https://lison16.github.io/iview-admin-doc/#/',
-      icon: 'ios-book'
-    }
-  },
+  // iview-admin的文档
+  // {
+  //   path: '',
+  //   name: 'doc',
+  //   meta: {
+  //     title: '文档',
+  //     href: 'https://lison16.github.io/iview-admin-doc/#/',
+  //     icon: 'ios-book'
+  //   }
+  // },
 ]
 /*
 *

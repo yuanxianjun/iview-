@@ -20,10 +20,11 @@ const turnTo = (to, access, next) => {
 router.beforeEach((to, from, next) => {
   iView.LoadingBar.start()
   const token = getToken()
-  console.log(!token && to.meta.annoymous)
-
+  // console.log(!token && to.meta.annoymous)
+  // 可以更改页面的头部的显示的标题
+  // document.title = to.meta.title
   if (!token && to.meta.annoymous) {
-    console.log('测试')
+    // console.log('测试')
     next()
   } else if (!token && to.name !== LOGIN_PAGE_NAME) {
     // 未登录且要跳转的页面不是登录页

@@ -19,15 +19,15 @@
 </template>
 <script>
 export default {
-  name: "rich-text",
+  name: 'rich-text',
   components: {},
   props: [],
-  data() {
+  data () {
     return {
       detailMess: {}
-    };
+    }
   },
   methods: {}
-};
+}
 </script>
 <style></style>

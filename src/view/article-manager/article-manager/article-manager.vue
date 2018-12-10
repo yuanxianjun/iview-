@@ -187,10 +187,6 @@ export default {
 .ivu-modal-content {
   height: 785px;
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> e8eef14b75c47ba4b29c26676ee5ca0615acb081
 /**
   出现点击两次才能正常使用clipboard的on("success")的方法，这时候的clipboard是已经实例出来了，有了实例之后调用不了on("success")f方法，这个问题的关键在与无法调用方法，为什么无法调用方法。试试在html页面中能够调用该方法吗？
   解决方法
