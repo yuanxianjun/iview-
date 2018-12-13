@@ -196,7 +196,27 @@ export default [
       }
     ]
   },
-
+  // app管理
+  {
+    path: "/appManager",
+    name: "appManager",
+    meta: {
+      icon: "ios-sonstruct",
+      title: "APP管理"
+    },
+    component: Main,
+    children: [
+      {
+        path: "/appAdminManager",
+        name: "appAdminManager",
+        meta: {
+          icon: "md-contact",
+          title: "APP管理",
+        },
+        component: () => import("@/view/app-manager/appAdmin-manager/appAdmin-manager.vue")
+      }
+    ]
+  },
   // 个人配置
   {
     path: '/setting',
