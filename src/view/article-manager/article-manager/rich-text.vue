@@ -151,6 +151,10 @@ export default {
         apiArticle.apiArticleDetail(id).then(res => {
           if (res.status == 0) {
             this.detailMess = res.data
+            this.content = res.data.postContent
+            if (res.data.postThumburls) {
+              this.showImg = true
+            }
           }
         })
       } else {

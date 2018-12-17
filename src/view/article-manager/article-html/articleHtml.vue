@@ -18,16 +18,60 @@
   </div>
 </template>
 <script>
+import articleDetail from '../../../api/apiArticle'
 export default {
   name: 'rich-text',
   components: {},
   props: [],
   data () {
     return {
-      detailMess: {}
+      detailMess: {},
+      articleId: this.$route.query.id
     }
   },
-  methods: {}
+  mounted () {
+    this.getArticleMess()
+  },
+  methods: {
+    getArticleMess () {
+      articleDetail.apiArticleDetail(this.articleId).then(res => {
+        console.log('查看取得的数据', res)
+
+        if (res.status == 0) {
+          this.detailMess = res.data
+        }
+      })
+    }
+  }
 }
 </script>
-<style></style>
+<style>
+.ivu-layout {
+  padding: 10px;
+  background: #ffffff;
+}
+.ivu-layout-header {
+  background: none;
+  text-align: center;
+  /* font-size: 20px; */
+  overflow: hidden;
+}
+.timeAuth {
+  margin-top: 12px;
+  margin-bottom: 20px;
+  font-size: 13px;
+}
+.time {
+  text-align: center;
+}
+.auth {
+  text-align: center;
+}
+.ql-align-center {
+  text-align: center;
+}
+img {
+  width: 100%;
+  height: auto;
+}
+</style>
