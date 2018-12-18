@@ -11,6 +11,17 @@ import parentView from '@/components/parent-view'
  * }
  */
 export default [
+  // 下载app官网首页
+  {
+    path: "/downWeb",
+    name: "downWeb",
+    meta: {
+      hideInMenu: true,
+      title: "app官网",
+      annoymous: true
+    },
+    component: () => import("@/view/down-website/websit.vue")
+  },
   // 服务协议内容
   {
     path: "/serviceAgreement",
@@ -623,11 +634,11 @@ export default [
           title: '二级-3'
         },
         component: () => import('@/view/multilevel/level-2-3.vue')
-      }, 
+      },
     ]
   },
 * */
-/* 
+/*
 */
 /**
  *

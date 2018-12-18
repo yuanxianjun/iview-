@@ -18,32 +18,31 @@
   </div>
 </template>
 <script>
-import articleDetail from '../../../api/apiArticle'
+import articleDetail from "../../../api/apiArticle";
 export default {
-  name: 'rich-text',
+  name: "rich-text",
   components: {},
   props: [],
-  data () {
+  data() {
     return {
       detailMess: {},
       articleId: this.$route.query.id
-    }
+    };
   },
-  mounted () {
-    this.getArticleMess()
+  mounted() {
+    this.getArticleMess();
   },
   methods: {
-    getArticleMess () {
+    getArticleMess() {
       articleDetail.apiArticleDetail(this.articleId).then(res => {
-        console.log('查看取得的数据', res)
-
+        console.log("查看取得的数据", res);
         if (res.status == 0) {
-          this.detailMess = res.data
+          this.detailMess = res.data;
         }
-      })
+      });
     }
   }
-}
+};
 </script>
 <style>
 .ivu-layout {
