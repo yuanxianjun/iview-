@@ -316,11 +316,11 @@ export default [
           title: '首页',
           notCache: true
         },
-        component: () => import('@/view/single-page/home')
+        redirect: 'credit-manage',
       }
     ]
   },
-  // 
+  //
   {
     path: '/argu',
     name: 'argu',
