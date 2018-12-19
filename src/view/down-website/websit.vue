@@ -33,7 +33,10 @@
           >
             <div class="fontWhite boxRight">
               <h1 class="htitle">审批快，额度高，人人卡包不等"贷"</h1>
-              <p class="ptext">1天下卡，3天到手，<span class="money_text">80000 </span>额度轻松得</p>
+              <p class="ptext">
+                1天下卡，3天到手，
+                <span class="money_text">80000</span>额度轻松得
+              </p>
               <div class="downDiv">
                 <div class="btnDiv">
                   <a :href="downLink">
@@ -141,9 +144,10 @@ export default {
   margin-top: 86px;
 }
 .ptext {
-  padding: 10px;
+  /* padding: 10px; */
   font-size: 20px;
   color: #cecaca;
+  margin-top: 10px;
 }
 .boxRight {
   height: 100%;
@@ -234,6 +238,7 @@ export default {
   }
   .width100 {
     width: 100%;
+    height: 100%;
   }
 }
 </style>

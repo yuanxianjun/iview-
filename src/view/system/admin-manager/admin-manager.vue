@@ -1,21 +1,26 @@
 <template>
   <div>
     <Card>
-      <Tables ref="tables" editable searchable search-place="top" v-model="tableData" :columns="columns"
-              @on-delete="handleDelete" @on-edit="handleEdit" @on-search="handleSearch" />
+      <Tables
+        ref="tables"
+        editable
+        searchable
+        search-place="top"
+        v-model="tableData"
+        :columns="columns"
+        @on-delete="handleDelete"
+        @on-edit="handleEdit"
+        @on-search="handleSearch"
+      />
 
-        <div class="pagenation">
-          <Page :total="totalNum" :page-size = 8 show-elevator @on-change="pageChange" />
-        </div>
-        <Button type="primary" @click="modal1 = true;isEdit=false;" >添加管理员</Button>
-        <Button style="margin: 10px 10px;" type="primary" @click="exportExcel">导出为Csv文件</Button>
-        <Modal
-            v-model="modal1"
-            v-bind:title="isEdit?'编辑管理员':'添加管理员'"
-            footer-hide
-            >
-          <adminForm v-if="modal1" :formData="isEdit?formData:''" @close-win="closeWin"></adminForm>
-        </Modal>
+      <div class="pagenation">
+        <Page :total="totalNum" :page-size="8" show-elevator @on-change="pageChange"/>
+      </div>
+      <Button type="primary" @click="modal1 = true;isEdit=false;">添加管理员</Button>
+      <Button style="margin: 10px 10px;" type="primary" @click="exportExcel">导出为Csv文件</Button>
+      <Modal v-model="modal1" v-bind:title="isEdit?'编辑管理员':'添加管理员'" footer-hide>
+        <adminForm v-if="modal1" :formData="isEdit?formData:''" @close-win="closeWin"></adminForm>
+      </Modal>
     </Card>
   </div>
 </template>
@@ -144,6 +149,7 @@ export default {
         manager.list('', '', searchKey, searchValue).then(res => {
           if (res.status == 0) {
             this.tableData = res.data.rows
+            this.totalNum = res.data.total
             return res.data.rows
           }
         })

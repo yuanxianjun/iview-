@@ -216,6 +216,7 @@ export default {
       apiDic.typeList('', 8, searchKey, searchValue).then(res => {
         if (res.status == 0) {
           this.tableData = res.data.rows
+          this.totalNum = res.data.total
           return res.data.rows
         }
       })

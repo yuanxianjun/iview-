@@ -1,19 +1,22 @@
 <template>
   <div>
     <Card>
-      <Tables ref="tables" editable searchable search-place="top" v-model="tableData" :columns="columns"
-               @on-search="handleSearch" />
+      <Tables
+        ref="tables"
+        editable
+        searchable
+        search-place="top"
+        v-model="tableData"
+        :columns="columns"
+        @on-search="handleSearch"
+      />
 
-        <div class="pagenation">
-          <Page :total="totalNum" :page-size = 8 show-elevator @on-change="pageChange" />
-        </div>
-        <Modal
-            v-model="modal1"
-            v-bind:title="isEdit?'编辑管理员':'添加管理员'"
-            footer-hide
-            >
-          <userForm v-if="modal1" :formData="formData" @close-win="closeWin"></userForm>
-        </Modal>
+      <div class="pagenation">
+        <Page :total="totalNum" :page-size="8" show-elevator @on-change="pageChange"/>
+      </div>
+      <Modal v-model="modal1" v-bind:title="isEdit?'编辑管理员':'添加管理员'" footer-hide>
+        <userForm v-if="modal1" :formData="formData" @close-win="closeWin"></userForm>
+      </Modal>
     </Card>
   </div>
 </template>
@@ -166,6 +169,7 @@ export default {
       apiAdmin.generalUseFind('', 8, searchKey, searchValue).then(res => {
         if (res.status == 0) {
           this.tableData = res.data.rows
+          this.totalNum = res.data.total
           return res.data.rows
         }
       })
