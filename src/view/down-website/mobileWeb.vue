@@ -1,6 +1,5 @@
 <template>
-<div class="layout">
-  <body style>
+  <div class="layout">
     <header>
       <div class="logo">
         <!-- <img src="http://h5.f.vivo.com.cn/appstore/h5/appinfodetail/image/logo.png"> -->
@@ -38,12 +37,14 @@
           </div>
           <div id="J_download" class="fixed-box">
             <div class="button-box">
-              <button
-                id="J_download_trigger"
-                class="item-operation"
-                type="button"
-                data="http://info.appstore.vivo.com.cn/dl/Mm1rYVNLazJZNkE9?source=7"
-              >下 载(8.54MB)</button>
+              <a :href="downloaLink">
+                <button
+                  id="J_download_trigger"
+                  class="item-operation"
+                  type="button"
+                  data="http://info.appstore.vivo.com.cn/dl/Mm1rYVNLazJZNkE9?source=7"
+                >下 载(8.54MB)</button>
+              </a>
             </div>
           </div>
         </div>
@@ -122,10 +123,12 @@
       </div>
     </section>
     <div class="weixin-tip-mask fn-hide" v-if="showGuid">
-      <img src="http://h5.f.vivo.com.cn/appstore/h5/appinfodetail/image/weixin-tip.png">
+      <img
+        class="guideImg"
+        src="http://h5.f.vivo.com.cn/appstore/h5/appinfodetail/image/weixin-tip.png"
+      >
     </div>
-  </body>
-</div>
+  </div>
 </template>
 <script>
 import downDetail from "../../api/apiDown.js";
@@ -143,7 +146,8 @@ export default {
   data() {
     const baseurl = base.baseUrl.pro;
     return {
-      showGuid: false
+      showGuid: false,
+      downloaLink: baseurl + "/api/v1/credit/download/newVersion"
     };
   },
 
@@ -152,8 +156,23 @@ export default {
   },
   methods: {
     JudgeBrowser() {
-      console.log(window);
-      // window.userAgent;
+      console.log(this.isWeiXin(), "查看是否是微信浏览器");
+      if (this.isWeiXin()) {
+        this.showGuid = true;
+      } else {
+        this.showGuid = false;
+      }
+    },
+    //判断是否是微信浏览器的函数
+    isWeiXin() {
+      //window.navigator.userAgent属性包含了浏览器类型、版本、操作系统类型、浏览器引擎类型等信息，这个属性可以用来判断浏览器类型
+      var ua = window.navigator.userAgent.toLowerCase();
+      //通过正则表达式匹配ua中是否含有MicroMessenger字符串
+      if (ua.match(/MicroMessenger/i) == "micromessenger") {
+        return true;
+      } else {
+        return false;
+      }
     }
   }
 };
