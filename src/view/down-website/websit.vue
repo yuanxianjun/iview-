@@ -59,55 +59,56 @@
   </div>
 </template>
 <script>
-import downDetail from '../../api/apiDown.js'
+import downDetail from "../../api/apiDown.js";
 // 引入生成二维码的库
-import QRCode from 'qrcodejs2'
+import QRCode from "qrcodejs2";
 // 引入服务器的地址
-import base from '@/config'
+import base from "@/config";
 
 export default {
-  name: 'websit',
+  name: "websit",
   components: {
     QRCode
   },
   props: [],
-  data () {
-    const baseurl = base.baseUrl.pro
+  data() {
+    const baseurl = base.baseUrl.pro;
     return {
       detailMess: {},
       // 二维码
       downloadButton: false,
       config: {
-        value: '',
-        imagePath: '../../assets/images/logo.jpg',
-        filter: 'color'
+        value: "",
+        imagePath: "../../assets/images/logo.jpg",
+        filter: "color"
       },
-      downLink: ''
-    }
+      downLink: ""
+    };
   },
-  mounted () {
-    this.qrcode()
+  mounted() {
+    this.qrcode();
   },
   methods: {
-    qrcode () {
+    qrcode() {
       downDetail.downDetail().then(res => {
         if (res.status == 0) {
-          var text = res.data.wtCreditAppEntity.appDownloadLink
-          this.downLink = text
-          let qrcode = new QRCode('qrcode', {
+          var text = res.data.wtCreditAppEntity.appDownloadLink;
+          this.downLink = text;
+          let qrcode = new QRCode("qrcode", {
             width: 180,
             height: 180, // 高度
             text: text // 二维码内容
             // render: 'canvas' // 设置渲染方式（有两种方式 table和canvas，默认是canvas）
-            // background: '#f0f'
+            // background: "#fff",
+            // padding: 10
             // foreground: '#ff0'
-          })
+          });
         }
-      })
+      });
     },
-    getDetail () {}
+    getDetail() {}
   }
-}
+};
 </script>
 <style>
 .downDiv {
@@ -122,6 +123,11 @@ export default {
   height: 180px;
   margin-top: 40px;
   margin-left: 110px;
+}
+#qrcode img {
+  background: #fff;
+  box-sizing: border-box;
+  padding: 10px;
 }
 .qrCodeDiv {
   width: 160px;
@@ -194,7 +200,7 @@ export default {
   width: 100%;
   height: 90%;
   background: url("../../assets/images/background.png") no-repeat center center;
-  background-size: 1440px auto;
+  background-size: 100% 100%;
   overflow: auto;
 }
 /* 手机图片的大小和位置 */

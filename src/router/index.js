@@ -19,9 +19,11 @@ const turnTo = (to, access, next) => {
 router.beforeEach((to, from, next) => {
   iView.LoadingBar.start()
   const token = getToken()
+
   // console.log(!token && to.meta.annoymous)
   // 可以更改页面的头部的显示的标题
   // document.title = to.meta.title
+
   if (!token && to.meta.annoymous) {
     // console.log('测试')
     next()

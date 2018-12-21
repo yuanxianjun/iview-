@@ -166,7 +166,6 @@ export default {
           props: {
             params: params,
             value: this.insideTableData[params.index][params.column.key],
-
             edittingCellId: this.edittingCellId,
             editable: this.editable
           },
