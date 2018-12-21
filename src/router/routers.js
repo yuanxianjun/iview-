@@ -11,7 +11,18 @@ import parentView from '@/components/parent-view'
  * }
  */
 export default [
-  // 下载app官网首页
+  // 移动端下载首页
+  {
+    path: "/mbDown",
+    name: "mbDown",
+    meta: {
+      hideInMenu: true,
+      title: "app下载",
+      annoymous: true
+    },
+    component: () => import("@/view/down-website/mobileWeb.vue")
+  },
+  // PC端下载app官网首页
   {
     path: "/downWeb",
     name: "downWeb",

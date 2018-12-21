@@ -171,6 +171,8 @@ export default {
         apiCredit.creditSave(data).then(res => {
           if (res.status == 0) {
             console.log("修改成功");
+            // 修改成功之后刷新页面
+            // this.searchList(this.currentPage, 8, this.sValue);
           }
         });
       }
