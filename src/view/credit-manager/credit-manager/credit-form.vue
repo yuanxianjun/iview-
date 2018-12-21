@@ -104,7 +104,9 @@
         </Select>
       </FormItem>
       <FormItem label="所属银行" prop="creditBank">
-        <Input v-model="formValidate.creditBank" placeholder="输入信用卡所属银行"></Input>
+        <Select v-model="formValidate.creditBank" placeholder="选择信用卡所属银行">
+          <Option v-for="item in creditLevel" :key="item.id" :value="item.value">{{item.text}}</Option>
+        </Select>
       </FormItem>
       <FormItem label="推荐链接" prop="creditLink">
         <Input v-model="formValidate.creditLink" placeholder="输入信用卡推荐链接"></Input>
@@ -126,6 +128,8 @@ import { apiUpload } from "@/api/apiUpload";
 import apiCredit from "@/api/credit-api/apiCredit";
 // 使用字典
 import { typeList } from "@/api/apiCom";
+
+var _ = require("lodash");
 
 export default {
   name: "new-list",
@@ -177,7 +181,7 @@ export default {
           { required: true, message: "申请人数不能为空", trigger: "blur" }
         ],
         creditBank: [
-          { required: true, message: "信用卡所属不能为空", trigger: "blur" }
+          { required: true, message: "信用卡所属不能为空", trigger: "change" }
         ],
         creditLink: [
           {
@@ -248,10 +252,13 @@ export default {
             this.formValidate.creditApplyCount = String(
               this.formValidate.creditApplyCount
             );
+
             if (this.formValidate.creditTips.length > 0) {
               this.formValidate.creditTips = this.formValidate.creditTips.split(
                 ","
               );
+            } else {
+              this.formValidate.creditTips = [];
             }
             // console.log(typeof this.formValidate.creditHotCard);
             // radio的value值必须为String | Numberf 使用typeof 测试String转码后的类型为string
@@ -274,31 +281,30 @@ export default {
           creditPurpose: "WITHDRAW",
           creditTips: []
         };
+        // 查找所有的银行
       }
     },
     handleSubmit(name) {
       this.$refs[name].validate(valid => {
         console.log(this.formValidate.creditTips);
-        if (
-          this.formValidate.creditTips &&
-          this.formValidate.creditTips.length > 0
-        ) {
-          var inputValue = this.formValidate.creditTips.join(",");
+        var data = _.cloneDeep(this.formValidate);
+        if (data.creditTips && data.creditTips.length > 0) {
+          var inputValue = data.creditTips.join(",");
         }
         var commalength = (inputValue.match(/,g/) || []).legnth;
         var inputValuelength = inputValue.length - commalength;
         console.log("实际字数", inputValuelength);
 
-        if (valid && this.formValidate.creditImg) {
+        if (valid && data.creditImg) {
           if (inputValue.length >= 40) {
             this.$Message.error("标签总字数不能超过40个字");
             return;
           } else {
-            this.formValidate.creditTips = inputValue;
+            data.creditTips = inputValue;
           }
-          apiCredit.creditSave(this.formValidate).then(res => {
+          apiCredit.creditSave(data).then(res => {
             if (res.status == 0) {
-              this.$Message.success("添加成功");
+              this.$Message.success("提交成功");
               this.$emit("close-win");
             }
           });

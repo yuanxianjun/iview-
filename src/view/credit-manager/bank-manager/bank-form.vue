@@ -48,16 +48,16 @@
         <div class="tipsBan">
           <Tag
             closable
-            @on-close="handleClose(index)"
+            @on-close="handleClose('label',index)"
             v-for="(item ,index) in formValidate.bankLabels"
             :key="index"
           >{{item}}</Tag>
         </div>
         <Input
           style="margin-top:10px;"
-          v-model="inputIip"
+          v-model="inputbankTip"
           placeholder="输入标签使用enter键作为隔断"
-          @on-enter="enterTips"
+          @on-enter="enterBankTips"
         ></Input>
       </FormItem>
 
@@ -65,13 +65,13 @@
         <div class="tipsBan">
           <Tag
             closable
-            @on-close="handleClose(index)"
+            @on-close="handleClose('tip',index)"
             v-for="(item ,index) in formValidate.bankTips"
             :key="index"
           >{{item}}</Tag>
           <Input
             style="margin-top:10px;"
-            v-model="inputbankTip"
+            v-model="inputIip"
             placeholder="输入小提示使用enter键作为隔断"
             @on-enter="enterTips"
           ></Input>
@@ -97,165 +97,193 @@
   </div>
 </template>
 <script>
-import { apiUpload } from '@/api/apiUpload'
-import apiBank from '@/api/credit-api/apiBank'
+import { apiUpload } from "@/api/apiUpload";
+import apiBank from "@/api/credit-api/apiBank";
+const _ = require("lodash");
 export default {
-  name: 'new-list',
+  name: "new-list",
   components: {},
-  props: ['formData'],
-  data () {
+  props: ["formData"],
+  data() {
     return {
       // 输入标签的input框
-      inputIip: '',
-      inputbankTip: '',
+      inputIip: "",
+      inputbankTip: "",
       // 上传头像的地址
       uploadUrl: apiUpload,
       uploadParam: {
-        fileType: 'bankImg'
+        fileType: "bankImg"
       },
       showImg: false,
       // form表单的内容
       formValidate: {
-        bankCode: '',
-        bankDescription: '',
+        bankCode: "",
+        bankDescription: "",
         bankHot: true,
-        bankId: '',
-        bankImg: '',
-        bankName: '',
+        bankId: "",
+        bankImg: "",
+        bankName: "",
         bankLabels: []
       },
       ruleValidate: {
         bankCode: [
           {
             required: true,
-            message: '银行代码不能为空',
-            trigeger: 'blur'
+            message: "银行代码不能为空",
+            trigeger: "blur"
           }
         ],
         bankName: [
           {
             required: true,
-            message: '银行名不能为空',
-            trigger: 'blur'
+            message: "银行名不能为空",
+            trigger: "blur"
           }
         ],
         bankDescription: [
-          { required: true, message: '银行描述不能为空', trigger: 'blur' }
+          { required: true, message: "银行描述不能为空", trigger: "blur" }
         ]
       }
-    }
+    };
   },
   methods: {
-    // 将输入的东西转化成一个个的小标签
-    enterTips (value) {
+    // 输入银行卡的小提示
+    enterTips() {
+      console.log("查看输入框中的内容", this.inputbankTip.length);
+      var regu = "^[ ]+$";
+      var re = new RegExp(regu);
+      if (this.inputIip) {
+        var result = re.test(this.inputbankTip);
+        if (!result) {
+          this.formValidate.bankTips.push(this.inputIip);
+        }
+      } else {
+        this.$Message.error("请输入内容");
+      }
+      this.inputIip = "";
+    },
+    // 输入银行标签
+    enterBankTips(value) {
       console.log(
-        '查看输入框中的内容',
+        "查看输入框中的内容",
         this.inputIip.length,
         this.inputbankTip.length
-      )
+      );
+      var regu = "^[ ]+$";
+      var re = new RegExp(regu);
 
-      var regu = '^[ ]+$'
-      var re = new RegExp(regu)
-
-      if (this.inputIip) {
-        var result = re.test(this.inputIip)
+      if (this.inputbankTip) {
+        var result = re.test(this.inputIip);
         if (!result) {
-          this.formValidate.bankLabels.push(this.inputIip)
-        }
-      } else if (this.inputbankTip) {
-        var result = re.test(this.inputbankTip)
-        if (!result) {
-          this.formValidate.bankTips.push(this.inputbankTip)
+          // console.log(this.formValidate.bankLabels.push);
+          this.formValidate.bankLabels.push(this.inputbankTip);
         }
       } else {
-        this.$Message.error('请输入内容')
+        this.$Message.error("请输入内容");
       }
-      this.inputbankTip = ''
-      this.inputIip = ''
+      this.inputbankTip = "";
     },
     // 关闭一个标签
-    handleClose (index) {
-      this.formValidate.bankLabels.splice(index, 1)
-      console.log(this.formValidate.bankLabels)
+    handleClose(type, index) {
+      if (type === "tip") {
+        this.formValidate.bankTips.splice(index, 1);
+      } else {
+        this.formValidate.bankLabels.splice(index, 1);
+      }
+      console.log(this.formValidate.bankLabels);
     },
-    checkData () {
+    checkData() {
       if (this.formData) {
-        var id = this.formData
+        var id = this.formData;
         apiBank.bankIdGet(id).then(res => {
           if (res.status == 0) {
-            this.formValidate = res.data
-            this.formValidate.bankHot = String(this.formValidate.bankHot)
+            this.formValidate = res.data;
+            this.formValidate.bankHot = String(this.formValidate.bankHot);
+
+            if (this.formValidate.bankLabels.length > 0) {
+              this.formValidate.bankLabels = res.data.bankLabels.split(",");
+            } else {
+              this.formValidate.bankLabels = [];
+            }
+            if (this.formValidate.bankTips.length > 0) {
+              this.formValidate.bankTips = res.data.bankTips.split(",");
+            } else {
+              this.formValidate.bankTips = [];
+            }
             // console.log(typeof this.formValidate.bankHot);
             // radio的value值必须为String | Numberf 使用typeof 测试String转码后的类型为string
-            console.log('查看接受到值', this.formData, this.formValidate)
+
+            console.log("查看接受到值", this.formData, this.formValidate);
           }
-        })
+        });
       } else {
-        this.formValidate = {}
+        this.formValidate = {};
         // 设置单选框的默认值
-        this.formValidate.bankHot = 'true'
-        this.formValidate.bankLabels = ''
-        this.formValidate.bankTips = ''
+        this.formValidate.bankHot = "true";
+        this.formValidate.bankLabels = [];
+        this.formValidate.bankTips = [];
       }
     },
-    handleSubmit (name) {
+    handleSubmit(name) {
       this.$refs[name].validate(valid => {
         if (valid && this.formValidate.bankImg) {
-          console.log(this.formValidate.bankTips.length > 0)
+          var data = _.cloneDeep(this.formValidate);
 
-          if (this.formValidate.bankLabels.length > 0) {
-            this.formValidate.bankLabels = this.formValidate.bankLabels.join(
-              ','
-            )
-          }
-          if (this.formValidate.bankTips.length > 0) {
-            this.formValidate.bankTips = this.formValidate.bankTips.join(',')
-          }
+          console.log(data.bankTips.length > 0);
 
-          console.log(this.formValidate)
-          apiBank.bankSave(this.formValidate).then(res => {
+          if (data.bankLabels.length > 0) {
+            data.bankLabels = data.bankLabels.join(",");
+          } else {
+            data.bankLabels = "";
+          }
+          if (data.bankTips.length > 0) {
+            data.bankTips = data.bankTips.join(",");
+          } else {
+            data.bankTips = "";
+          }
+          apiBank.bankSave(data).then(res => {
             if (res.status == 0) {
-              this.$Message.success('添加成功')
-              this.$emit('close-win')
+              this.$Message.success("提交成功");
+              this.$emit("close-win");
             }
-          })
+          });
         } else {
-          this.$Message.error('请将信息填写完整')
+          this.$Message.error("请将信息填写完整");
         }
-      })
+      });
     },
     // 上传文件
-    handleSuccess (res, file) {
+    handleSuccess(res, file) {
       if (this.isDisabled) {
-        this.$Message.success('头像编辑禁用')
+        this.$Message.success("头像编辑禁用");
       } else {
-        console.log('文件上传成功', res, file)
-        this.formValidate.bankImg = res.data.previewFileName
-        this.showImg = true
+        console.log("文件上传成功", res, file);
+        this.formValidate.bankImg = res.data.previewFileName;
+        this.showImg = true;
       }
     },
-    handleFormatError (file) {
+    handleFormatError(file) {
       this.$Notice.warning({
-        title: '上传的文件格式不正确',
-        desc: '文件格式' + file.name + ' 是不正确的，请选择jpg或者png格式的图片'
-      })
+        title: "上传的文件格式不正确",
+        desc: "文件格式" + file.name + " 是不正确的，请选择jpg或者png格式的图片"
+      });
     },
-    handleMaxSize (file) {
+    handleMaxSize(file) {
       this.$Notice.warning({
-        title: '上传扥文件大小超过限制',
-        desc: '文件  ' + file.name + '太大,大小不能超过2M.'
-      })
+        title: "上传扥文件大小超过限制",
+        desc: "文件  " + file.name + "太大,大小不能超过2M."
+      });
     },
 
     // 重置表单
-    handleReset (name) {
-      this.$refs[name].resetFields()
+    handleReset(name) {
+      this.$refs[name].resetFields();
     }
   },
-  mounted () {
-    this.checkData()
+  mounted() {
+    this.checkData();
   }
-}
+};
 </script>
 <style>
 .img {
