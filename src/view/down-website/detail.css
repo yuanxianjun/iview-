@@ -38,6 +38,7 @@ body{
     left:0;
     top:0;
     z-index: 20;
+    overflow: hidden;
 }
 .guideImg{
     width:100%;
@@ -501,6 +502,7 @@ section.main-content{
     line-height: 12px;
     padding: 8px 1%;
     color: #959595;
+    list-style: none;
 }
 .comment-list .item{
     margin:0 auto;

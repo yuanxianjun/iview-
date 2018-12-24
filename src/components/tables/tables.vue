@@ -223,7 +223,7 @@ export default {
     setDefaultSearchKey() {
       console.log("查看默认的搜索值", this.columns[0].key !== "handle");
 
-      this.searchKey = this.searchKey =
+      this.searchKey =
         this.columns[0].key !== "handle"
           ? this.columns[0].key
           : this.columns.length > 1

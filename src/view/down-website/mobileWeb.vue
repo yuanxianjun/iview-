@@ -37,14 +37,12 @@
           </div>
           <div id="J_download" class="fixed-box">
             <div class="button-box">
-              <a :href="downloaLink">
-                <button
-                  id="J_download_trigger"
-                  class="item-operation"
-                  type="button"
-                  data="http://info.appstore.vivo.com.cn/dl/Mm1rYVNLazJZNkE9?source=7"
-                >下 载(8.54MB)</button>
-              </a>
+              <button
+                id="J_download_trigger"
+                class="item-operation"
+                type="button"
+                @click="handleClick"
+              >下 载(8.54MB)</button>
             </div>
           </div>
         </div>
@@ -76,10 +74,10 @@
             <div class="wrap">
               <ul class="comment clearfix">
                 <li class="ly-fl">
-                  <small>版本：1.0.1</small>
+                  <small>版本：{{versionMess.appVersion}}</small>
                 </li>
                 <li class="ly-fr">
-                  <small>更新时间：2018-12-21 15:31:20</small>
+                  <small>更新时间：{{versionMess.createTime}}</small>
                 </li>
               </ul>
 
@@ -147,20 +145,36 @@ export default {
     const baseurl = base.baseUrl.pro;
     return {
       showGuid: false,
-      downloaLink: baseurl + "/api/v1/credit/download/newVersion"
+      downloaLink: baseurl + "/api/v1/credit/download/newVersion",
+      versionMess: {}
     };
   },
-
   mounted() {
-    this.JudgeBrowser();
+    // 获取apk的最新消息
+    this.getDetailMessage();
   },
   methods: {
+    // 获取下载的最新消息
+    getDetailMessage() {
+      downDetail.downDetail().then(res => {
+        if (res.status == 0) {
+          this.versionMess = res.data.wtCreditAppEntity;
+        }
+      });
+    },
+    // 点击下载
+    handleClick() {
+      this.showGuid = this.JudgeBrowser();
+      if (this.showGuid == false) {
+        window.location.href = this.downloaLink;
+      }
+    },
     JudgeBrowser() {
       console.log(this.isWeiXin(), "查看是否是微信浏览器");
       if (this.isWeiXin()) {
-        this.showGuid = true;
+        return true;
       } else {
-        this.showGuid = false;
+        return false;
       }
     },
     //判断是否是微信浏览器的函数
