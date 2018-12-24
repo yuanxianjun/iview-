@@ -27,6 +27,7 @@
 import Tables from "_c/tables";
 
 import apiCredit from "@/api/credit-api/apiCredit.js";
+
 import creditForm from "./credit-form.vue";
 // 使用字典
 import { typeList } from "@/api/apiCom";

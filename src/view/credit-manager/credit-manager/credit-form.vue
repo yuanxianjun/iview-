@@ -104,10 +104,16 @@
         </Select>
       </FormItem>
       <FormItem label="所属银行" prop="creditBank">
-        <Select v-model="formValidate.creditBank" placeholder="选择信用卡所属银行">
-          <Option v-for="item in creditLevel" :key="item.id" :value="item.value">{{item.text}}</Option>
+        <Select v-if="showbankOption" v-model="formValidate.creditBank" placeholder="选择信用卡所属银行">
+          <Option
+            v-for="item in bankData"
+            :key="item.bankId"
+            :value="item.bankCode"
+          >{{item.bankName}}</Option>
         </Select>
+        <Input v-model="formValidate.creditBank" placeholder="中国银行" v-if="!showbankOption" disabled></Input>
       </FormItem>
+
       <FormItem label="推荐链接" prop="creditLink">
         <Input v-model="formValidate.creditLink" placeholder="输入信用卡推荐链接"></Input>
       </FormItem>
@@ -140,6 +146,9 @@ export default {
   props: ["formData"],
   data() {
     return {
+      // 全部银行的消息
+      bankData: [],
+      showbankOption: true,
       // 上传头像的地址
       uploadUrl: apiUpload,
       uploadParam: {
@@ -203,8 +212,10 @@ export default {
     // 添加的时候展示银行列表
     searchBankList(pageNum, rows = 8) {
       apiBank.bankPage(pageNum, rows).then(res => {
-        this.tableData = res.data.rows;
+        this.bankData = res.data.rows;
         this.totalNum = res.data.total;
+        // 加载完银行的item之后才显示详情信息
+        this.checkData();
       });
     },
     // 当输入完毕按下enter键的时候，将input框中的内容，添加到input为textarea中形成标签，inputarea中的一个个标签是一数组的形式存储的
@@ -249,6 +260,8 @@ export default {
         var id = this.formData;
         apiCredit.creditIdGet(id).then(res => {
           if (res.status == 0) {
+            this.showbankOption = false;
+
             this.formValidate = res.data;
             this.formValidate.creditHotCard = String(
               this.formValidate.creditHotCard
@@ -351,7 +364,9 @@ export default {
     }
   },
   mounted() {
-    this.checkData();
+    // 加载所有银行的列表
+    this.searchBankList();
+
     this.getDictionarys();
   }
 };

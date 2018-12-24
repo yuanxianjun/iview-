@@ -221,11 +221,17 @@ export default {
       });
     },
     setDefaultSearchKey() {
-      console.log("查看默认的搜索值", this.columns[0].key !== "handle");
+      var searchIndex = -1;
+      for (let index in this.columns) {
+        if (this.columns[index].searchable == true) {
+          searchIndex = index;
+          break;
+        }
+      }
 
       this.searchKey =
-        this.columns[0].key !== "handle"
-          ? this.columns[0].key
+        this.columns[0].key !== "handle" && searchIndex > -1
+          ? this.columns[searchIndex].key
           : this.columns.length > 1
           ? this.columns[1].key
           : "";

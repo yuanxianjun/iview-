@@ -27,7 +27,7 @@
                 </span>
                 &nbsp;&nbsp;
                 8.54M &nbsp;&nbsp;
-                1000次下载
+                <!-- 1000次下载 -->
               </dd>
               <dd class="item-introduce-tags">
                 <span class="tag">安全</span>
@@ -77,7 +77,7 @@
                   <small>版本：{{versionMess.appVersion}}</small>
                 </li>
                 <li class="ly-fr">
-                  <small>更新时间：{{versionMess.createTime}}</small>
+                  <small>更新时间：{{$moment(versionMess.createTime).format("YYYY-MM-DD")}}</small>
                 </li>
               </ul>
 

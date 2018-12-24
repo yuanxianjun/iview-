@@ -93,7 +93,7 @@ export default {
       downDetail.downDetail().then(res => {
         if (res.status == 0) {
           var text = res.data.wtCreditAppEntity.appDownloadLink;
-          text = "http://appdetailh5.vivo.com.cn/detail/2404657?source=7";
+          text = "http://renrencredit.charmatd.com/download.html";
           this.downLink = text;
           let qrcode = new QRCode("qrcode", {
             width: 180,
