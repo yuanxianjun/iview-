@@ -129,6 +129,9 @@ import apiCredit from "@/api/credit-api/apiCredit";
 // 使用字典
 import { typeList } from "@/api/apiCom";
 
+// 银行管理的api
+import apiBank from "@/api/credit-api/apiBank.js";
+// 引入js库lodash
 var _ = require("lodash");
 
 export default {
@@ -197,6 +200,13 @@ export default {
     };
   },
   methods: {
+    // 添加的时候展示银行列表
+    searchBankList(pageNum, rows = 8) {
+      apiBank.bankPage(pageNum, rows).then(res => {
+        this.tableData = res.data.rows;
+        this.totalNum = res.data.total;
+      });
+    },
     // 当输入完毕按下enter键的时候，将input框中的内容，添加到input为textarea中形成标签，inputarea中的一个个标签是一数组的形式存储的
     enterTips(value) {
       console.log("查看输入框中的内容", this.inputIip.length);

@@ -19,11 +19,11 @@
               </dt>
               <dd class="item-introduce-download">
                 <span class="yello">
-                  <span class="iconfont icon-star"></span>
-                  <span class="iconfont icon-star"></span>
-                  <span class="iconfont icon-star"></span>
-                  <span class="iconfont icon-star"></span>
-                  <span class="iconfont icon-star"></span>
+                  <span class="iconfont icon-star-fill"></span>
+                  <span class="iconfont icon-star-fill"></span>
+                  <span class="iconfont icon-star-fill"></span>
+                  <span class="iconfont icon-star-fill"></span>
+                  <span class="iconfont icon-star-fill"></span>
                 </span>
                 &nbsp;&nbsp;
                 8.54M &nbsp;&nbsp;

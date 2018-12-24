@@ -25,6 +25,8 @@
 </template>
 <script>
 import Tables from "_c/tables";
+// 银行管理的api
+import apiBank from "@/api/credit-api/apiBank.js";
 
 import apiCredit from "@/api/credit-api/apiCredit.js";
 import creditForm from "./credit-form.vue";

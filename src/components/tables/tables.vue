@@ -221,14 +221,16 @@ export default {
       });
     },
     setDefaultSearchKey() {
-      // console.log('查看默认的搜索值', this.columns[0].key !== 'handle')
-      this.searchKey =
+      console.log("查看默认的搜索值", this.columns[0].key !== "handle");
+
+      this.searchKey = this.searchKey =
         this.columns[0].key !== "handle"
           ? this.columns[0].key
           : this.columns.length > 1
           ? this.columns[1].key
           : "";
-      console.log(this.searchKey);
+
+      console.log("查看搜索值", this.searchKey);
     },
     handleClear(e) {
       if (e.target.value === "") this.insideTableData = this.value;

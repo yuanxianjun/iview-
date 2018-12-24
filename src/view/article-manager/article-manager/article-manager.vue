@@ -47,7 +47,7 @@
         <Page :total="totalNum" show-elevator @on-change="changePage"/>
       </div>
     </div>
-    <Modal v-model="modal1" width="900" footer-hide>
+    <Modal v-model="modal1" width="900" footer-hide :mask-closable="false">
       <!-- <conShow v-if="false" :formData="formData" @close-win="closeWin"></conShow> -->
       <richText v-if="modal1" :formData="formData" @close-win="closeWin"></richText>
     </Modal>
