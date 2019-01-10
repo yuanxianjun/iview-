@@ -18,6 +18,7 @@ export const creditPage = (page, rows, search) => {
     data
   })
 }
+
 // 根据id删除信用卡
 export const creditDel = (id) => {
   const data = {
@@ -28,6 +29,7 @@ export const creditDel = (id) => {
     data
   })
 }
+
 // 根据id查询信用卡相关信息
 export const creditIdGet = (id) => {
   const data = {
@@ -38,6 +40,7 @@ export const creditIdGet = (id) => {
     data
   })
 }
+
 // 管理员创建或更新信用卡信息
 export const creditSave = (data) => {
   var datas = {

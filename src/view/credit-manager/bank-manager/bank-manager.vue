@@ -12,11 +12,14 @@
         @on-edit="handleEdit"
         @on-search="handleSearch"
       />
+
       <div class="pagenation">
         <Page :total="totalNum" show-elevator :page-size="8" @on-change="pageChange"/>
       </div>
+
       <Button type="primary" @click="modal1 = true;isEdit=false;">添加银行</Button>
       <Button style="margin: 8px 8px;" type="primary" @click="exportExcel">导出为Csv文件</Button>
+
       <Modal v-model="modal1" v-bind:title="isEdit?'修改银行信息':'添加银行'" footer-hide>
         <bankForm v-if="modal1" :formData="isEdit?formData:''" @close-win="closeWin"></bankForm>
       </Modal>

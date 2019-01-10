@@ -11,6 +11,50 @@ import parentView from '@/components/parent-view'
  * }
  */
 export default [
+  // 进度查询
+  {
+    path: "/helpCard",
+    name: "helpCard",
+    meta: {
+      hideInMenu: true,
+      title: "帮您选卡",
+      annoymous: true
+    },
+    component: () => (import("@/view/active-page/helpCard.vue"))
+  },
+  // 进度查询
+  {
+    path: "/checkCard",
+    name: "checkCard",
+    meta: {
+      hideInMenu: true,
+      title: "进度查询",
+      annoymous: true
+    },
+    component: () => (import("@/view/active-page/checkCard.vue"))
+  },
+  // 极速办卡
+  {
+    path: "/speedCard",
+    name: "speedCard",
+    meta: {
+      hideInMenu: true,
+      title: "极速办卡",
+      annoymous: true
+    },
+    component: () => (import("@/view/active-page/speedCard.vue"))
+  },
+  // APP中主题精选里面的页面
+  {
+    path: "/templateOne",
+    name: "templateOne",
+    meta: {
+      hideInMenu: true,
+      title: "这里应该是活动的",
+      annoymous: true
+    },
+    component: () => (import("@/view/active-page/templateOne.vue"))
+  },
   // 移动端下载首页
   {
     path: "/mbDown",
@@ -239,6 +283,39 @@ export default [
       }
     ]
   },
+  // 主题活动管理
+  {
+    path: '/topicManager',
+    name: 'topicManager',
+    meta: {
+      title: "主题活动管理",
+      icon: "logo-buffer"
+    },
+    component: Main,
+    children: [
+      {
+        path: '/topicMan',
+        name: 'topicMan',
+        meta: {
+          icon: 'md-flower',
+          title: "主题活动管理",
+          beforeCloseName: 'before_close_normal'
+        },
+        component: () => import('@/view/theme-actives/themeList.vue')
+      },
+      {
+        path: '/themeItemList',
+        name: 'themeItemList',
+        meta: {
+          hideInMenu: true,
+          icon: 'md-flower',
+          title: "主题活动子项管理",
+          beforeCloseName: 'before_close_normal'
+        },
+        component: () => import('@/view/theme-actives/themeItem-list.vue')
+      }
+    ]
+  },
   // 个人配置
   {
     path: '/setting',
@@ -331,6 +408,7 @@ export default [
       }
     ]
   },
+
   //
   {
     path: '/argu',

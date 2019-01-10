@@ -6,7 +6,6 @@
           <Tables
             ref="tables"
             editable
-            searchable
             search-place="top"
             v-model="tableData2"
             :columns="columns2"
@@ -15,32 +14,26 @@
             @on-search="itemSearch"
           />
           <div class="pagenation">
-            <Page :total="totalNum2" :page-size="8" show-elevator @on-change="pageChange2"/>
+            <Page :total="totalNum2" :page-size="8" show-elevator/>
           </div>
           <Button type="primary" @click="modal1 = true;isEdit='添加item';">添加item</Button>
           <Button style="margin-left:10px;" type="primary" @click="backToIndex">返回</Button>
         </TabPane>
       </Tabs>
       <Modal v-model="modal1" :title="isEdit" footer-hide width="600">
-        <dicForm
-          v-if="modal1"
-          :formData="formData"
-          :CODE="CODE"
-          :ortype="ban"
-          @close-win="closeWin"
-        ></dicForm>
+        <dicForm v-if="modal1" :formData="formData" :ortype="ban" @close-win="closeWin"></dicForm>
       </Modal>
     </Card>
   </div>
 </template>
 <script>
 import Tables from '_c/tables'
-import apiDic from '@/api/apiDic.js'
-import dicForm from './dic-form.vue'
-import { checkTypeStatus } from '@/libs/checkStatus'
+import apiTheme from '@/api/apiTopic.js'
+import dicForm from './themeItem-form.vue'
 
+const _ = require('lodash')
 export default {
-  name: 'dicItem-list',
+  name: 'themeItem-list',
   components: {
     Tables,
     dicForm
@@ -59,6 +52,7 @@ export default {
       totalNum2: 0,
       currentPage: 1,
       currentPage2: 1,
+
       // 当前显示面板
       ban: 'item',
       searchKey: '',
@@ -72,38 +66,42 @@ export default {
           searchable: true
         },
         {
-          title: '序号',
-          key: 'sort',
+          title: '信用卡名称',
+          key: 'creditName',
           sortable: true,
           // editable: true,
           searchable: true
         },
         {
-          title: '字典内容',
-          key: 'text',
+          title: '图片',
+
+          sortable: true,
+          // editable: true,
+          searchable: true,
+          render: (h, params) => {
+            return h('img', {
+              attrs: {
+                src: params.row.creditImg
+              },
+              style: {
+                width: '80px',
+                height: '40px'
+              }
+            })
+          }
+        },
+        {
+          title: '所属银行',
+          key: 'creditBank',
           sortable: true,
           // editable: true,
           searchable: true
         },
 
         {
-          title: '类型',
-          key: 'typeId',
-          sortable: true,
-          // editable: true,
-          searchable: true
-        },
-        {
-          title: '值',
-          key: 'value',
-          sortable: true,
-          // editable: true,
-          searchable: true
-        },
-        {
           title: '操作',
           key: 'handle',
-          options: ['delete', 'edit'],
+          options: ['delete'],
           button: []
         }
       ]
@@ -115,21 +113,36 @@ export default {
       this.searchKey = ''
       this.searchValue = ''
       this.currentPage = 1
-      this.$router.push({ name: 'dictionary-setting', query: {} })
+      this.$router.push({ name: 'topicMan', query: {} })
     },
-    intItemData (page, rows, searchKey, searchValue) {
-      apiDic.dicItemList(page, 8, searchKey, searchValue).then(res => {
-        console.log('查看查询到信息', res)
+    intItemData (id) {
+      apiTheme.itemDetail(id).then(res => {
         if (res.status == 0) {
-          this.tableData2 = res.data.rows
           this.totalNum2 = res.data.total
+          // 处理一下数据以便于能够在表格中更好的展示出来
+          var cloneData = _.cloneDeep(res.data.rows)
+          cloneData.map(res => {
+            for (var key in res.detail) {
+              if (key === 'creditName') {
+                res[key] = res.detail[key]
+              }
+              if (key === 'creditImg') {
+                res[key] = res.detail[key]
+              }
+              if (key === 'creditBank') {
+                res[key] = res.detail[key]
+              }
+            }
+          })
+          console.log('克隆之后的数据', cloneData)
+          this.tableData2 = cloneData
         }
       })
     },
     // 删除item
     itemDelete (params) {
       var delId = params.row.id
-      apiDic.dicItemDel(delId).then(res => {
+      apiTheme.delItem(delId).then(res => {
         if (res.status == 0) {
           this.$Message.success('删除成功')
         }
@@ -140,8 +153,6 @@ export default {
       this.modal1 = true
       this.isEdit = '编辑item'
       this.formData = params.row.id
-      this.CODE = this.$route.query.id
-      console.log('查看code', this.CODE)
     },
     // item字段搜索
     itemSearch (searchKey, searchValue) {
@@ -153,28 +164,18 @@ export default {
         }
       })
     },
-    // item分类
-    pageChange2 (currentPage) {
-      console.log(this.searchKey, this.searchValue)
-      this.intItemData(currentPage, 8, 'typeId', this.searchValue)
-      this.currentPage = currentPage
-    },
     // 关闭窗口
     closeWin () {
       this.modal1 = false
-      this.intItemData(this.currentPage, 8, 'typeId', this.searchValue)
+      this.intItemData(this.searchValue)
       this.formData = ''
     }
   },
   mounted () {
     console.log('查看item页面', this.$route)
-
     this.searchValue = this.$route.query.id
-    this.CODE = this.$route.query.id
     if (this.searchValue) {
-      this.intItemData(this.currentPage2, 8, 'typeId', this.searchValue)
-    } else {
-      this.intItemData(this.currentPage2, 8)
+      this.intItemData(this.searchValue)
     }
   }
 }

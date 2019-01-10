@@ -70,7 +70,7 @@
       </FormItem>
       <FormItem label="用途" prop="creditPurpose">
         <!-- <Input  v-model="formValidate.creditPurpose" placeholder="输入用途"></Input> -->
-        <Select v-model="formValidate.creditPurpose" placeholder="选择用途">
+        <Select :multiple="true" v-model="formValidate.creditPurpose" placeholder="选择用途">
           <Option v-for="item in purpose" :key="item.id" :value="item.value">{{item.text}}</Option>
         </Select>
       </FormItem>
@@ -174,7 +174,7 @@ export default {
         creditLevel: 'VIP',
         creditOrganization: 'VISA',
         creditAnnualFee: 'FOREVER_FREE',
-        creditPurpose: 'WITHDRAW',
+        creditPurpose: [],
         creditTips: []
       },
       ruleValidate: {
@@ -283,6 +283,14 @@ export default {
             } else {
               this.formValidate.creditTips = []
             }
+
+            if (this.formValidate.creditPurpose.length > 0) {
+              this.formValidate.creditPurpose = this.formValidate.creditPurpose.split(
+                ','
+              )
+            } else {
+              this.formValidate.creditPurpose = []
+            }
             // console.log(typeof this.formValidate.creditHotCard);
             // radio的value值必须为String | Numberf 使用typeof 测试String转码后的类型为string
             if (this.formValidate.creditImg) {
@@ -301,7 +309,7 @@ export default {
           creditLevel: 'VIP',
           creditOrganization: 'VISA',
           creditAnnualFee: 'FOREVER_FREE',
-          creditPurpose: 'WITHDRAW',
+          creditPurpose: [],
           creditTips: []
         }
         // 查找所有的银行
@@ -311,19 +319,26 @@ export default {
       this.$refs[name].validate(valid => {
         console.log(this.formValidate.creditTips)
         var data = _.cloneDeep(this.formValidate)
+
+        var inputValue = 0
         if (data.creditTips && data.creditTips.length > 0) {
-          var inputValue = data.creditTips.join(',')
+          inputValue = data.creditTips.join(',')
+          var commalength = (inputValue.match(/,g/) || []).legnth
+          var inputValuelength = inputValue.length - commalength
         }
-        var commalength = (inputValue.match(/,g/) || []).legnth
-        var inputValuelength = inputValue.length - commalength
+
         console.log('实际字数', inputValuelength)
 
         if (valid && data.creditImg) {
-          if (inputValue.length >= 40) {
+          if (inputValuelength >= 40) {
             this.$Message.error('标签总字数不能超过40个字')
             return
           } else {
             data.creditTips = inputValue
+          }
+
+          if (data.creditPurpose && data.creditPurpose.length > 0) {
+            data.creditPurpose = data.creditPurpose.join(',')
           }
           apiCredit.creditSave(data).then(res => {
             if (res.status == 0) {

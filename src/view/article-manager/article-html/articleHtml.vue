@@ -7,7 +7,7 @@
       <div>
         <Row class="timeAuth">
           <Col span="12" class="time">时间： {{$moment(detailMess.updateTime).format("YYYY/MM/DD")}}</Col>
-          <Col span="10">作者：{{detailMess.authorName}}</Col>
+          <Col span="10">作者：{{detailMess.postSource || detailMess.authorName}}</Col>
           <Col span="2"></Col>
         </Row>
       </div>
