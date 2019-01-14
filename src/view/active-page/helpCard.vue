@@ -33,73 +33,73 @@
 
 <script>
 export default {
-  name: 'templateOne',
+  name: "templateOne",
   components: {},
-  data () {
+  data() {
     return {
-      liStyle: 'tipCom tipsLiChecked',
+      liStyle: "tipCom tipsLiChecked",
       activeLi1: [],
       AllactiveLi: [],
       // 展示第二项拼写
       showPage2: false,
-      btnCon: '下一步',
+      btnCon: "下一步",
 
       jsonOne: {
         num: 1,
-        title: '/2:你最关注的信用卡特色？',
+        title: "/2:你最关注的信用卡特色？",
         tips: [
-          '额度高',
-          '易申请',
-          '极速发卡',
-          '高端白金',
-          '大额取现',
-          '开卡好礼',
-          '权益丰厚',
-          '免年费',
-          '颜值正义'
+          "额度高",
+          "易申请",
+          "极速发卡",
+          "高端白金",
+          "大额取现",
+          "开卡好礼",
+          "权益丰厚",
+          "免年费",
+          "颜值正义"
         ]
       },
       jsonTwo: {
         num: 2,
-        title: '/2:你最常进行消费?',
+        title: "/2:你最常进行消费?",
         tips: [
-          '超市',
-          '爱车',
-          '酒店',
-          '高铁航空',
-          '境外购物',
-          '美食',
-          '游戏',
-          '追星',
-          '追星观影',
-          '网购',
-          '女性专属'
+          "超市",
+          "爱车",
+          "酒店",
+          "高铁航空",
+          "境外购物",
+          "美食",
+          "游戏",
+          "追星",
+          "追星观影",
+          "网购",
+          "女性专属"
         ]
       },
       bossJson: {}
-    }
+    };
   },
   methods: {
-    checkedLi (value, index) {
+    checkedLi(value, index) {
       if (this.activeLi1.indexOf(index) == -1 && this.activeLi1.length < 3) {
-        this.activeLi1.push(index)
+        this.activeLi1.push(index);
       } else {
-        var delIndex = this.activeLi1.indexOf(index)
-        if (delIndex >= 0) this.activeLi1.splice(delIndex, 1)
+        var delIndex = this.activeLi1.indexOf(index);
+        if (delIndex >= 0) this.activeLi1.splice(delIndex, 1);
       }
     },
-    nextPage () {
+    nextPage() {
       if (this.activeLi1.length > 0 && !this.showPage2) {
-        this.btnCon = '上一步'
-        this.bossJson = this.jsonTwo
-        this.showPage2 = !this.showPage2
-        this.AllactiveLi = this.activeLi1
-        this.activeLi1 = []
+        this.btnCon = "上一步";
+        this.bossJson = this.jsonTwo;
+        this.showPage2 = !this.showPage2;
+        this.AllactiveLi = this.activeLi1;
+        this.activeLi1 = [];
       } else {
-        this.btnCon = '下一步'
-        this.bossJson = this.jsonOne
-        this.showPage2 = false
-        this.activeLi1 = []
+        this.btnCon = "下一步";
+        this.bossJson = this.jsonOne;
+        this.showPage2 = false;
+        this.activeLi1 = [];
       }
     }
   },
@@ -109,10 +109,10 @@ export default {
     //   this.activeLi1 = item;
     // }
   },
-  mounted () {
-    this.bossJson = this.jsonOne
+  mounted() {
+    this.bossJson = this.jsonOne;
   }
-}
+};
 </script>
 <style lang="less">
 .oneFont {

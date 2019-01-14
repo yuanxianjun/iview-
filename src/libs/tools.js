@@ -9,6 +9,25 @@ export const forEach = (arr, fn) => {
 }
 
 /**
+ * @param {Array，String} obj
+ * @param {Array，String} obj 如果obj不存在的时候返回的东西是什么
+ */
+export const arrAndStr = (obj, value) => {
+  let result = ''
+  if (obj && obj.length > 0) {
+    if (Array.isArray(obj)) {
+      result = obj.join(',')
+    } else {
+      result = obj.split(',')
+    }
+  } else {
+    result = value
+  }
+
+  return result
+}
+
+/**
  * @param {Array} arr1
  * @param {Array} arr2
  * @description 得到两个数组的交集, 两个数组的元素为数值或字符串

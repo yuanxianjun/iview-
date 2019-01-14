@@ -2,7 +2,7 @@ import axios from '@/libs/api.request'
 // 这里是管理员的相关api
 const API_CREDIT_PREFIX = '/api/v1/admin/credit/detail'
 // 查询管理员相关的列表
-export const creditPage = (page, rows, search) => {
+export const creditPage = (page, rows, search, creditState) => {
   const data = {
     'loanHotCard': 0,
     'loanLevel': '',
@@ -11,7 +11,8 @@ export const creditPage = (page, rows, search) => {
     'loanShortApprovalTimeCard': 0,
     page,
     rows,
-    search
+    search,
+    creditState
   }
   return axios.post({
     url: API_CREDIT_PREFIX + '/page',

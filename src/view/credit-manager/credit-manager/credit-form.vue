@@ -59,6 +59,17 @@
         ></Input>
       </FormItem>
       <!-- 下拉 -->
+      <FormItem label="支持的货币" prop="creditCurrency">
+        <!-- <Input  v-model="formValidate.creditAnnualFee" placeholder=""></Input> -->
+        <Select :multiple="true" v-model="formValidate.creditCurrency" placeholder="选择信用卡货币">
+          <Option
+            v-for="item in creditCurrencys"
+            :key="item.value"
+            :value="item.value"
+          >{{item.text}}</Option>
+        </Select>
+      </FormItem>
+
       <FormItem label="年费" prop="creditAnnualFee">
         <!-- <Input  v-model="formValidate.creditAnnualFee" placeholder=""></Input> -->
         <Select v-model="formValidate.creditAnnualFee" placeholder="选择信用卡年费">
@@ -74,20 +85,22 @@
           <Option v-for="item in purpose" :key="item.id" :value="item.value">{{item.text}}</Option>
         </Select>
       </FormItem>
+
       <FormItem label="卡组织" prop="creditOrganization">
         <!-- <Input  v-model="formValidate.creditOrganization" placeholder=""></Input> -->
-        <Select v-model="formValidate.creditOrganization" placeholder="选择卡组织">
+        <Select :multiple="true" v-model="formValidate.creditOrganization" placeholder="选择卡组织">
           <Option v-for="item in cardOrganization" :key="item.id" :value="item.value">{{item.text}}</Option>
         </Select>
       </FormItem>
+
       <FormItem label="是否热门" prop="creditHotCard">
         <RadioGroup v-model="formValidate.creditHotCard">
           <Radio label="true">是</Radio>
           <Radio label="false">否</Radio>
         </RadioGroup>
       </FormItem>
-      <FormItem label="是否有效" prop="deleteStatus">
-        <RadioGroup v-model="formValidate.deleteStatus">
+      <FormItem label="是否有效" prop="creditState">
+        <RadioGroup v-model="formValidate.creditState">
           <Radio label="1">是</Radio>
           <Radio label="0">否</Radio>
         </RadioGroup>
@@ -113,9 +126,25 @@
         </Select>
         <!-- <Input v-model="formValidate.creditBank" placeholder="中国银行" v-if="!showbankOption" disabled></Input> -->
       </FormItem>
-
       <FormItem label="推荐链接" prop="creditLink">
         <Input v-model="formValidate.creditLink" placeholder="输入信用卡推荐链接"></Input>
+      </FormItem>
+
+      <FormItem label="积分政策" prop="creditPointPolicy">
+        <Input
+          type="textarea"
+          :autosize="{minRows: 2,maxRows: 5}"
+          v-model="formValidate.creditPointPolicy"
+          placeholder="请输入积分政策"
+        ></Input>
+      </FormItem>
+      <FormItem label="年费政策" prop="creditAnnualFeePolicy">
+        <Input
+          type="textarea"
+          :autosize="{minRows: 2,maxRows: 5}"
+          v-model="formValidate.creditAnnualFeePolicy"
+          placeholder="请输入年费政策"
+        ></Input>
       </FormItem>
 
       <FormItem label="办卡攻略" prop="credit_guide">
@@ -130,21 +159,23 @@
   </div>
 </template>
 <script>
-import { apiUpload } from '@/api/apiUpload'
-import apiCredit from '@/api/credit-api/apiCredit'
+import { apiUpload } from "@/api/apiUpload";
+import apiCredit from "@/api/credit-api/apiCredit";
 // 使用字典
-import { typeList } from '@/api/apiCom'
+import { typeList } from "@/api/apiCom";
 
 // 银行管理的api
-import apiBank from '@/api/credit-api/apiBank.js'
+import apiBank from "@/api/credit-api/apiBank.js";
 // 引入js库lodash
-var _ = require('lodash')
+var _ = require("lodash");
 
+// 使用工具箱
+import { arrAndStr } from "@/libs/tools";
 export default {
-  name: 'new-list',
+  name: "new-list",
   components: {},
-  props: ['formData'],
-  data () {
+  props: ["formData"],
+  data() {
     return {
       // 全部银行的消息
       bankData: [],
@@ -152,7 +183,7 @@ export default {
       // 上传头像的地址
       uploadUrl: apiUpload,
       uploadParam: {
-        fileType: 'creditImg'
+        fileType: "creditImg"
       },
       showImg: false,
       // 字典查询的列表
@@ -160,20 +191,20 @@ export default {
       purpose: [],
       yearMoney: [],
       creditLevel: [],
+      creditCurrencys: [],
       // 输入标签的input框
-      inputIip: '',
+      inputIip: "",
       // form表单的内容
       formValidate: {
-        creditDescription: '',
-        creditHotCard: 'true',
-        deleteStatus: '1',
-        creditRecommandCard: 'true',
-        creditImg: '',
-        creditName: '',
-
-        creditLevel: 'VIP',
-        creditOrganization: 'VISA',
-        creditAnnualFee: 'FOREVER_FREE',
+        creditDescription: "",
+        creditHotCard: "true",
+        deleteStatus: "1",
+        creditRecommandCard: "true",
+        creditImg: "",
+        creditName: "",
+        creditLevel: "VIP",
+        creditOrganization: [],
+        creditAnnualFee: "FOREVER_FREE",
         creditPurpose: [],
         creditTips: []
       },
@@ -181,210 +212,202 @@ export default {
         creditName: [
           {
             required: true,
-            message: '信用卡名不能为空',
-            trigger: 'blur'
+            message: "信用卡名不能为空",
+            trigger: "blur"
           }
         ],
-        creditDescription: [
-          { required: true, message: '信用卡描述不能为空', trigger: 'blur' }
-        ],
-
-        creditApplyCount: [
-          { required: true, message: '申请人数不能为空', trigger: 'blur' }
-        ],
-        creditBank: [
-          { required: true, message: '信用卡所属不能为空', trigger: 'change' }
-        ],
-        creditLink: [
+        creditCurrency: [
           {
             required: true,
-            message: '信用卡相关联的链接不能为空',
-            trigger: 'blur'
+            type: "array",
+            message: "请选择支持的货币",
+            trigger: "change"
           }
+        ],
+        creditApplyCount: [
+          { required: true, message: "申请人数不能为空", trigger: "blur" }
+        ],
+        creditBank: [
+          { required: true, message: "信用卡所属不能为空", trigger: "change" }
         ]
+        // creditLink: [
+        //   {
+        //     required: true,
+        //     message: "信用卡相关联的链接不能为空",
+        //     trigger: "blur"
+        //   }
+        // ]
         // creditPrivileges: [
         //   { required: true, message: "特权", trigger: "blur" }
         // ]
       }
-    }
+    };
   },
   methods: {
     // 添加的时候展示银行列表
-    searchBankList (pageNum, rows = 100) {
+    searchBankList(pageNum, rows = 100) {
       apiBank.bankPage(pageNum, rows).then(res => {
-        this.bankData = res.data.rows
-        this.totalNum = res.data.total
+        this.bankData = res.data.rows;
+        this.totalNum = res.data.total;
         // 加载完银行的item之后才显示详情信息
-        this.checkData()
-      })
+        this.checkData();
+      });
     },
     // 当输入完毕按下enter键的时候，将input框中的内容，添加到input为textarea中形成标签，inputarea中的一个个标签是一数组的形式存储的
-    enterTips (value) {
-      console.log('查看输入框中的内容', this.inputIip.length)
-      var regu = '^[ ]+$'
-      var re = new RegExp(regu)
-      var result = re.test(this.inputIip)
-      console.log(result)
+    enterTips(value) {
+      console.log("查看输入框中的内容", this.inputIip.length);
+      var regu = "^[ ]+$";
+      var re = new RegExp(regu);
+      var result = re.test(this.inputIip);
+      console.log(result);
       if (this.inputIip && !result) {
-        this.formValidate.creditTips.push(this.inputIip)
+        this.formValidate.creditTips.push(this.inputIip);
       } else {
-        this.$Message.error('请输入内容')
+        this.$Message.error("请输入内容");
       }
-      this.inputIip = ''
+      this.inputIip = "";
     },
     // 关闭一个标签
-    handleClose (index) {
-      this.formValidate.creditTips.splice(index, 1)
-      console.log(this.formValidate.creditTips)
+    handleClose(index) {
+      this.formValidate.creditTips.splice(index, 1);
+      console.log(this.formValidate.creditTips);
     },
     // 查询所需要的字典
-    getDictionarys () {
-      var _this = this
-      getDatas('creditOrganization', 'cardOrganization')
-      getDatas('creditPurpose', 'purpose')
-      getDatas('creditAnnualFee', 'yearMoney')
-      getDatas('creditLevel', 'creditLevel')
-      console.log(this.cardOrganization)
-      function getDatas (id, key) {
+    getDictionarys() {
+      var _this = this;
+      getDatas("creditOrganization", "cardOrganization");
+      getDatas("creditPurpose", "purpose");
+      getDatas("creditAnnualFee", "yearMoney");
+      getDatas("creditLevel", "creditLevel");
+      getDatas("creditCurrency", "creditCurrencys");
+
+      function getDatas(id, key) {
         return typeList(id).then(res => {
           if (res.status == 0) {
-            _this[key] = res.data
-            console.log('查询到的值', _this[key])
+            _this[key] = res.data;
+            console.log("查询到的值", _this[key]);
           }
-        })
+        });
       }
     },
     // 编辑模式的时候初始化数据
-    checkData () {
+    checkData() {
       if (this.formData) {
-        var id = this.formData
+        var id = this.formData;
+
         apiCredit.creditIdGet(id).then(res => {
           if (res.status == 0) {
-            this.showbankOption = false
+            this.showbankOption = false;
 
-            this.formValidate = res.data
-            this.formValidate.creditHotCard = String(
-              this.formValidate.creditHotCard
-            )
-            this.formValidate.deleteStatus = String(
-              this.formValidate.deleteStatus
-            )
-            this.formValidate.creditRecommandCard = String(
-              this.formValidate.creditRecommandCard
-            )
-            this.formValidate.creditApplyCount = String(
-              this.formValidate.creditApplyCount
-            )
+            var formData = res.data;
+            formData.creditHotCard = String(formData.creditHotCard);
+            formData.deleteStatus = String(formData.deleteStatus);
+            formData.creditRecommandCard = String(formData.creditRecommandCard);
+            formData.creditApplyCount = String(formData.creditApplyCount);
 
-            if (this.formValidate.creditTips.length > 0) {
-              this.formValidate.creditTips = this.formValidate.creditTips.split(
-                ','
-              )
-            } else {
-              this.formValidate.creditTips = []
-            }
+            formData.creditTips = arrAndStr(formData.creditTips, []);
+            formData.creditPurpose = arrAndStr(formData.creditPurpose, []);
 
-            if (this.formValidate.creditPurpose.length > 0) {
-              this.formValidate.creditPurpose = this.formValidate.creditPurpose.split(
-                ','
-              )
-            } else {
-              this.formValidate.creditPurpose = []
-            }
-            // console.log(typeof this.formValidate.creditHotCard);
+            formData.creditOrganization = arrAndStr(
+              formData.creditOrganization,
+              []
+            );
+            formData.creditCurrency = arrAndStr(formData.creditCurrency, []);
             // radio的value值必须为String | Numberf 使用typeof 测试String转码后的类型为string
-            if (this.formValidate.creditImg) {
-              this.showImg = true
+            if (formData.creditImg) {
+              this.showImg = true;
             }
+
+            this.formValidate = formData;
           }
-        })
+        });
       } else {
         this.formValidate = {
-          creditDescription: '',
-          creditHotCard: 'true',
-          deleteStatus: '1',
-          creditRecommandCard: 'true',
-          creditImg: '',
-          creditName: '',
-          creditLevel: 'VIP',
-          creditOrganization: 'VISA',
-          creditAnnualFee: 'FOREVER_FREE',
+          creditDescription: "",
+          creditHotCard: "true",
+          deleteStatus: "1",
+          creditRecommandCard: "true",
+          creditImg: "",
+          creditName: "",
+          creditLevel: "VIP",
+          creditOrganization: [],
+          creditAnnualFee: "FOREVER_FREE",
           creditPurpose: [],
           creditTips: []
-        }
+        };
         // 查找所有的银行
       }
     },
-    handleSubmit (name) {
+    handleSubmit(name) {
       this.$refs[name].validate(valid => {
-        console.log(this.formValidate.creditTips)
-        var data = _.cloneDeep(this.formValidate)
+        var data = _.cloneDeep(this.formValidate);
 
-        var inputValue = 0
+        var inputValue = 0;
         if (data.creditTips && data.creditTips.length > 0) {
-          inputValue = data.creditTips.join(',')
-          var commalength = (inputValue.match(/,g/) || []).legnth
-          var inputValuelength = inputValue.length - commalength
+          inputValue = arrAndStr(data.creditTips, "");
+          var commalength = (inputValue.match(/,g/) || []).legnth;
+          var inputValuelength = inputValue.length - commalength;
         }
-
-        console.log('实际字数', inputValuelength)
 
         if (valid && data.creditImg) {
           if (inputValuelength >= 40) {
-            this.$Message.error('标签总字数不能超过40个字')
-            return
+            this.$Message.error("标签总字数不能超过40个字");
+            return;
           } else {
-            data.creditTips = inputValue
+            data.creditTips = inputValue;
           }
 
-          if (data.creditPurpose && data.creditPurpose.length > 0) {
-            data.creditPurpose = data.creditPurpose.join(',')
-          }
+          // 用途
+          data.creditPurpose = arrAndStr(data.creditPurpose, "");
+
+          // 卡组织
+
+          data.creditOrganization = arrAndStr(data.creditOrganization, "");
+          data.creditCurrency = arrAndStr(data.creditCurrency, "");
           apiCredit.creditSave(data).then(res => {
             if (res.status == 0) {
-              this.$Message.success('提交成功')
-              this.$emit('close-win')
+              this.$Message.success("提交成功");
+              this.$emit("close-win");
             }
-          })
+          });
         } else {
-          this.$Message.error('请上传图片')
+          this.$Message.error("请完善信息");
         }
-      })
+      });
     },
     // 上传文件
-    handleSuccess (res, file) {
+    handleSuccess(res, file) {
       if (this.isDisabled) {
-        this.$Message.success('头像编辑禁用')
+        this.$Message.success("头像编辑禁用");
       } else {
-        console.log('文件上传成功', res, file)
-        this.formValidate.creditImg = res.data.previewFileName
-        this.showImg = true
+        console.log("文件上传成功", res, file);
+        this.formValidate.creditImg = res.data.previewFileName;
+        this.showImg = true;
       }
     },
-    handleFormatError (file) {
+    handleFormatError(file) {
       this.$Notice.warning({
-        title: '上传的文件格式不正确',
-        desc: '文件格式' + file.name + ' 是不正确的，请选择jpg或者png格式的图片'
-      })
+        title: "上传的文件格式不正确",
+        desc: "文件格式" + file.name + " 是不正确的，请选择jpg或者png格式的图片"
+      });
     },
-    handleMaxSize (file) {
+    handleMaxSize(file) {
       this.$Notice.warning({
-        title: '上传扥文件大小超过限制',
-        desc: '文件' + file.name + '太大,大小不能超过2M'
-      })
+        title: "上传扥文件大小超过限制",
+        desc: "文件" + file.name + "太大,大小不能超过2M"
+      });
     },
     // 重置表单
-    handleReset (name) {
-      this.$refs[name].resetFields()
+    handleReset(name) {
+      this.$refs[name].resetFields();
     }
   },
-  mounted () {
+  mounted() {
     // 加载所有银行的列表
-    this.searchBankList()
-
-    this.getDictionarys()
+    this.searchBankList();
+    this.getDictionarys();
   }
-}
+};
 </script>
 <style>
 .img {

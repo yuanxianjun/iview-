@@ -26,7 +26,6 @@
             </div>
             <div class="cardCon">
               <h3 class="conTitle">卡神推荐员</h3>
-
               <ul>
                 <li class="lip">追剧党最爱</li>
                 <li class="lip">全年爱奇艺VIP黄金会员</li>
@@ -66,12 +65,12 @@
 
 <script>
 export default {
-  name: 'templateOne',
+  name: "templateOne",
   components: {},
-  data () {
-    return {}
+  data() {
+    return {};
   }
-}
+};
 </script>
 <style lang="less">
 .lip {
@@ -141,7 +140,7 @@ export default {
   width: 117px;
   height: 75px;
   position: absolute;
-  left: 9px;
+  left: 15px;
   bottom: 38%;
   border-radius: 5px;
 }

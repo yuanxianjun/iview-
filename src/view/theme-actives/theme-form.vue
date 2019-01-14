@@ -34,6 +34,12 @@
       <FormItem label="主题名称" prop="topicName">
         <Input v-model="formValidate.topicName" placeholder="输入主题名称"></Input>
       </FormItem>
+      <FormItem label="搜索字段名" prop="topicQueryName">
+        <Input v-model="formValidate.topicQueryName" placeholder="输入搜索字段名"></Input>
+      </FormItem>
+      <FormItem label="搜索字段值" prop="topicQueryValue">
+        <Input v-model="formValidate.topicQueryValue" placeholder="输入搜索字段值"></Input>
+      </FormItem>
 
       <!-- 写入标签 -->
       <FormItem label="主题小标签" prop="topicTips">
@@ -79,190 +85,190 @@
   </div>
 </template>
 <script>
-import { apiUpload } from '@/api/apiUpload'
-import apiTheme from '@/api/apiTopic.js'
+import { apiUpload } from "@/api/apiUpload";
+import apiTheme from "@/api/apiTopic.js";
 
 // 使用字典
-import { typeList } from '@/api/apiCom'
+import { typeList } from "@/api/apiCom";
 // 引入js库lodash
-var _ = require('lodash')
+var _ = require("lodash");
 
 export default {
-  name: 'new-list',
+  name: "new-list",
   components: {},
-  props: ['formData'],
-  data () {
+  props: ["formData"],
+  data() {
     return {
       // 上传头像的地址
       uploadUrl: apiUpload,
       uploadParam: {
-        fileType: 'topicIcon'
+        fileType: "topicIcon"
       },
       showImg: false,
       // 字典查询的列表
       topicTypes: [],
       // 输入标签的input框
-      inputIip: '',
+      inputIip: "",
       // form表单的内容
       formValidate: {
         id: 0,
-        topicBg: '',
+        topicBg: "",
         topicDisplay: false,
-        topicIcon: '',
-        topicLink: '',
-        topicName: '',
+        topicIcon: "",
+        topicLink: "",
+        topicName: "",
         topicOrder: 0,
-        topicQueryName: '',
-        topicQueryValue: '',
+        topicQueryName: "",
+        topicQueryValue: "",
         topicTips: [],
-        topicType: ''
+        topicType: ""
       },
       ruleValidate: {
         topicName: [
           {
             required: true,
-            message: '主题名称不能为空',
-            trigger: 'blur'
+            message: "主题名称不能为空",
+            trigger: "blur"
           }
         ],
         topicLink: [
           {
             required: true,
-            message: '主题相关联的链接地址不能为空',
-            trigger: 'blur'
+            message: "主题相关联的链接地址不能为空",
+            trigger: "blur"
           }
         ]
       }
-    }
+    };
   },
   methods: {
     // 查询所需要的字典
-    getDictionarys () {
-      var _this = this
-      getDatas('topicType', 'topicTypes')
-      function getDatas (id, key) {
+    getDictionarys() {
+      var _this = this;
+      getDatas("topicType", "topicTypes");
+      function getDatas(id, key) {
         return typeList(id).then(res => {
           if (res.status == 0) {
-            _this[key] = res.data
+            _this[key] = res.data;
 
             // console.log("查询到的值", _this[key]);
           }
-        })
+        });
       }
     },
     // 当输入完毕按下enter键的时候，将input框中的内容，添加到input为textarea中形成标签，inputarea中的一个个标签是一数组的形式存储的
-    enterTips (value) {
+    enterTips(value) {
       // console.log("查看输入框中的内容", this.inputIip.length);
-      var regu = '^[ ]+$'
-      var re = new RegExp(regu)
-      var result = re.test(this.inputIip)
+      var regu = "^[ ]+$";
+      var re = new RegExp(regu);
+      var result = re.test(this.inputIip);
       // console.log(result);
       if (this.inputIip && !result) {
-        this.formValidate.topicTips.push(this.inputIip)
+        this.formValidate.topicTips.push(this.inputIip);
       } else {
-        this.$Message.error('请输入内容')
+        this.$Message.error("请输入内容");
       }
-      this.inputIip = ''
+      this.inputIip = "";
     },
     // 关闭一个标签
-    handleClose (index) {
-      this.formValidate.topicTips.splice(index, 1)
+    handleClose(index) {
+      this.formValidate.topicTips.splice(index, 1);
       // console.log(this.formValidate.topicTips);
     },
     // 编辑模式的时候初始化数据
-    checkData () {
-      console.log('查看传过来的数据', this.formData)
+    checkData() {
+      console.log("查看传过来的数据", this.formData);
       if (this.formData) {
-        var id = this.formData
+        var id = this.formData;
 
         apiTheme.IdGet(id).then(res => {
           if (res.status == 0) {
-            this.formValidate = res.data
+            this.formValidate = res.data;
 
             // 将获取的标签字符串替换成可以正常显示的数组形式
             if (this.formValidate.topicTips.length > 0) {
               this.formValidate.topicTips = this.formValidate.topicTips.split(
-                ','
-              )
+                ","
+              );
             } else {
-              this.formValidate.topicTips = []
+              this.formValidate.topicTips = [];
             }
 
             // radio的value值必须为String | Number 使用typeof 测试String转码后的类型为string
             if (this.formValidate.topicIcon) {
-              this.showImg = true
+              this.showImg = true;
             }
           }
-        })
+        });
       } else {
         this.formValidate = {
-          topicDisplay: 'true',
+          topicDisplay: true,
           topicTips: []
-        }
+        };
       }
     },
-    handleSubmit (name) {
+    handleSubmit(name) {
       this.$refs[name].validate(valid => {
-        var data = _.cloneDeep(this.formValidate)
+        var data = _.cloneDeep(this.formValidate);
 
-        var inputValue = ''
+        var inputValue = "";
         if (data.topicTips && data.topicTips.length > 0) {
-          inputValue = data.topicTips.join(',')
+          inputValue = data.topicTips.join(",");
         }
-        var commalength = (inputValue.match(/,g/) || []).legnth
-        var inputValuelength = inputValue.length - commalength
+        var commalength = (inputValue.match(/,g/) || []).legnth;
+        var inputValuelength = inputValue.length - commalength;
         if (valid && data.topicIcon) {
           if (inputValuelength >= 40) {
-            this.$Message.error('标签总字数不能超过40个字')
-            return
+            this.$Message.error("标签总字数不能超过40个字");
+            return;
           } else {
-            data.topicTips = inputValue
+            data.topicTips = inputValue;
           }
 
           apiTheme.managerSave(data).then(res => {
             if (res.status == 0) {
-              this.$Message.success('提交成功')
-              this.$emit('close-win')
+              this.$Message.success("提交成功");
+              this.$emit("close-win");
             }
-          })
+          });
         } else {
-          this.$Message.error('请上传图片')
+          this.$Message.error("请上传图片");
         }
-      })
+      });
     },
     // 上传文件
-    handleSuccess (res, file) {
+    handleSuccess(res, file) {
       // #endregion
       if (this.isDisabled) {
-        this.$Message.success('头像编辑禁用')
+        this.$Message.success("头像编辑禁用");
       } else {
-        console.log('文件上传成功', res, file)
-        this.formValidate.topicIcon = res.data.previewFileName
-        this.showImg = true
+        console.log("文件上传成功", res, file);
+        this.formValidate.topicIcon = res.data.previewFileName;
+        this.showImg = true;
       }
     },
-    handleFormatError (file) {
+    handleFormatError(file) {
       this.$Notice.warning({
-        title: '上传的文件格式不正确',
-        desc: '文件格式' + file.name + ' 是不正确的，请选择jpg或者png格式的图片'
-      })
+        title: "上传的文件格式不正确",
+        desc: "文件格式" + file.name + " 是不正确的，请选择jpg或者png格式的图片"
+      });
     },
-    handleMaxSize (file) {
+    handleMaxSize(file) {
       this.$Notice.warning({
-        title: '上传扥文件大小超过限制',
-        desc: '文件' + file.name + '太大,大小不能超过2M'
-      })
+        title: "上传扥文件大小超过限制",
+        desc: "文件" + file.name + "太大,大小不能超过2M"
+      });
     },
     // 重置表单
-    handleReset (name) {
-      this.$refs[name].resetFields()
+    handleReset(name) {
+      this.$refs[name].resetFields();
     }
   },
-  mounted () {
-    this.getDictionarys()
-    this.checkData()
+  mounted() {
+    this.getDictionarys();
+    this.checkData();
   }
-}
+};
 </script>
 <style>
 .img {

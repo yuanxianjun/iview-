@@ -7,7 +7,7 @@
         <div class="topTitle">
           <h4>
             资料完成度
-            <span>4%</span>
+            <span>{{percent}}%</span>
           </h4>
         </div>
         <div class="topCon">资料完成度越高越有助于批核卡片</div>
@@ -42,13 +42,29 @@
 </template>
 
 <script>
+import { percent } from "@/api/apiActive/apiPersonApprove.js";
+
 export default {
-  name: 'speedCard',
+  name: "speedCard",
   components: {},
-  data () {
-    return {}
+  data() {
+    return {
+      percent: 0
+    };
+  },
+  methods: {
+    getPercent() {
+      percent().then(res => {
+        if (res.status == 0) {
+          this.percent = res.data;
+        }
+      });
+    }
+  },
+  mounted() {
+    this.getPercent();
   }
-}
+};
 </script>
 <style lang="less">
 // 最底部的盒子
