@@ -124,7 +124,7 @@ export default {
     // 先进行登录
     setTimeout(function() {
       var state = getAppToken(that.getPercent);
-    }, 10);
+    }, 500);
 
     // 获取推荐的卡片
     this.getRcommondList();
