@@ -16,6 +16,6 @@ export default {
   //      192.168.0.7:9010
   baseUrl: {
     dev: 'http://192.168.0.7:9010/',
-    pro: 'http://credit.charmatd.com/'
+    pro: 'http://192.168.0.7:9010/'
   }
 }

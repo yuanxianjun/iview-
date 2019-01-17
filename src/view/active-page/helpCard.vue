@@ -29,6 +29,7 @@
           @click="nextPage"
         >{{btnCon}}</div>
       </div>
+
       <!-- 第二页 -->
       <div class="tips" v-if="bossJson.num == 2">
         <ul>

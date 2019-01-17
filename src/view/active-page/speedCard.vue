@@ -65,6 +65,7 @@ export default {
           {},
           function(responseData) {}
         );
+        alert("调用成功了");
       } else {
         alert("没有WebViewJavascriptBridge");
       }
@@ -74,6 +75,7 @@ export default {
     getPercent() {
       ApiApprove.percent().then(res => {
         if (res.status == 0) {
+          // alert(JSON.stringify(res.data));
           this.percent = res.data;
         }
       });
@@ -102,16 +104,28 @@ export default {
           this.bankList = cloneData;
         }
       });
+    },
+    connectWebViewJavascriptBridge(callback) {
+      if (window.WebViewJavascriptBridge) {
+        callback(WebViewJavascriptBridge);
+      } else {
+        document.addEventListener(
+          "WebViewJavascriptBridgeReady",
+          function() {
+            callback(WebViewJavascriptBridge);
+          },
+          false
+        );
+      }
     }
   },
   mounted() {
+    var that = this;
     // 先进行登录
-    this.$nextTick(() => {
-      getAppToken();
-    });
+    setTimeout(function() {
+      var state = getAppToken(that.getPercent);
+    }, 10);
 
-    // 获取资料进度
-    this.getPercent();
     // 获取推荐的卡片
     this.getRcommondList();
   }

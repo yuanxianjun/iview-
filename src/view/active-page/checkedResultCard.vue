@@ -16,7 +16,7 @@
         </div>
       </div>
       <div class="conten2">
-        <Carousel v-model="value1" :height="340" :radius-dot="true" trigger="hover">
+        <Carousel v-model="value1" :height="340" :radius-dot="true" arrow="always">
           <CarouselItem v-for="item in cloneData" :key="item.id">
             <div class="demo-carouse demo-carouse1">
               <div class="cardDiv">

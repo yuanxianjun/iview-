@@ -1,11 +1,15 @@
 // 判断如果是android APP的话直接进行请求token如果不是的话
 import { setToken } from '@/libs/util'
-export const getAppToken = () => {
+export const getAppToken = (callBack) => {
   if (window.WebViewJavascriptBridge) {
     window.WebViewJavascriptBridge.callHandler('authToken', {}, function (responseData) {
-      window.alert('查看获取到的token内容' + responseData)
+      // window.alert('查看获取到的token内容' + JSON.stringify(responseData))
       if (responseData.code === 0) {
+        var token = responseData.token
         setToken(token)
+        if (callBack) {
+          callBack()
+        }
       }
     })
   } else {
