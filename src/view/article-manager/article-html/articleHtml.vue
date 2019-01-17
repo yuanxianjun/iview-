@@ -18,36 +18,36 @@
   </div>
 </template>
 <script>
-import articleDetail from '../../../api/apiArticle'
-import 'quill/dist/quill.core.css'
-import 'quill/dist/quill.snow.css'
-import 'quill/dist/quill.bubble.css'
+import articleDetail from "../../../api/apiArticle";
+import "quill/dist/quill.core.css";
+import "quill/dist/quill.snow.css";
+import "quill/dist/quill.bubble.css";
 
 export default {
-  name: 'rich-text',
+  name: "rich-text",
   components: {},
   props: [],
-  data () {
+  data() {
     return {
       detailMess: {},
       articleId: this.$route.query.id
-    }
+    };
   },
-  mounted () {
-    this.getArticleMess()
+  mounted() {
+    this.getArticleMess();
   },
   methods: {
-    getArticleMess () {
+    getArticleMess() {
       articleDetail.apiArticleDetail(this.articleId).then(res => {
-        console.log('查看取得的数据', res)
+        console.log("查看取得的数据", res);
 
         if (res.status === 0) {
-          this.detailMess = res.data
+          this.detailMess = res.data;
         }
-      })
+      });
     }
   }
-}
+};
 </script>
 <style>
 .ivu-layout {
@@ -76,6 +76,7 @@ export default {
 }
 .content {
   line-height: 2;
+  font-size: 16px;
 }
 img {
   width: 100%;

@@ -6,54 +6,35 @@
       <span class="float headerCon">第一张卡办什么</span>
     </div>-->
     <!-- 中间内容栏 -->
-    <div class="content">
+    <div class="content" :style="{background:creditDetailList.topicBgColor}">
       <!-- 内容上面展示的图片 -->
       <div class="imgTop">
-        <img src="@/assets/images/activeImg/big1.jpg" alt>
+        <img :src="creditDetailList.topicBg" alt>
       </div>
 
       <!-- 第一种形式的卡片 -->
       <div class="listOne">
         <ul>
-          <li class="listOneLi">
+          <li class="listOneLi" v-for="item in this.listRows" :key="item.id">
             <!-- 左上角的标签盒子 -->
-            <div class="titleDiv">平安爱奇艺金卡</div>
+            <div class="titleDiv">{{item.detail.creditName}}</div>
             <div class="cardUp">
-              <img src="@/assets/images/activeImg/small1.png" alt>
+              <img :src="item.topicItemBg" alt>
             </div>
             <div class="cardDiV">
-              <img src="@/assets/images/activeImg/card.jpg" alt>
+              <img :src="item.detail.creditImg" alt>
             </div>
             <div class="cardCon">
-              <h3 class="conTitle">卡神推荐员</h3>
+              <h3 class="conTitle">卡神推荐语</h3>
               <ul>
                 <li class="lip">追剧党最爱</li>
                 <li class="lip">全年爱奇艺VIP黄金会员</li>
                 <li class="lip">网络消费可积分</li>
               </ul>
             </div>
-            <Button type="error" size="large" class="applyBtn">免费申请</Button>
-          </li>
-
-          <li class="listOneLi">
-            <!-- 左上角的标签盒子 -->
-            <div class="titleDiv">平安爱奇艺金卡</div>
-            <div class="cardUp">
-              <img src="@/assets/images/activeImg/small1.png" alt>
-            </div>
-            <div class="cardDiV">
-              <img src="@/assets/images/activeImg/card.jpg" alt>
-            </div>
-            <div class="cardCon">
-              <h3 class="conTitle">卡神推荐员</h3>
-
-              <ul>
-                <li class="lip">追剧党最爱</li>
-                <li class="lip">全年爱奇艺VIP黄金会员</li>
-                <li class="lip">网络消费可积分</li>
-              </ul>
-            </div>
-            <Button type="error" size="large" class="applyBtn">免费申请</Button>
+            <a :href="item.detail.creditLink">
+              <Button type="error" size="large" class="applyBtn">免费申请</Button>
+            </a>
           </li>
         </ul>
       </div>
@@ -64,11 +45,41 @@
 </template>
 
 <script>
+import { itemDetail } from "@/api/apiTopic.js";
+const _ = require("lodash");
 export default {
   name: "templateOne",
   components: {},
   data() {
-    return {};
+    return {
+      creditDetailList: [],
+      listRows: []
+    };
+  },
+  methods: {
+    topicDetail() {
+      var id = this.$route.query.topicId;
+      if (id)
+        itemDetail(id).then(res => {
+          if (res.status == 0) {
+            this.creditDetailList = res.data;
+            this.listRows = res.data.rows;
+
+            var data = _.sortBy(this.listRows, function(o) {
+              if (o.detail && o.detail.creditImg !== null) {
+                return o.detail.creditImg;
+              } else {
+                return "";
+              }
+            });
+
+            this.listRows = data.reverse();
+          }
+        });
+    }
+  },
+  mounted() {
+    this.topicDetail();
   }
 };
 </script>
@@ -112,7 +123,7 @@ export default {
   width: 51%;
   height: auto;
   position: absolute;
-  right: 5px;
+  right: 0px;
   top: 47%;
   // background: #000;
 }
@@ -141,7 +152,7 @@ export default {
   height: 75px;
   position: absolute;
   left: 15px;
-  bottom: 38%;
+  bottom: 35%;
   border-radius: 5px;
 }
 .cardDiV img {
@@ -150,17 +161,18 @@ export default {
   border-radius: 5px;
 }
 .titleDiv {
-  width: 100px;
+  width: auto;
   height: 30px;
   position: absolute;
-  left: -5px;
+  left: -8px;
   top: 20px;
   background: url(../../assets/images/activeImg/titleTips.png) no-repeat center
     center;
-  background-size: contain;
+  background-size: cover;
   line-height: 35px;
   color: #fff;
   text-align: center;
+  padding: 0 10px;
 }
 .listOneLi {
   width: 90%;
@@ -203,12 +215,12 @@ export default {
 .content {
   width: 100%;
   height: auto;
-  min-height: 90%;
+  min-height: 100%;
   overflow: auto;
   position: relative;
   left: 0;
   top: 0;
-  background: #29a2ff;
+  // background: #29a2ff;
 }
 .container {
   width: 100%;

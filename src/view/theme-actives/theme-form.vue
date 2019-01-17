@@ -4,7 +4,7 @@
       <!-- <FormItem label="ID" prop="id">
             <Input v-model="formValidate.id" placeholder="输入ID"></Input>
       </FormItem>-->
-      <FormItem label="主题卡片背景" prop="topicIcon">
+      <FormItem label="主题卡片背景" prop="topicBg">
         <Upload
           ref="upload"
           :show-upload-list="false"
@@ -23,6 +23,33 @@
             <img
               class="img"
               v-if="showImg"
+              :src="formValidate.topicItemBg"
+              alt
+              style="width:100px;height:60px;"
+            >
+          </div>
+        </Upload>
+      </FormItem>
+
+      <FormItem label="主题卡片ICON" prop="topicIcon">
+        <Upload
+          ref="upload"
+          :show-upload-list="false"
+          :format="['jpg','jpeg','png']"
+          :max-size="2048"
+          :on-format-error="handleFormatError"
+          :on-exceeded-size="handleMaxSize"
+          :on-success="handleSuccess2"
+          type="drag"
+          :action="uploadUrl"
+          :data="uploadParam"
+          style="display: inline-block;width:100px;"
+        >
+          <div style="width: 100px;height:58px;line-height: 58px;">
+            <Icon v-if="!showImg2" type="ios-add" size="50"></Icon>
+            <img
+              class="img"
+              v-if="showImg2"
               :src="formValidate.topicIcon"
               alt
               style="width:100px;height:60px;"
@@ -31,6 +58,11 @@
         </Upload>
       </FormItem>
 
+      <!-- 颜色选项 -->
+      <FormItem label="主题颜色" prop="topicBgColor">
+        <!-- <ColorPicker  :hue="false"/> -->
+        <ColorPicker v-model="formValidate.topicBgColor" :colors="color1" :editable="true"/>
+      </FormItem>
       <FormItem label="主题名称" prop="topicName">
         <Input v-model="formValidate.topicName" placeholder="输入主题名称"></Input>
       </FormItem>
@@ -99,29 +131,21 @@ export default {
   props: ["formData"],
   data() {
     return {
+      color1: ["#19be6b"],
       // 上传头像的地址
       uploadUrl: apiUpload,
       uploadParam: {
-        fileType: "topicIcon"
+        fileType: "topicBg"
       },
       showImg: false,
+      showImg2: false,
       // 字典查询的列表
       topicTypes: [],
       // 输入标签的input框
       inputIip: "",
       // form表单的内容
       formValidate: {
-        id: 0,
-        topicBg: "",
-        topicDisplay: false,
-        topicIcon: "",
-        topicLink: "",
-        topicName: "",
-        topicOrder: 0,
-        topicQueryName: "",
-        topicQueryValue: "",
-        topicTips: [],
-        topicType: ""
+        topicBgColor: "#19be6b"
       },
       ruleValidate: {
         topicName: [
@@ -137,6 +161,13 @@ export default {
             message: "主题相关联的链接地址不能为空",
             trigger: "blur"
           }
+        ],
+        topicType: [
+          {
+            required: true,
+            message: "主题相关联的链接地址不能为空",
+            trigger: "chagne"
+          }
         ]
       }
     };
@@ -150,7 +181,6 @@ export default {
         return typeList(id).then(res => {
           if (res.status == 0) {
             _this[key] = res.data;
-
             // console.log("查询到的值", _this[key]);
           }
         });
@@ -177,7 +207,6 @@ export default {
     },
     // 编辑模式的时候初始化数据
     checkData() {
-      console.log("查看传过来的数据", this.formData);
       if (this.formData) {
         var id = this.formData;
 
@@ -195,15 +224,33 @@ export default {
             }
 
             // radio的value值必须为String | Number 使用typeof 测试String转码后的类型为string
-            if (this.formValidate.topicIcon) {
+            if (this.formValidate.topicBg) {
               this.showImg = true;
+            }
+
+            // 展示内容
+            if (this.formValidate.topicIcon) {
+              this.showImg2 = true;
+            }
+            if (!this.formValidate.topicBgColor) {
+              this.formValidate.topicBgColor = "#19BE6B";
             }
           }
         });
       } else {
         this.formValidate = {
           topicDisplay: true,
-          topicTips: []
+          id: 0,
+          topicBg: "",
+          topicIcon: "",
+          topicLink: "",
+          topicName: "",
+          topicOrder: 0,
+          topicQueryName: "",
+          topicQueryValue: "",
+          topicTips: [],
+          topicType: "",
+          topicBgColor: "#19be6b"
         };
       }
     },
@@ -217,7 +264,7 @@ export default {
         }
         var commalength = (inputValue.match(/,g/) || []).legnth;
         var inputValuelength = inputValue.length - commalength;
-        if (valid && data.topicIcon) {
+        if (valid) {
           if (inputValuelength >= 40) {
             this.$Message.error("标签总字数不能超过40个字");
             return;
@@ -232,21 +279,26 @@ export default {
             }
           });
         } else {
-          this.$Message.error("请上传图片");
+          this.$Message.error("请完善信息");
         }
       });
     },
     // 上传文件
     handleSuccess(res, file) {
       // #endregion
-      if (this.isDisabled) {
-        this.$Message.success("头像编辑禁用");
-      } else {
-        console.log("文件上传成功", res, file);
-        this.formValidate.topicIcon = res.data.previewFileName;
-        this.showImg = true;
-      }
+      console.log("文件上传成功", res, file);
+      this.formValidate.topicItemBg = res.data.previewFileName;
+      this.showImg = true;
     },
+
+    // 上传Icon
+    handleSuccess2(res, file) {
+      // #endregion
+      this.formValidate.topicIcon = res.data.previewFileName;
+      console.log("文件2上传成功", res, this.formValidate.topicIcon);
+      this.showImg2 = true;
+    },
+
     handleFormatError(file) {
       this.$Notice.warning({
         title: "上传的文件格式不正确",

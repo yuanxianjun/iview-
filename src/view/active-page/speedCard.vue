@@ -13,7 +13,7 @@
         <div class="topCon">资料完成度越高越有助于批核卡片</div>
       </div>
       <div class="topRight">
-        <div class="continueBtn">继续填写</div>
+        <div class="continueBtn" @click="HandleContinue">继续填写</div>
       </div>
     </div>
 
@@ -21,48 +21,99 @@
     <div class="partition">为您推荐</div>
     <div class="cardCon">
       <ul>
-        <li class="cardLi">
-          <div class="yelloDiv"></div>
-          <div class="cardImg">
-            <img src="../../assets/images/login-bg.jpg" alt>
-          </div>
-          <div class="cardRight">
-            <p class="cardpOne">平安爱奇艺金卡</p>
-            <p class="cardp">全年爱奇艺VIP会员</p>
-            <p class="cardp">秒批下卡额度高</p>
-          </div>
-        </li>
+        <a v-for="(item,index) in bankList" :key="item.id" :href="item.creditLink">
+          <li class="cardLi">
+            <!-- <div class="yelloDiv" v-if="index<3">{{index+1}}</div> -->
+            <div class="cardImg">
+              <img :src="item.creditImg" alt>
+            </div>
+            <div class="cardRight">
+              <p class="cardpOne">{{item.creditName}}</p>
+              <p class="cardp">{{item.creditTips[0]}}</p>
+              <p class="cardp">{{item.creditTips[1]}}</p>
+            </div>
+          </li>
+        </a>
       </ul>
     </div>
     <!-- 底部的链接按钮 -->
-    <div class="cardFooter">
+    <!-- <div class="cardFooter">
       <a href="http://localhost:8080/#/speedCard">查看更多选择</a>
-    </div>
+    </div>-->
   </div>
 </template>
 
 <script>
-import { percent } from "@/api/apiActive/apiPersonApprove.js";
-
+import ApiApprove from "@/api/apiActive/apiPersonApprove.js";
+import { getAppToken } from "@/libs/tools.js";
+const _ = require("lodash");
 export default {
   name: "speedCard",
   components: {},
   data() {
     return {
-      percent: 0
+      percent: 0,
+      bankList: []
     };
   },
   methods: {
+    // 继续填写完善信息
+    HandleContinue() {
+      if (window.WebViewJavascriptBridge) {
+        window.WebViewJavascriptBridge.callHandler(
+          "fillCardApplyInfo",
+          {},
+          function(responseData) {}
+        );
+      } else {
+        alert("没有WebViewJavascriptBridge");
+      }
+    },
+
+    // 完成进度查询
     getPercent() {
-      percent().then(res => {
+      ApiApprove.percent().then(res => {
         if (res.status == 0) {
           this.percent = res.data;
+        }
+      });
+    },
+    getRcommondList() {
+      var cloneData = [];
+      ApiApprove.getRecommondList().then(res => {
+        if (res.status == 0) {
+          cloneData = _.cloneDeep(res.data.rows);
+
+          // 处理cloneData
+          for (var item in cloneData) {
+            if (
+              cloneData[item].creditTips &&
+              cloneData[item].creditTips.length > 0
+            ) {
+              cloneData[item].creditTips = cloneData[item].creditTips.split(
+                ","
+              );
+            } else {
+              // console.log(cloneData[item]);
+              cloneData[item].creditTips = [];
+            }
+          }
+          // console.log("查看split之后的数组", cloneData.creditTips);
+          this.bankList = cloneData;
         }
       });
     }
   },
   mounted() {
+    // 先进行登录
+    this.$nextTick(() => {
+      getAppToken();
+    });
+
+    // 获取资料进度
     this.getPercent();
+    // 获取推荐的卡片
+    this.getRcommondList();
   }
 };
 </script>
@@ -85,6 +136,9 @@ export default {
   position: absolute;
   right: 30px;
   top: 0;
+  text-align: center;
+  color: #fff;
+  line-height: 20px;
 }
 .cardpOne {
   font-size: 12px;
@@ -95,15 +149,16 @@ export default {
   font-size: 10px;
   -webkit-transform: scale(0.75);
   display: block;
-  margin-left: -10px;
-  color: grey;
+  margin-left: -24px;
+  color: #ccc;
 }
 .cardRight {
+  width: 60%;
   float: left;
   margin-left: 10px;
 }
 .cardImg {
-  width: 34%;
+  width: 30%;
   height: 100%;
   float: left;
 }
@@ -118,6 +173,8 @@ export default {
   padding: 10px;
   background: #fff;
   position: relative;
+  margin-bottom: 5px;
+  list-style-type: none;
 }
 .cardCon {
   width: 100%;

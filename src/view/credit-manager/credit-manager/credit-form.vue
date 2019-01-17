@@ -111,6 +111,12 @@
           <Radio label="false">否</Radio>
         </RadioGroup>
       </FormItem>
+      <FormItem label="是否为极速办卡" prop="creditShorterCard">
+        <RadioGroup v-model="formValidate.creditShorterCard">
+          <Radio label="true">是</Radio>
+          <Radio label="false">否</Radio>
+        </RadioGroup>
+      </FormItem>
       <FormItem label="信用卡级别" prop="creditLevel">
         <Select v-model="formValidate.creditLevel" placeholder="选择信用卡级别">
           <Option v-for="item in creditLevel" :key="item.id" :value="item.value">{{item.text}}</Option>
@@ -301,17 +307,19 @@ export default {
 
             var formData = res.data;
             formData.creditHotCard = String(formData.creditHotCard);
+            formData.creditState = String(formData.creditState);
             formData.deleteStatus = String(formData.deleteStatus);
             formData.creditRecommandCard = String(formData.creditRecommandCard);
+            formData.creditShorterCard = String(formData.creditShorterCard);
             formData.creditApplyCount = String(formData.creditApplyCount);
 
             formData.creditTips = arrAndStr(formData.creditTips, []);
             formData.creditPurpose = arrAndStr(formData.creditPurpose, []);
-
             formData.creditOrganization = arrAndStr(
               formData.creditOrganization,
               []
             );
+
             formData.creditCurrency = arrAndStr(formData.creditCurrency, []);
             // radio的value值必须为String | Numberf 使用typeof 测试String转码后的类型为string
             if (formData.creditImg) {

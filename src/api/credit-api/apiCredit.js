@@ -4,11 +4,6 @@ const API_CREDIT_PREFIX = '/api/v1/admin/credit/detail'
 // 查询管理员相关的列表
 export const creditPage = (page, rows, search, creditState) => {
   const data = {
-    'loanHotCard': 0,
-    'loanLevel': '',
-    'loanPurpose': '',
-    'loanRecommandCard': 0,
-    'loanShortApprovalTimeCard': 0,
     page,
     rows,
     search,
@@ -19,7 +14,6 @@ export const creditPage = (page, rows, search, creditState) => {
     data
   })
 }
-
 // 根据id删除信用卡
 export const creditDel = (id) => {
   const data = {

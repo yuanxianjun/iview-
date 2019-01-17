@@ -94,7 +94,7 @@ export default {
           key: "creditBank",
           sortable: true,
           // editable: true,
-          searchable: false,
+          searchable: true,
           width: 80
         },
         {
@@ -183,20 +183,20 @@ export default {
         {
           title: "极速办卡",
           sortable: true,
-          key: "creditHotCard",
+          key: "creditShorterCard",
           // editable: true,
           searchable: false,
           render: (h, params) => {
             return h("i-switch", {
               props: {
-                value: params.row.creditHotCard,
+                value: params.row.creditShorterCard,
                 "true-value": true,
                 "false-value": false
               },
               on: {
                 "on-change": () => {
                   var data = params.row;
-                  data.creditHotCard = !data.creditHotCard;
+                  data.creditShorterCard = !data.creditShorterCard;
                   // console.log("查看data.deleteStatus", data);
                   this.switchUse(data);
                 }
@@ -275,7 +275,6 @@ export default {
     handleSearch(searchKey, searchValue) {
       this.sKey = searchKey;
       this.sValue = searchValue;
-      console.log("查看是否有搜索内容", searchValue);
       apiCredit.creditPage("", 8, searchValue, this.checked).then(res => {
         if (res.status == 0) {
           // console.log(this.tableData);

@@ -18,34 +18,34 @@
 </template>
 
 <script>
-import { applyProgressBanks } from '@/api/apiActive/apiProgress.js'
+import { applyProgressBanks } from "@/api/apiActive/apiProgress.js";
 export default {
-  name: 'templateOne',
+  name: "templateOne",
   components: {},
-  data () {
+  data() {
     return {
       bankList: []
-    }
+    };
   },
   methods: {
-    goLink (params) {
-      console.log('查看传输过来的itme', params)
-      window.location.href = params.bankQueryProgressLink
+    goLink(params) {
+      console.log("查看传输过来的itme", params);
+      window.location.href = params.bankQueryProgressLink;
     },
-    getBank () {
+    getBank() {
       applyProgressBanks().then(res => {
         if (res.status == 0) {
           if (res.data.length > 0) {
-            this.bankList = res.data
+            this.bankList = res.data;
           }
         }
-      })
+      });
     }
   },
-  mounted () {
-    this.getBank()
+  mounted() {
+    this.getBank();
   }
-}
+};
 </script>
 <style lang="less">
 .bankLi {
@@ -81,13 +81,14 @@ export default {
   width: 100%;
   height: 20px;
   text-align: center;
-  background: #efb81457;
+  background: rgba(239, 184, 20, 0.34);
   font-size: 6px;
   line-height: 20px;
 }
 .topTitle p {
   -webkit-transform: scale(0.75);
   letter-spacing: 2px;
+  font-size: 12px;
 }
 .container {
   width: 100%;

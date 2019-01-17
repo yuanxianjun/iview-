@@ -215,7 +215,7 @@ export default {
       this.modal1 = true;
       this.isEdit = "编辑类型";
       this.formData = params.row.id;
-      console.log(params);
+      // console.log(params);
 
       // console.log(changeId, _this.formData);
     },

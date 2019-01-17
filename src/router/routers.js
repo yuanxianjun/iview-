@@ -11,6 +11,17 @@ import parentView from '@/components/parent-view'
  * }
  */
 export default [
+  // 结果页面
+  {
+    path: "/resultPage",
+    name: "resultPage",
+    meta: {
+      hideInMenu: true,
+      title: "结果页面",
+      annoymous: true
+    },
+    component: () => (import("@/view/active-page/checkedResultCard.vue"))
+  },
   // 进度查询
   {
     path: "/helpCard",
