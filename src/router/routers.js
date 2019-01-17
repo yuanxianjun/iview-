@@ -183,15 +183,16 @@ export default [
         },
         component: () => import('@/view/system/inform-manager/inform-manager.vue')
       },
-      {
-        path: 'notice_manager',
-        name: 'notice_manager',
-        meta: {
-          icon: 'ios-text',
-          title: '内容管理'
-        },
-        component: () => import('@/view/system/notice-manager/notice-manager.vue')
-      },
+      // {
+      //   path: 'notice_manager',
+      //   name: 'notice_manager',
+      //   meta: {
+      //     icon: 'ios-text',
+      //     title: '内容管理'
+      //   },
+      //   component: () => import('@/view/system/notice-manager/notice-manager.vue')
+      // },
+
     ]
   },
   // 信用卡管理页面
@@ -209,7 +210,7 @@ export default [
         name: 'bank-manager',
         meta: {
           icon: 'md-home',
-          title: '信用卡银行管理'
+          title: '银行管理'
         },
         component: () => import('@/view/credit-manager/bank-manager/bank-manager.vue')
       },
@@ -239,6 +240,25 @@ export default [
           title: '贷款管理'
         },
         component: () => import('@/view/credit-manager/loans-manager/loans-manager.vue')
+      },
+      {
+        path: '/topicMan',
+        name: 'topicMan',
+        meta: {
+          icon: 'md-flower',
+          title: "主题管理",
+          beforeCloseName: 'before_close_normal'
+        },
+        component: () => import('@/view/theme-actives/themeList.vue')
+      },
+      {
+        path: "/article-list-manager",
+        name: "article-list-manager",
+        meta: {
+          icon: "ios-text",
+          title: "文章管理"
+        },
+        component: () => import("@/view/article-manager/article-manager/article-manager.vue")
       },
     ]
   },
@@ -295,38 +315,38 @@ export default [
     ]
   },
   // 主题活动管理
-  {
-    path: '/topicManager',
-    name: 'topicManager',
-    meta: {
-      title: "主题活动管理",
-      icon: "logo-buffer"
-    },
-    component: Main,
-    children: [
-      {
-        path: '/topicMan',
-        name: 'topicMan',
-        meta: {
-          icon: 'md-flower',
-          title: "主题活动管理",
-          beforeCloseName: 'before_close_normal'
-        },
-        component: () => import('@/view/theme-actives/themeList.vue')
-      },
-      {
-        path: '/themeItemList',
-        name: 'themeItemList',
-        meta: {
-          hideInMenu: true,
-          icon: 'md-flower',
-          title: "主题活动子项管理",
-          beforeCloseName: 'before_close_normal'
-        },
-        component: () => import('@/view/theme-actives/themeItem-list.vue')
-      }
-    ]
-  },
+  // {
+  //   path: '/topicManager',
+  //   name: 'topicManager',
+  //   meta: {
+  //     title: "主题管理",
+  //     icon: "logo-buffer"
+  //   },
+  //   component: Main,
+  //   children: [
+  //     {
+  //       path: '/topicMan',
+  //       name: 'topicMan',
+  //       meta: {
+  //         icon: 'md-flower',
+  //         title: "主题管理",
+  //         beforeCloseName: 'before_close_normal'
+  //       },
+  //       component: () => import('@/view/theme-actives/themeList.vue')
+  //     },
+  //     {
+  //       path: '/themeItemList',
+  //       name: 'themeItemList',
+  //       meta: {
+  //         hideInMenu: true,
+  //         icon: 'md-flower',
+  //         title: "主题活动子项管理",
+  //         beforeCloseName: 'before_close_normal'
+  //       },
+  //       component: () => import('@/view/theme-actives/themeItem-list.vue')
+  //     }
+  //   ]
+  // },
   // 个人配置
   {
     path: '/setting',
@@ -367,35 +387,35 @@ export default [
     ]
   },
   // 文章管理
-  {
-    path: "/article-manager",
-    name: "article-manager",
-    meta: {
-      icon: "ios-text",
-      title: "文章管理"
-    },
-    component: Main,
-    children: [
-      {
-        path: "/article-list-manager",
-        name: "article-list-manager",
-        meta: {
-          icon: "ios-text",
-          title: "管理文章列表"
-        },
-        component: () => import("@/view/article-manager/article-manager/article-manager.vue")
-      },
-      // {
-      //   path: "/comment-manager",
-      //   name: "comment-manager",
-      //   meta: {
-      //     icon: "ios-text",
-      //     title: "评论管理"
-      //   },
-      //   component: () => import('@/view/user-manager/approve-manager/approve-manager.vue')
-      // },
-    ]
-  },
+  // {
+  //   path: "/article-manager",
+  //   name: "article-manager",
+  //   meta: {
+  //     icon: "ios-text",
+  //     title: "文章管理"
+  //   },
+  //   component: Main,
+  //   children: [
+  //     {
+  //       path: "/article-list-manager",
+  //       name: "article-list-manager",
+  //       meta: {
+  //         icon: "ios-text",
+  //         title: "文章管理"
+  //       },
+  //       component: () => import("@/view/article-manager/article-manager/article-manager.vue")
+  //     },
+  //     // {
+  //     //   path: "/comment-manager",
+  //     //   name: "comment-manager",
+  //     //   meta: {
+  //     //     icon: "ios-text",
+  //     //     title: "评论管理"
+  //     //   },
+  //     //   component: () => import('@/view/user-manager/approve-manager/approve-manager.vue')
+  //     // },
+  //   ]
+  // },
   // home页面
   {
     path: '/',

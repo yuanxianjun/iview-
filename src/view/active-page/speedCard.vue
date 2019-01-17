@@ -74,8 +74,8 @@ export default {
     // 完成进度查询
     getPercent() {
       ApiApprove.percent().then(res => {
+        // alert(JSON.stringify(res));
         if (res.status == 0) {
-          // alert(JSON.stringify(res.data));
           this.percent = res.data;
         }
       });
@@ -124,7 +124,7 @@ export default {
     // 先进行登录
     setTimeout(function() {
       var state = getAppToken(that.getPercent);
-    }, 500);
+    }, 1000);
 
     // 获取推荐的卡片
     this.getRcommondList();

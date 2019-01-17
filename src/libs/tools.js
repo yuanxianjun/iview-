@@ -3,17 +3,22 @@ import { setToken } from '@/libs/util'
 export const getAppToken = (callBack) => {
   if (window.WebViewJavascriptBridge) {
     window.WebViewJavascriptBridge.callHandler('authToken', {}, function (responseData) {
-      // window.alert('查看获取到的token内容' + JSON.stringify(responseData))
-      if (responseData.code === 0) {
-        var token = responseData.token
+      var result = JSON.parse(responseData)
+      // window.alert('查看获取到的token内容' +
+      // result.code)
+      if (result.code === 0) {
+        var token = result.token
         setToken(token)
+
         if (callBack) {
           callBack()
         }
       }
     })
+
+    // alert('存在方法')
   } else {
-    alert('没有该方法')
+    window.alert('没有该方法')
   }
 }
 export const forEach = (arr, fn) => {

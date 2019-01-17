@@ -263,7 +263,7 @@ export default {
     closeWin() {
       this.modal1 = false;
       if (this.ban == "item") {
-        this.intItemData(this.currentPage, 8, this.searchKey, this.searchValue);
+        this.intData(this.currentPage, 8, this.searchKey, this.searchValue);
       } else {
         this.intData(this.currentPage, 8);
       }

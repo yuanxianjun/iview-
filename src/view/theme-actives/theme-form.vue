@@ -4,6 +4,7 @@
       <!-- <FormItem label="ID" prop="id">
             <Input v-model="formValidate.id" placeholder="输入ID"></Input>
       </FormItem>-->
+      <!-- {{formValidate.topicBg}} -->
       <FormItem label="主题卡片背景" prop="topicBg">
         <Upload
           ref="upload"
@@ -20,10 +21,11 @@
         >
           <div style="width: 100px;height:58px;line-height: 58px;">
             <Icon v-if="!showImg" type="ios-add" size="50"></Icon>
+
             <img
               class="img"
               v-if="showImg"
-              :src="formValidate.topicItemBg"
+              :src="formValidate.topicBg"
               alt
               style="width:100px;height:60px;"
             >
@@ -104,7 +106,7 @@
 
       <FormItem label="主题类型" prop="topicType">
         <Select v-model="formValidate.topicType" placeholder="选择主题类型">
-          <Option v-for="item in topicTypes" :key="item.id" :value="item.text">{{item.text}}</Option>
+          <Option v-for="item in topicTypes" :key="item.id" :value="item.value">{{item.text}}</Option>
         </Select>
       </FormItem>
 
@@ -250,6 +252,7 @@ export default {
           topicQueryValue: "",
           topicTips: [],
           topicType: "",
+
           topicBgColor: "#19be6b"
         };
       }
@@ -286,16 +289,18 @@ export default {
     // 上传文件
     handleSuccess(res, file) {
       // #endregion
-      console.log("文件上传成功", res, file);
-      this.formValidate.topicItemBg = res.data.previewFileName;
-      this.showImg = true;
+      if (res.status == 0) {
+        this.formValidate.topicBg = res.data.previewFileName;
+        console.log("文件上传成功", this.formValidate.topicBg);
+        this.showImg = true;
+      }
     },
 
     // 上传Icon
     handleSuccess2(res, file) {
       // #endregion
       this.formValidate.topicIcon = res.data.previewFileName;
-      console.log("文件2上传成功", res, this.formValidate.topicIcon);
+      console.log("文件2上传成功", res, thsi.formValidate.topicIcon);
       this.showImg2 = true;
     },
 
